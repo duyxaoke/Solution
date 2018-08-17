@@ -14,7 +14,7 @@ namespace Web.Areas.Admin.Controllers
         private IMenuServices _menuAppService = new MenuServices();
         private IMenuInRolesServices _menuInRolesAppService = new MenuInRolesServices();
         private IAccountServices _accountServices = new AccountServices();
-        private IRoleServices _roleServices = new RoleServices();
+        //private IRoleServices _roleServices = new RoleServices();
         private readonly UserManager userManager;
         private readonly RoleManager roleManager;
         public TemplateController(UserManager userManager, RoleManager roleManager)

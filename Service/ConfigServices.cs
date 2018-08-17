@@ -13,7 +13,7 @@ namespace Service
     public interface IConfigServices
     {
         CRUDResult<IEnumerable<Config>> GetAll();
-        CRUDResult<Config> Get(int id);
+        CRUDResult<Config> GetById(int id);
         CRUDResult<bool> Create(Config model);
         CRUDResult<bool> Update(Config model);
         CRUDResult<bool> Delete(int id);
@@ -23,14 +23,17 @@ namespace Service
     }
     public class ConfigServices : IConfigServices
     {
-        private readonly UnitOfWork _unitOfWork = new UnitOfWork();
-
+        private readonly UnitOfWork _unitOfWork;
+        public ConfigServices(UnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
         public CRUDResult<IEnumerable<Config>> GetAll()
         {
             var result = _unitOfWork.ConfigRepository.GetAll();
             return new CRUDResult<IEnumerable<Config>> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
         }
-        public CRUDResult<Config> Get(int id)
+        public CRUDResult<Config> GetById(int id)
         {
             var result = _unitOfWork.ConfigRepository.GetById(id);
             return new CRUDResult<Config> { StatusCode = CRUDStatusCodeRes.Success, Data = result };

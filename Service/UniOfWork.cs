@@ -25,7 +25,7 @@ namespace Service
         private BaseRepository<MenuInRoles> _menuInRolesRepository;
         private BaseRepository<MenuViewModel> _menuViewRepository;
         private BaseRepository<UserViewModel> _userViewRepository;
-        private BaseRepository<IdentityRole> _identityRoleRepository;
+        private BaseRepository<ApplicationRole> _identityRoleRepository;
         private BaseRepository<ApplicationUser> _applicationUserRepository;
         private BaseRepository<IdentityUserRole> _identityUserRoleRepository;
         private BaseRepository<DB_LOG> _dbLogRepository;
@@ -46,12 +46,12 @@ namespace Service
                 return _dbLogRepository;
             }
         }
-        public BaseRepository<IdentityRole> IdentityRoleRepository
+        public BaseRepository<ApplicationRole> IdentityRoleRepository
         {
             get
             {
                 if (this._identityRoleRepository == null)
-                    this._identityRoleRepository = new BaseRepository<IdentityRole>(Context);
+                    this._identityRoleRepository = new BaseRepository<ApplicationRole>(Context);
                 return _identityRoleRepository;
             }
         }

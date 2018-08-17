@@ -29,6 +29,7 @@ namespace Web
             builder.RegisterModule(new AutofacWebTypesModule());
 
             builder.RegisterType<DatabaseContext>().AsSelf().InstancePerRequest();
+            builder.RegisterType<UnitOfWork>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<UserManager>().AsSelf().InstancePerRequest();
             builder.RegisterType<RoleManager>().AsSelf().InstancePerRequest();
             builder.RegisterType<SignInManager>().AsSelf().InstancePerRequest();

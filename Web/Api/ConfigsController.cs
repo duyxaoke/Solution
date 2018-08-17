@@ -5,6 +5,7 @@ using System.Web.Http;
 using System.Web.Http.Results;
 using Web.Helpers;
 using Web.Infrastructure;
+using WebApiThrottle;
 
 namespace Web.Api
 {
@@ -20,7 +21,6 @@ namespace Web.Api
         }
         [HttpGet]
         [Route("list")]
-        [ApiAuthorizeAttribute(Roles = "User")]
         public IHttpActionResult List()
         {
             var result = _configServices.GetAll();
@@ -29,14 +29,15 @@ namespace Web.Api
 
         [HttpGet]
         [Route("{id:int}")]
-        public IHttpActionResult Get(int id)
+        public IHttpActionResult GetById(int id)
         {
-            var result = _configServices.Get(id);
+            var result = _configServices.GetById(id);
             return ApiHelper.ReturnHttpAction(result, this);
         }
 
         [HttpPost]
         [Route("create")]
+        [EnableThrottling(PerSecond = 1)]
         public IHttpActionResult Post([FromBody]Config model)
         {
             var result = _configServices.Create(model);
@@ -46,6 +47,7 @@ namespace Web.Api
 
         [HttpPut]
         [Route("update")]
+        [EnableThrottling(PerSecond = 1)]
         public IHttpActionResult Put([FromBody]Config model)
         {
             var result = _configServices.Update(model);
@@ -54,6 +56,7 @@ namespace Web.Api
         }
 
         [HttpDelete]
+        [EnableThrottling(PerSecond = 1)]
         public IHttpActionResult Delete(int id)
         {
             var result = _configServices.Delete(id);

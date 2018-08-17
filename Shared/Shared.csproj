@@ -104,11 +104,14 @@
     <Compile Include="Common\Command.cs" />
     <Compile Include="Common\Enum.cs" />
     <Compile Include="Models\BootstrapModel.cs" />
+    <Compile Include="Models\RoleClaimsViewModel.cs" />
+    <Compile Include="Models\CreateRoleViewModel.cs" />
     <Compile Include="Models\MenuViewModel.cs" />
     <Compile Include="Models\ModalFooter.cs" />
     <Compile Include="Models\ModalHeader.cs" />
     <Compile Include="Models\ModalSize.cs" />
     <Compile Include="Models\UserViewModel.cs" />
+    <Compile Include="Models\SelectListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
