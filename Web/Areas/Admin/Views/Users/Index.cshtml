@@ -1,0 +1,104 @@
+﻿@model Web.Controllers.UsersIndexViewIndex
+@{
+    ViewBag.Title = "Danh sách Users";
+}
+<div class="col-sm-12">
+    <div class="panel panel-default">
+        <div class="panel-heading b-b b-light">
+            <span class="pull-right">
+                <a href="@Url.Action("Add", "Users")" data-toggle="modal" data-target="#modal-action" class="btn btn-addon btn-sm btn-info" style="margin-top:-5px">
+                    <i class="fa fa-plus"></i> Thêm mới
+                </a>
+            </span>
+            <a class="font-bold">@ViewBag.Title</a>
+        </div>
+        <div class="panel-body">
+            <table class="table table-striped b-t b-b" id="tblMain">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <td>UserName</td>
+                        <td>Lockout</td>
+                        <td>Truy cập thất bại</td>
+                        <td>Ngày mở khóa</td>
+                        <td>Action</td>
+                    </tr>
+                </thead>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+{
+    <script>
+        $('#tblMain').DataTable({
+            "language": {
+                "search": "Tìm kiếm:",
+                "paginate": {
+                    "first": "Trang đầu",
+                    "last": "Trang cuối",
+                    "next": "Trang kế tiếp",
+                    "previous": "Trang trước"
+                },
+                "lengthMenu": "Hiển thị _MENU_ dòng",
+                "info": "Đang hiển thị _START_ đến _END_ của _TOTAL_ dòng",
+                "infoEmpty": "Đang hiển thị 0 đến 0 của 0 dòng",
+                "infoFiltered": "(lọc từ tổng số _MAX_ dòng)",
+                "zeroRecords": "Không tìm thấy kết quả",
+                "emptyTable": "Không có dữ liệu nào trong bảng",
+                "loadingRecords": "Đang tải...",
+                "processing": "Đang xử lý...",
+            },
+            autoWidth: false,
+            processing: true,
+            serverSide: true,
+            order: [[1, "asc"]],
+            pageLength: 10,
+            ajax: {
+                url: '/Users/GetDataTable',
+            },
+            columnDefs: [
+                {
+                    targets: 0,
+                    searchable: false,
+                    orderable: false,
+                    data: "Id",
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                { targets: 1, data: 'UserName' },
+                { targets: 2, data: 'LockoutEnabled' },
+                { targets: 3, data: 'AccessFailedCount' },
+                { targets: 4, data: 'LockoutEndDateUtc' },
+                {
+                    targets: 5,
+                    data: 'Id',
+                    searchable: false,
+                    orderable: false,
+                    render: function (data, type, row, meta) {
+                        var html = '<div class="btn-group dropdown">';
+                        html += '<button class="btn btn-default btn-sm btn-bg dropdown-toggle" data-toggle="dropdown">';
+                        html += '<span class="dropdown-label"><i class="fa fa-dedent fa-fw text"></i></span>';
+                        html += '<span class="caret"></span>';
+                        html += '</button>';
+                        html += '<ul class="dropdown-menu text-sm">';
+                        html += '<li><a data-toggle="modal" href="/Users/Edit?id=' + data + '" data-target="#modal-action"><i class="fa fa-pencil"></i> Sửa</a></li>';
+                        html += '<li><a data-toggle="modal" href="/Users/EditRoles?userId=' + data + '" data-target="#modal-action"><i class="icon-bag"></i> Role</a></li>';
+                        html += '<li><a data-toggle="modal" href="/Users/ViewClaims?id=' + data + '" data-target="#modal-action"><i class="fa  fa-calendar"></i> Phân quyền</a></li>';
+                        html += '<li><a data-toggle="modal" href="/Users/Delete?id=' + data + '" data-target="#modal-action"><i class="fa fa-trash"></i> Xóa</a></li>';
+                        html += '</ul>';
+                        html += '</div>';
+                        return html;
+                    }
+                }
+            ]
+        }).on('draw', function () {
+            $('div.btn-group').parent().css('text-align', 'center');
+            $('tr').find('td:eq(0)').css('text-align', 'center');
+        });
+    </script>
+}

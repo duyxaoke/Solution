@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Shared.Models.MenuViewModel>
+@using Shared.Models
+
+<form action="@Url.Action("MenuInRoles","Roles")" method="post" role="form">
+    @Html.Partial("_ModalHeader", new ModalHeader { Heading = "Menu in role" })
+    <div class="panel-body">
+        <input value="@Model.FirstOrDefault().RoleId" type="hidden" name="RoleId" />
+        <ul>
+            @foreach (var item in Model)
+            {
+                <!-- co item con -->
+                if (item.Children.Count() > 0)
+                {
+                    <li>
+                        <div class="checkbox">
+                            <input type="checkbox" @item.Checked id="@item.Id" value="@item.Id" name="menuIds">
+                            <label for="@item.Id">
+                                @item.Name
+                            </label>
+                        </div>
+
+                        <ul>
+                            @foreach (var itemChild in item.Children)
+                            {
+                                <li>
+                                    <div class="checkbox">
+                                        <input type="checkbox" @itemChild.Checked id="@itemChild.Id" value="@itemChild.Id" name="menuIds">
+                                        <label for="@itemChild.Id">
+                                            @itemChild.Name
+                                        </label>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <div class="checkbox">
+                            <input type="checkbox" @item.Checked id="@item.Id" value="@item.Id" name="menuIds">
+                            <label for="@item.Id">
+                                @item.Name
+                            </label>
+                        </div>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+    @Html.Partial("_ModalFooter", new ModalFooter { SubmitButtonText = "Submit" })
+</form>
+<script>
+    $("form").submit(function (event) {
+        event.preventDefault();
+        let url = $("form").attr('action');
+        let data = $("form").serialize();
+        $.when(sys.CallAjax(url, data))
+            .done(function (response) {
+                $('#modal-action').modal('hide');
+                sys.Alert(response.status, response.message);
+                $('table').DataTable().ajax.reload(null, false);
+            })
+            .fail(function (error) {
+                sys.Alert(false, "Có lỗi xảy ra, vui lòng thử lại!");
+            });
+    });
+</script>
+
+
+

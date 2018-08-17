@@ -1,0 +1,12 @@
+﻿@model Shared.Models.ModalFooter
+
+<div class="modal-footer">
+    <button class="btn btn-default" data-dismiss="modal" id="@Model.CancelButtonID">@Model.CancelButtonText</button>
+    @if (!Model.OnlyCancelButton)
+    {
+        <button class="btn btn-primary pull-right" id="@Model.SubmitButtonID" type="submit">
+            @Model.SubmitButtonText
+        </button>
+    }
+</div>
+

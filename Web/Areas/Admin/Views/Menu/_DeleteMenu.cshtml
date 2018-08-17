@@ -1,0 +1,29 @@
+﻿@model Core.Data.Menu
+@using Shared.Models
+
+
+<form action="@Url.Action("Delete","Menu")" method="post" role="form">
+    @Html.Partial("_ModalHeader", new ModalHeader { Heading = "Xóa menu" })
+    @Html.HiddenFor(m => m.Id)
+    <div class="modal-body form-horizontal">
+        Bạn chắc chắn muốn xóa @Model.Name?
+    </div>
+    @Html.Partial("_ModalFooter", new ModalFooter { })
+</form>
+
+<script>
+    $("form").submit(function (event) {
+        event.preventDefault();
+        let url = $("form").attr('action');
+        let data = $("form").serialize();
+        $.when(sys.CallAjax(url, data))
+            .done(function (response) {
+                $('#modal-action').modal('hide');
+                sys.Alert(response.status, response.message);
+                $('table').DataTable().ajax.reload(null, false);
+            })
+            .fail(function (error) {
+                sys.Alert(false, "Có lỗi xảy ra, vui lòng thử lại!");
+            });
+    });
+</script>
