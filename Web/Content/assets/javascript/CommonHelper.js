@@ -2,10 +2,11 @@
     var service = {};
 
     service.ConfigUrl = "Configs/"; 
-    service.CurrencyUrl = "Currency/"; 
-    service.TransactionUrl = "Transaction/"; 
-    service.RoleUrl = "Role/"; 
-    service.UserUrl = "User/"; 
+    service.MenuUrl = "Menus/"; 
+    service.CurrencyUrl = "Currencies/"; 
+    service.TransactionUrl = "Transactions/"; 
+    service.RoleUrl = "Roles/"; 
+    service.UserUrl = "Users/"; 
 
     service.DepWithType = {};
     service.DepWithType.Deposit = 0;

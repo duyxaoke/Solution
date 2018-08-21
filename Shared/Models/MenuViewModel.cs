@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Web.Mvc;
-using System.Web.UI.WebControls;
-using Core.Data;
-using System.ComponentModel.DataAnnotations.Schema;
 using System;
+using FluentValidation;
+using System.ComponentModel.DataAnnotations.Schema;
+using FluentValidation.Attributes;
 
 namespace Shared.Models
 {
+    [Validator(typeof(MenuViewModelValidator))]
     public class MenuViewModel
     {
         public int Id { get; set; }
@@ -21,9 +21,20 @@ namespace Shared.Models
         public string Checked { get; set; } // in role - checked
         public string RoleName { get; set; } // in role - checked
         [NotMapped]
-        public List<SelectListItem> Parent { get; set; }
+        public IEnumerable<SelectListViewModel> Parent { get; set; }
         [NotMapped]
         public IEnumerable<MenuViewModel> Children { get; set; }
 
     }
+    public class MenuViewModelValidator : AbstractValidator<MenuViewModel>
+    {
+        public MenuViewModelValidator()
+        {
+            RuleFor(x => x.Name).NotEmpty().Length(0, 50);
+            RuleFor(x => x.Url).Length(0, 255);
+            RuleFor(x => x.Icon).Length(0, 255);
+            RuleFor(x => x.RoleName).Length(0, 255);
+        }
+    }
+
 }

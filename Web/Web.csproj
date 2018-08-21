@@ -55,9 +55,11 @@
     <Reference Include="Autofac.Integration.WebApi, Version=4.2.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.WebApi2.4.2.0\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
     </Reference>
-    <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\AutoMapper.2.0.0\lib\net40-client\AutoMapper.dll</HintPath>
+    <Reference Include="AutoMapper, Version=5.2.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.2.0\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Core.API">
+      <HintPath>..\packages\Core.API.dll</HintPath>
     </Reference>
     <Reference Include="Core.DTO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -73,6 +75,12 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.7.6.0\lib\net45\FluentValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation.WebApi, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.WebApi.7.6.0\lib\net45\FluentValidation.WebApi.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -122,6 +130,12 @@
       <HintPath>..\packages\Swashbuckle.Core.5.6.0\lib\net40\Swashbuckle.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.4.4.1\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Primitives, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Primitives.4.3.0\lib\net45\System.ComponentModel.Primitives.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
@@ -211,7 +225,7 @@
     <Compile Include="Areas\Product\ProductAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\BaseController.cs" />
     <Compile Include="Controllers\ErrorsController.cs" />
-    <Compile Include="Areas\Admin\Controllers\MenuController.cs" />
+    <Compile Include="Areas\Admin\Controllers\MenusController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProfilerController.cs" />
     <Compile Include="Areas\Admin\Controllers\ClaimsController.cs" />
     <Compile Include="Areas\Admin\Controllers\TemplateController.cs" />
@@ -291,6 +305,8 @@
     <Content Include="Content\assets\images\illustration\img-2.png" />
     <Content Include="Content\assets\images\illustration\img-5.png" />
     <Content Include="Content\assets\images\illustration\img-7.png" />
+    <Content Include="Content\assets\javascript\DataFactory.js" />
+    <Content Include="Content\assets\javascript\UtilFactory.js" />
     <Content Include="Content\assets\javascript\ApiHelper.js" />
     <Content Include="Content\assets\javascript\CommonHelper.js" />
     <Content Include="Content\assets\javascript\main.min.js" />
@@ -774,6 +790,7 @@
     <Content Include="Content\assets\vendor\katex\fonts\KaTeX_Typewriter-Regular.html" />
     <Content Include="Content\assets\vendor\katex\katex.min.css" />
     <Content Include="Content\assets\vendor\katex\katex.min.js" />
+    <Content Include="Content\assets\vendor\lodash\core.js" />
     <Content Include="Content\assets\vendor\masonry-layout\masonry.pkgd.js" />
     <Content Include="Content\assets\vendor\masonry-layout\masonry.pkgd.min.js" />
     <Content Include="Content\assets\vendor\nestable2\jquery.nestable.min.js" />
@@ -897,10 +914,6 @@
     <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Claims\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Home\Test.cshtml" />
-    <Content Include="Areas\Admin\Views\Menu\_AddMenu.cshtml" />
-    <Content Include="Areas\Admin\Views\Menu\_DeleteMenu.cshtml" />
-    <Content Include="Areas\Admin\Views\Menu\_EditMenu.cshtml" />
-    <Content Include="Areas\Admin\Views\Menu\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Profiler\AddClaims.cshtml" />
     <Content Include="Areas\Admin\Views\Profiler\AddRandomClaims.cshtml" />
     <Content Include="Areas\Admin\Views\Profiler\Index.cshtml" />
@@ -933,6 +946,7 @@
     <Content Include="Content\assets\vendor\jquery-validation\package.json" />
     <Content Include="Content\assets\vendor\jquery-validation\README.md" />
     <Content Include="Areas\Admin\Views\Configs\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Menus\Index.cshtml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

@@ -39,6 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=5.2.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.2.0\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="Core.DTO">
       <HintPath>..\packages\Core.DTO.dll</HintPath>
     </Reference>
@@ -74,9 +77,9 @@
     <Compile Include="BaseRepository.cs" />
     <Compile Include="CacheService\CacheService.cs" />
     <Compile Include="DbLogService.cs" />
-    <Compile Include="MenuInRoleService.cs" />
+    <Compile Include="MenuInRoleServices.cs" />
     <Compile Include="RoleServices.cs" />
-    <Compile Include="MenuService.cs" />
+    <Compile Include="MenuServices.cs" />
     <Compile Include="ConfigServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UniOfWork.cs" />

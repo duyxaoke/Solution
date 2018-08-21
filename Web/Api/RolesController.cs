@@ -52,7 +52,7 @@ namespace Web.Api
         public IHttpActionResult MenuInRoles(Guid? roleId)
         {
             var result = new List<MenuViewModel>();
-            var menus = _menuService.GetParent().OrderBy(l => l.Order);
+            var menus = _menuService.GetParent().Data.OrderBy(l => l.Order);
             foreach (var item in menus)
             {
                 MenuViewModel model = new MenuViewModel();
@@ -67,7 +67,7 @@ namespace Web.Api
                 model.Children = GetChildren(item.Id, roleId);
                 if (roleId.HasValue)
                 {
-                    var menu = _menuInRolesService.GetMenuByRoleId(roleId.Value).Any(c => c.MenuId == item.Id);
+                    var menu = _menuInRolesService.GetMenuByRoleId(roleId.Value).Data.Any(c => c.MenuId == item.Id);
                     if (menu)
                         model.Checked = "checked";
                     else
@@ -207,7 +207,7 @@ namespace Web.Api
         private List<MenuViewModel> GetChildren(int parentId, Guid? roleId)
         {
             var lsmodel = new List<MenuViewModel>();
-            var menus = _menuService.GetChildren(parentId).OrderBy(l => l.Order);
+            var menus = _menuService.GetChildren(parentId).Data.OrderBy(l => l.Order);
             foreach (var item in menus)
             {
                 MenuViewModel model = new MenuViewModel();
@@ -220,7 +220,7 @@ namespace Web.Api
                 model.ParentId = item.ParentId;
                 if (roleId.HasValue)
                 {
-                    var menu = _menuInRolesService.GetMenuByRoleId(roleId.Value).Any(c => c.MenuId == item.Id);
+                    var menu = _menuInRolesService.GetMenuByRoleId(roleId.Value).Data.Any(c => c.MenuId == item.Id);
                     if (menu)
                         model.Checked = "checked";
                     else

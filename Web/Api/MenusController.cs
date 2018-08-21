@@ -1,5 +1,6 @@
 ﻿using Core.Data;
 using Service;
+using Shared.Models;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
@@ -31,38 +32,38 @@ namespace Web.Api
         [Route("{id:int}")]
         public IHttpActionResult Get(int id)
         {
-            var result = _menuServices.Get(id);
+            var result = _menuServices.GetById(id);
             return ApiHelper.ReturnHttpAction(result, this);
         }
 
-        //[HttpPost]
-        //[Route("create")]
-        //[EnableThrottling(PerSecond = 1)]
-        //public IHttpActionResult Post([FromBody]Menu model)
-        //{
-        //    var result = _menuServices.Create(model);
-        //    _menuServices.Save();
-        //    return ApiHelper.ReturnHttpAction(result, this);
-        //}
+        [HttpPost]
+        [Route("create")]
+        [EnableThrottling(PerSecond = 1)]
+        public IHttpActionResult Post([FromBody]MenuViewModel model)
+        {
+            var result = _menuServices.Add(model);
+            _menuServices.Save();
+            return ApiHelper.ReturnHttpAction(result, this);
+        }
 
-        //[HttpPut]
-        //[Route("update")]
-        //[EnableThrottling(PerSecond = 1)]
-        //public IHttpActionResult Put([FromBody]Menu model)
-        //{
-        //    var result = _menuServices.Update(model);
-        //    _menuServices.Save();
-        //    return ApiHelper.ReturnHttpAction(result, this);
-        //}
+        [HttpPut]
+        [Route("update")]
+        [EnableThrottling(PerSecond = 1)]
+        public IHttpActionResult Put([FromBody]MenuViewModel model)
+        {
+            var result = _menuServices.Update(model);
+            _menuServices.Save();
+            return ApiHelper.ReturnHttpAction(result, this);
+        }
 
-        //[HttpDelete]
-        //[EnableThrottling(PerSecond = 1)]
-        //public IHttpActionResult Delete(int id)
-        //{
-        //    var result = _menuServices.Delete(id);
-        //    _menuServices.Save();
-        //    return ApiHelper.ReturnHttpAction(result, this);
-        //}
+        [HttpDelete]
+        [EnableThrottling(PerSecond = 1)]
+        public IHttpActionResult Delete(int id)
+        {
+            var result = _menuServices.Delete(id);
+            _menuServices.Save();
+            return ApiHelper.ReturnHttpAction(result, this);
+        }
 
     }
 }

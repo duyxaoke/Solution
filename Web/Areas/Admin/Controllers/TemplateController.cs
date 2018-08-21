@@ -11,18 +11,21 @@ namespace Web.Areas.Admin.Controllers
 {
     public class TemplateController : Controller
     {
-        private IMenuServices _menuAppService = new MenuServices();
-        private IMenuInRolesServices _menuInRolesAppService = new MenuInRolesServices();
-        private IAccountServices _accountServices = new AccountServices();
-        //private IRoleServices _roleServices = new RoleServices();
+        private IMenuServices _menuAppService;
+        private IMenuInRolesServices _menuInRolesAppService;
+        private IAccountServices _accountServices;
         private readonly UserManager userManager;
         private readonly RoleManager roleManager;
-        public TemplateController(UserManager userManager, RoleManager roleManager)
+        public TemplateController(UserManager userManager, RoleManager roleManager, IMenuServices menuAppService, IMenuInRolesServices menuInRolesAppService,
+            IAccountServices accountServices)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
+            _menuInRolesAppService = menuInRolesAppService;
+            _accountServices = accountServices;
+            _menuAppService = menuAppService;
         }
-        
+
         // GET: Template
         public PartialViewResult Sidebar()
         {
@@ -45,9 +48,9 @@ namespace Web.Areas.Admin.Controllers
                 lsCurrentRole.Add(roleManager.FindByNameAsync("Anonymous").Result.Id);
             }
             //get current menu tu role
-            var lsCurrentMenu = _menuInRolesAppService.GetAll().Where(c => lsCurrentRole.Contains(c.RoleId.ToString())).Select(c => c.MenuId);
+            var lsCurrentMenu = _menuInRolesAppService.GetAll().Data.Where(c => lsCurrentRole.Contains(c.RoleId.ToString())).Select(c => c.MenuId);
 
-            var model = _menuAppService.GetParent()
+            var model = _menuAppService.GetParent().Data
                 .Where(c => lsCurrentMenu.Contains(c.Id))
                 .OrderBy(c => c.Order)
                 .Select(l => new MenuViewModel
@@ -91,9 +94,9 @@ namespace Web.Areas.Admin.Controllers
                 lsCurrentRole.Add(roleManager.FindByNameAsync("Anonymous").Result.Id);
             }
             //get current menu tu role
-            var lsCurrentMenu = _menuInRolesAppService.GetAll().Where(c => lsCurrentRole.Contains(c.RoleId.ToString())).Select(c => c.MenuId);
+            var lsCurrentMenu = _menuInRolesAppService.GetAll().Data.Where(c => lsCurrentRole.Contains(c.RoleId.ToString())).Select(c => c.MenuId);
 
-            return _menuAppService.GetChildren(parentId)
+            return _menuAppService.GetChildren(parentId).Data
                  .Where(c => lsCurrentMenu.Contains(c.Id))
                  .OrderBy(l => l.Order)
                 .Select(l => new MenuViewModel

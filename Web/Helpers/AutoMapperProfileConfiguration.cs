@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Core.Data;
+using Shared.Models;
 
 namespace Web.Helpers
 {
@@ -6,11 +8,9 @@ namespace Web.Helpers
     {
         public MappingProfile()
         {
-           
-
             // suport
-            //Mapper.CreateMap<ContactUsMessage, ContactUsMessageModel>();
-            //Mapper.CreateMap<ContactUsMessageModel, ContactUsMessage>();
+            CreateMap<Menu, MenuViewModel>();
+            CreateMap<MenuViewModel, Menu>().ForMember(d => d.Id, o => o.Ignore());
         }
     }
 
