@@ -62,7 +62,7 @@ namespace Web.Areas.Admin.Controllers
                     Order = l.Order,
                     IsActive = l.IsActive,
                     ParentId = l.ParentId,
-                    Children = GetChildren(l.Id)
+                    Childrens = GetChildren(l.Id)
                 });
             return PartialView(model);
         }
@@ -108,7 +108,7 @@ namespace Web.Areas.Admin.Controllers
                     Order = l.Order,
                     IsActive = l.IsActive,
                     ParentId = l.ParentId,
-                    Children = GetChildren(l.Id)
+                    Childrens = GetChildren(l.Id)
                 }).ToList();
         }
         private List<string> CurrentRole()

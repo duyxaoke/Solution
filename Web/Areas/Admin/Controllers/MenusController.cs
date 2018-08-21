@@ -16,7 +16,7 @@ using DataTablesDotNet;
 
 namespace Web.Areas.Admin.Controllers
 {
-    //[ClaimsGroup(ClaimResources.Menus)]
+    [ClaimsGroup(ClaimResources.Menus)]
     [MvcAuthorize]
     public class MenusController : BaseController
     {
@@ -27,7 +27,7 @@ namespace Web.Areas.Admin.Controllers
             _menuServices = menuServices;
         }
 
-        //[ClaimsAction(ClaimsActions.Index)]
+        [ClaimsAction(ClaimsActions.Index)]
         public ActionResult Index()
         {
             return View();

@@ -48,7 +48,7 @@ namespace Web.Api
             return ApiHelper.ReturnHttpAction(result, this);
         }
         [HttpGet]
-        [Route("MenuInRoles/{id:guid}")]
+        [Route("MenuInRoles/{roleId:guid}")]
         public IHttpActionResult MenuInRoles(Guid? roleId)
         {
             var result = new List<MenuViewModel>();
@@ -64,25 +64,26 @@ namespace Web.Api
                 model.IsActive = item.IsActive;
                 model.ParentId = item.ParentId;
                 model.RoleId = roleId;
-                model.Children = GetChildren(item.Id, roleId);
+                model.Childrens = GetChildrens(item.Id, roleId);
                 if (roleId.HasValue)
                 {
                     var menu = _menuInRolesService.GetMenuByRoleId(roleId.Value).Data.Any(c => c.MenuId == item.Id);
                     if (menu)
-                        model.Checked = "checked";
+                        model.Checked = true;
                     else
-                        model.Checked = "";
+                        model.Checked = false;
                 }
                 result.Add(model);
             }
-            return ApiHelper.ReturnHttpAction(result, this);
+            return CCOk(result);
         }
+
         [HttpPost]
         [Route("MenuInRoles")]
         [EnableThrottling(PerSecond = 1)]
-        public IHttpActionResult MenuInRoles([FromBody]Guid? roleId, List<int> menuIds)
+        public IHttpActionResult MenuInRoles(UpdateMenuInRoleViewModel model)
         {
-            var result = _menuInRolesService.AddOrUpdateMenuInRoles(roleId.Value, menuIds);
+            var result = _menuInRolesService.AddOrUpdateMenuInRoles(model.RoleId, model.MenuIds);
             _menuInRolesService.Save();
             return ApiHelper.ReturnHttpAction(result, this);
         }
@@ -98,7 +99,7 @@ namespace Web.Api
                 Name = model.Name,
             };
             await _roleManager.CreateAsync(newRole);
-            return ApiHelper.ReturnHttpAction(true, this);
+            return CCOk(true);
         }
         [HttpGet]
         [Route("EditClaims/{id}")]
@@ -132,7 +133,7 @@ namespace Web.Api
                 };
                 result.ClaimGroups.Add(claimGroupModel);
             }
-            return Ok(result);
+            return CCOk(result);
         }
         [HttpPost]
         [Route("EditClaims")]
@@ -177,7 +178,7 @@ namespace Web.Api
 
             var cacheKey = ApplicationRole.GetCacheKey(role.Name);
             System.Web.HttpContext.Current.Cache.Remove(cacheKey);
-            return ApiHelper.ReturnHttpAction(true, this);
+            return CCOk(roleClaims);
         }
 
         [HttpDelete]
@@ -197,14 +198,14 @@ namespace Web.Api
                 var roleRuslt = _roleManager.DeleteAsync(role).Result;
                 if (roleRuslt.Succeeded)
                 {
-                    return ApiHelper.ReturnHttpAction(true, this);
+                    return CCOk(true);
                 }
             }
-            return ApiHelper.ReturnHttpAction(false, this);
+            return CCOk(false);
         }
 
         #region Helper
-        private List<MenuViewModel> GetChildren(int parentId, Guid? roleId)
+        private List<MenuViewModel> GetChildrens(int parentId, Guid? roleId)
         {
             var lsmodel = new List<MenuViewModel>();
             var menus = _menuService.GetChildren(parentId).Data.OrderBy(l => l.Order);
@@ -222,9 +223,9 @@ namespace Web.Api
                 {
                     var menu = _menuInRolesService.GetMenuByRoleId(roleId.Value).Data.Any(c => c.MenuId == item.Id);
                     if (menu)
-                        model.Checked = "checked";
+                        model.Checked = true;
                     else
-                        model.Checked = "";
+                        model.Checked = false;
                 }
                 lsmodel.Add(model);
             }

@@ -119,6 +119,7 @@
     <Compile Include="Common\Command.cs" />
     <Compile Include="Common\Enum.cs" />
     <Compile Include="Models\BootstrapModel.cs" />
+    <Compile Include="Models\UpdateMenuInRoleViewModel.cs" />
     <Compile Include="Models\RoleClaimsViewModel.cs" />
     <Compile Include="Models\CreateRoleViewModel.cs" />
     <Compile Include="Models\MenuViewModel.cs" />

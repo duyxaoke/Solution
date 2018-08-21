@@ -18,12 +18,13 @@ namespace Shared.Models
         public string Icon { get; set; }
         public bool IsActive { get; set; }
         public int Order { get; set; }
-        public string Checked { get; set; } // in role - checked
+        public bool Checked { get; set; } // in role - checked
         public string RoleName { get; set; } // in role - checked
         [NotMapped]
-        public IEnumerable<SelectListViewModel> Parent { get; set; }
+        public IEnumerable<SelectListViewModel> Parents { get; set; }
         [NotMapped]
-        public IEnumerable<MenuViewModel> Children { get; set; }
+        public IEnumerable<MenuViewModel> Childrens { get; set; }
+        public List<int> MenuIds { get; set; }
 
     }
     public class MenuViewModelValidator : AbstractValidator<MenuViewModel>

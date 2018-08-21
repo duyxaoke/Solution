@@ -32,17 +32,23 @@ namespace Web.Infrastructure
             {
                 if (filterContext.HttpContext.Request.IsAjaxRequest())
                 {
-                    filterContext.Result = new PartialViewResult
+                    filterContext.HttpContext.Response.StatusCode = 403;
+                    filterContext.Result = new JsonResult()
                     {
-                        ViewName = "_Unauthorised"
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                        Data = new
+                        {
+                            errorMessage = "Unauthorised"
+                        }
                     };
                 }
                 else
                 {
                     filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary()
                     {
-                        { "controller", "errors" },
-                        { "action", "Unauthorised" }
+                        { "controller", "Errors" },
+                        { "action", "Unauthorised" },
+                        { "area", null}
                     });
                 }
 

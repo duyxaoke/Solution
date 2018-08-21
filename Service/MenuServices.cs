@@ -38,7 +38,7 @@ namespace Service
         {
             var obj = _unitOfWork.MenuRepository.GetById(id);
             var result = Mapper.Map<Menu, MenuViewModel>(obj);
-            result.Parent = _unitOfWork.MenuRepository.GetAll()
+            result.Parents = _unitOfWork.MenuRepository.GetAll()
                 .Select(c=> new SelectListViewModel{
                     Text = c.Name,
                     Value = c.Id.ToString()

@@ -46,7 +46,7 @@
                     @foreach (var item in Model)
                     {
                         <!-- co item con -->
-                        if (item.Children.Count > 0)
+                        if (item.Childrens.Count > 0)
                         {
                             <li class="menu-item has-child">
                                 <a href="#" class="menu-link">
@@ -55,7 +55,7 @@
                                 </a>
                                 <!-- child menu -->
                                 <ul class="menu">
-                                    @foreach (var itemChild in item.Children)
+                                    @foreach (var itemChild in item.Childrens)
                                     {
                                         <li class="menu-item">
                                             <a href="@itemChild.Url" class="menu-link">@itemChild.Name</a>

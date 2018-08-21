@@ -2,6 +2,11 @@
 @{
     ViewData["Title"] = "Index";
 }
+<style>
+    ul {
+        list-style-type: none;
+    }
+</style>
 <div ng-controller="IndexController" ng-cloak>
     <!-- .card -->
     <section class="card">
@@ -57,15 +62,127 @@
         <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
+    <!-- Menu in role modal -->
+    <div id="MenuInRoleModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="MenuInRoleLabel" aria-hidden="true">
+        <!-- .modal-dialog -->
+        <div class="modal-dialog" role="document">
+            <!-- .modal-content -->
+            <div class="modal-content">
+                <!-- .modal-header -->
+                <div class="modal-header">
+                    <h5 class="modal-title"> Cập nhật menu </h5>
+                </div>
+                <!-- /.modal-header -->
+                <!-- .modal-body -->
+                <!-- form .needs-validation -->
+                <form id="frmMenuInRoleModal" name="frmMenuInRoleModal" class="needs-validation" novalidate="">
+                    <!-- /form .needs-validation -->
+                    <div class="modal-body">
+                        <div class="col-md-12">
+                            <ul>
+                                <li ng-repeat="item in MenuInRole" ng-if="item.Childrens.length > 0">
+                                    <div class="custom-control custom-checkbox mt-3">
+                                        <input type="checkbox" class="custom-control-input" id="{{item.Id}}" ng-checked="{{item.Checked}}" value="{{item.Id}}" ng-model="item.Checked">
+                                        <label class="custom-control-label" for="{{item.Id}}">{{item.Name}}</label>
+                                    </div>
+                                    <ul>
+                                        <li ng-repeat="itemChild in item.Childrens">
+                                            <div class="custom-control custom-checkbox mt-3">
+                                                <input type="checkbox" class="custom-control-input" id="{{itemChild.Id}}" value="{{itemChild.Id}}" ng-model="itemChild.Checked">
+                                                <label class="custom-control-label" for="{{itemChild.Id}}">{{itemChild.Name}}</label>
+                                            </div>
+                                        </li>
+                                    </ul>
+
+                                </li>
+                                <li ng-repeat="item in MenuInRole" ng-if="item.Childrens.length == 0">
+                                    <div class="custom-control custom-checkbox mt-3">
+                                        <input type="checkbox" class="custom-control-input" id="{{item.Id}}" value="{{item.Id}}" ng-model="item.Checked">
+                                        <label class="custom-control-label" for="{{item.Id}}">{{item.Name}}</label>
+                                    </div>
+                                </li>
+                            </ul>
+
+
+                        </div>
+                    </div>
+                    <!-- /.modal-body -->
+                    <!-- .modal-footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary" ng-disabled="frmMeneInRoleModal.$invalid" ng-click="SaveMenuInRole(roleId)">Cập nhật</button>
+                    </div>
+                </form>
+                <!-- /.modal-footer -->
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    <!-- Edit claim modal -->
+    <div id="EditClaimModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="EditClaimLabel" aria-hidden="true">
+        <!-- .modal-dialog -->
+        <div class="modal-dialog" role="document">
+            <!-- .modal-content -->
+            <div class="modal-content">
+                <!-- .modal-header -->
+                <div class="modal-header">
+                    <h5 class="modal-title"> Cập nhật menu </h5>
+                </div>
+                <!-- /.modal-header -->
+                <!-- .modal-body -->
+                <!-- form .needs-validation -->
+                <form id="frmEditClaimModal" name="frmEditClaimModal" class="needs-validation" novalidate="">
+                    <!-- /form .needs-validation -->
+                    <div class="modal-body">
+                        <div class="col-md-12">
+                            <label>
+                                Name
+                                <abbr title="Required">*</abbr>
+                            </label>
+                            <input type="hidden" class="form-control" ng-model="Claim.RoleId" required="">
+                            <input type="text" class="form-control" ng-model="Claim.RoleName" required="">
+                        </div>
+                        <div class="col-md-12">
+                            <div ng-repeat="item in Claim.ClaimGroups">
+                                <!-- .form-group -->
+                                <hr />
+                                <div class="form-group">
+                                    <label class="d-block">{{item.GroupName}}</label>
+                                    <div ng-repeat="itemOne in item.GroupClaimsCheckboxes" class="custom-control custom-control-inline custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="{{itemOne.Value}}" ng-checked="itemOne.Selected" ng-model="itemOne.Selected">
+                                        <label class="custom-control-label" for="{{itemOne.Value}}">{{itemOne.Text}}</label>
+                                    </div>
+                                </div>
+                                <!-- /.form-group -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.modal-body -->
+                    <!-- .modal-footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary" ng-disabled="frmMeneInRoleModal.$invalid" ng-click="SaveEditClaim(roleId)">Cập nhật</button>
+                    </div>
+                </form>
+                <!-- /.modal-footer -->
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 </div>
 
 @section scripts{
     <script>
         var IndexController = ($scope, $rootScope, $timeout, $filter, $compile, ApiHelper, CommonHelper, $q) => {
-
             //#region declare variable
             $scope.UpdateMode = false;
             $scope.Role = {};
+            $scope.MenuInRole = {};
+            $scope.Claim = {};
             //#endregion
 
             //#region Datatable
@@ -91,8 +208,9 @@
                         },
                         {
                             'mRender': function (data, type, row, meta) {
-                                return `<a class="btn btn-sm btn-secondary" href="javascript:void(0)" ng-click="Update('` + data + `');"><i class="fa fa-pencil-alt"></i></a>\n
-                                                        <a class="btn btn-sm btn-secondary" href="javascript:void(0)" ng-click="Delete('` + data + `');"><i class="far fa-trash-alt"></i></a>`;
+                                return `<a class="btn btn-sm btn-secondary" href="javascript:void(0)" ng-click="ReadMenuInRole('` + data + `');"><i class="fa fa-align-justify"></i></a>\n
+                                            <a class="btn btn-sm btn-secondary" href="javascript:void(0)" ng-click="ReadEditClaim('` + data + `');"><i class="fa fa-pencil-alt"></i></a>\n
+                                            <a class="btn btn-sm btn-secondary" href="javascript:void(0)" ng-click="Delete('` + data + `');"><i class="far fa-trash-alt"></i></a>`;
                             },
                             "sName": "Id",
                             "bSortable": false,
@@ -120,6 +238,34 @@
             };
             //#endregion
 
+            //#region ReadMenuInRoleById
+            var ReadMenuInRoleById = (Id) => {
+                let defer = $q.defer();
+                let strApiEndPoint = CommonHelper.RoleUrl + "MenuInRoles/" + Id;
+                ApiHelper.GetMethod(strApiEndPoint)
+                    .then(function (response) {
+                        $scope.MenuInRole = response.Data;
+                        defer.resolve(response);
+                    })
+                    .catch(function (response) { sys.Alert(false, response); });
+                return defer.promise;
+            };
+            //#endregion
+
+            //#region ReadEditClaim
+            var ReadEditClaimById = (Id) => {
+                let defer = $q.defer();
+                let strApiEndPoint = CommonHelper.RoleUrl + "EditClaims/" + Id;
+                ApiHelper.GetMethod(strApiEndPoint)
+                    .then(function (response) {
+                        $scope.Claim = response.Data;
+                        defer.resolve(response);
+                    })
+                    .catch(function (response) { sys.Alert(false, response); });
+                return defer.promise;
+            };
+            //#endregion
+
             //#region Create
             $scope.Create = function () {
                 $scope.UpdateMode = false;
@@ -133,6 +279,20 @@
                 $scope.UpdateMode = true;
                 ReadById(Id);
                 $('#PnModal').modal('show');
+            }
+            //#endregion
+
+            //#region MenuInRole
+            $scope.ReadMenuInRole = function (Id) {
+                ReadMenuInRoleById(Id);
+                $('#MenuInRoleModal').modal('show');
+            }
+            //#endregion
+
+            //#region ReadEditClaim
+            $scope.ReadEditClaim = function (Id) {
+                ReadEditClaimById(Id);
+                $('#EditClaimModal').modal('show');
             }
             //#endregion
 
@@ -180,108 +340,56 @@
                 }
             };
             //#endregion
+
+            //#region Save MenuInRole
+            $scope.SaveMenuInRole = function () {
+                let strApiEndPoint = CommonHelper.RoleUrl + "MenuInRoles";
+                let obj = new Object();
+                obj.roleId = "";
+                obj.menuIds = [];
+
+                $scope.MenuInRole.forEach((x) => {
+                    obj.roleId = x.RoleId;
+                    if (x.Checked) obj.menuIds.push(x.Id);
+                    if (x.Childrens.length > 0) {
+                        x.Childrens.forEach((xx) => {
+                            if (xx.Checked) obj.menuIds.push(xx.Id);
+                        });
+                    }
+                });
+                ApiHelper.PostMethod(strApiEndPoint, obj)
+                    .then(function (response) {
+                        $('#myTable').DataTable().ajax.reload(null, false);
+                        sys.Alert(true, 'Cập nhật thành công');
+                    })
+                    .catch(function (response) { sys.Alert(false, response.Message); });
+                $('#MenuInRoleModal').modal('hide');
+            };
+            //#endregion
+
+            //#region Save EditClaim
+            $scope.SaveEditClaim = function () {
+                let SelectedClaims = [];
+                $scope.Claim.ClaimGroups.forEach((item) => {
+                    item.GroupClaimsCheckboxes.forEach((x) => {
+                        if (x.Selected) SelectedClaims.push(x.Value);
+                    });
+                });
+                $scope.Claim.SelectedClaims = SelectedClaims;
+                let strApiEndPoint = CommonHelper.RoleUrl + "EditClaims";
+                ApiHelper.PostMethod(strApiEndPoint, $scope.Claim)
+                    .then(function (response) {
+                        $('#myTable').DataTable().ajax.reload(null, false);
+                        sys.Alert(true, 'Cập nhật thành công');
+                    })
+                    .catch(function (response) { sys.Alert(false, response); });
+                $('#EditClaimModal').modal('hide');
+            };
+            //#endregion
+
         }
         IndexController.$inject = ["$scope", "$rootScope", "$timeout", "$filter", "$compile", "ApiHelper", "CommonHelper", "$q"];
         addController("IndexController", IndexController);
     </script>
 }
 
-
-@*@{
-    ViewBag.Title = "Quản lý phân quyền";
-}
-
-
-<div class="col-sm-12">
-    <div class="panel panel-default">
-        <div class="panel-heading b-b b-light">
-            <span class="pull-right">
-                <a href="@Url.Action("Create", "Roles")" data-toggle="modal" data-target="#modal-action" class="btn btn-addon btn-sm btn-info" style="margin-top:-5px">
-                    <i class="fa fa-plus"></i> Thêm mới
-                </a>
-            </span>
-            <a class="font-bold">@ViewBag.Title</a>
-        </div>
-        <div class="panel-body">
-            <table class="table table-striped b-t b-b" id="tblMain">
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>Phân quyền</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-            </table>
-
-        </div>
-    </div>
-</div>
-
-
-@section scripts
-{
-    @*<script>
-            $('#tblMain').DataTable({
-                "language": {
-                    "search": "Tìm kiếm:",
-                    "paginate": {
-                        "first": "Trang đầu",
-                        "last": "Trang cuối",
-                        "next": "Trang kế tiếp",
-                        "previous": "Trang trước"
-                    },
-                    "lengthMenu": "Hiển thị _MENU_ dòng",
-                    "info": "Đang hiển thị _START_ đến _END_ của _TOTAL_ dòng",
-                    "infoEmpty": "Đang hiển thị 0 đến 0 của 0 dòng",
-                    "infoFiltered": "(lọc từ tổng số _MAX_ dòng)",
-                    "zeroRecords": "Không tìm thấy kết quả",
-                    "emptyTable": "Không có dữ liệu nào trong bảng",
-                    "loadingRecords": "Đang tải...",
-                    "processing": "Đang xử lý...",
-                },
-                autoWidth: false,
-                processing: true,
-                serverSide: true,
-                order: [[1, "asc"]],
-                pageLength: 10,
-                ajax: {
-                    url: '/Roles/GetDataTable',
-                },
-                columnDefs: [
-                    {
-                        targets: 0,
-                        searchable: false,
-                        orderable: false,
-                        data: "Id",
-                        render: function (data, type, row, meta) {
-                            return meta.row + meta.settings._iDisplayStart + 1;
-                        }
-                    },
-                    { targets: 1, data: 'Name' },
-                    {
-                        targets: 2,
-                        data: 'Id',
-                        searchable: false,
-                        orderable: false,
-                        render: function (data, type, row, meta) {
-                            var html = '<div class="btn-group dropdown">';
-                            html += '<button class="btn btn-default btn-sm btn-bg dropdown-toggle" data-toggle="dropdown">';
-                            html += '<span class="dropdown-label"><i class="fa fa-dedent fa-fw text"></i></span>';
-                            html += '<span class="caret"></span>';
-                            html += '</button>';
-                            html += '<ul class="dropdown-menu text-sm">';
-                            html += '<li><a data-toggle="modal" href="/Roles/MenuInRoles?roleId=' + data + '" data-target="#modal-action"><i class="icon-settings"></i> Set Menu</a></li>';
-                            html += '<li><a data-toggle="modal" href="/Roles/EditClaims?id=' + data + '" data-target="#modal-action"><i class="fa fa-pencil"></i> Sửa | Phân quyền</a></li>';
-                            html += '<li><a data-toggle="modal" href="/Roles/Delete?id=' + data + '" data-target="#modal-action"><i class="fa fa-trash"></i> Xóa</a></li>';
-                            html += '</ul>';
-                            html += '</div>';
-                            return html;
-                        }
-                    }
-                ]
-            }).on('draw', function () {
-                $('div.btn-group').parent().css('text-align', 'center');
-                $('tr').find('td:eq(0)').css('text-align', 'center');
-            });
-        </script>
-}*@
