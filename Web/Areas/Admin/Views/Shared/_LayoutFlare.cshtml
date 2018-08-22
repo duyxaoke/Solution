@@ -1,0 +1,296 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- End Required meta tags -->
+    <!-- Begin SEO tag -->
+    <title>@ViewData["Title"] - Manage account</title>
+    <meta property="og:title" content="Starter Template">
+    <meta name="author" content="Beni Arisandi">
+    <meta property="og:locale" content="en_US">
+    <meta name="description" content="Responsive admin theme build on top of Bootstrap 4">
+    <meta property="og:description" content="Responsive admin theme build on top of Bootstrap 4">
+    <link rel="canonical" href="index.html">
+    <meta property="og:url" content="index.html">
+    <meta property="og:site_name" content="Looper - Bootstrap 4 Admin Theme">
+    <!-- End SEO tag -->
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Flare Premium Bootstrap Admin Dashboard Template</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="~/Content/assets/flare/vendors/iconfonts/simple-line-icon/css/simple-line-icons.css">
+    <link rel="stylesheet" href="~/Content/assets/flare/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="~/Content/assets/flare/vendors/css/vendor.bundle.addons.css">
+    <link rel="stylesheet" href="~/Content/assets/flare/vendors/iconfonts/font-awesome/css/font-awesome.min.css" />
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link href="~/Content/assets/flare/css/style.css" rel="stylesheet" />
+    <!-- endinject -->
+</head>
+<body ng-app="MyApp">
+    <!-- .app -->
+    <!-- partial:../../partials/_horizontal-navbar.html -->
+    <nav class="navbar horizontal-layout col-lg-12 col-12 p-0">
+        <div class="nav-top flex-grow-1">
+            <div class="container d-flex flex-row h-100">
+                <div class="text-center navbar-brand-wrapper d-flex align-items-top">
+                    <a class="navbar-brand brand-logo" href="../../index.html"><img src="../../images/logo.svg" alt="logo" /></a>
+                    <a class="navbar-brand brand-logo-mini" href="../../index.html"><img src="../../images/logo-mini.svg" alt="logo" /></a>
+                </div>
+                <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+                    <form class="search-field" action="#">
+                        <div class="form-group mb-0">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="search">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="icon-magnifier"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <ul class="navbar-nav navbar-nav-right mr-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
+                                <i class="icon-bell"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
+                                <a class="dropdown-item py-3">
+                                    <p class="mb-0 font-weight-medium float-left">
+                                        You have 4 new notifications
+                                    </p>
+                                    <span class="badge badge-pill badge-inverse-info float-right">View all</span>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item preview-item">
+                                    <div class="preview-thumbnail">
+                                        <div class="preview-icon bg-inverse-success">
+                                            <i class="icon-exclamation mx-0"></i>
+                                        </div>
+                                    </div>
+                                    <div class="preview-item-content">
+                                        <h6 class="preview-subject font-weight-normal text-dark mb-1">Application Error</h6>
+                                        <p class="font-weight-light small-text mb-0">
+                                            Just now
+                                        </p>
+                                    </div>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item preview-item">
+                                    <div class="preview-thumbnail">
+                                        <div class="preview-icon bg-inverse-warning">
+                                            <i class="icon-bubble mx-0"></i>
+                                        </div>
+                                    </div>
+                                    <div class="preview-item-content">
+                                        <h6 class="preview-subject font-weight-normal text-dark mb-1">Settings</h6>
+                                        <p class="font-weight-light small-text mb-0">
+                                            Private message
+                                        </p>
+                                    </div>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item preview-item">
+                                    <div class="preview-thumbnail">
+                                        <div class="preview-icon bg-inverse-info">
+                                            <i class="icon-user-following mx-0"></i>
+                                        </div>
+                                    </div>
+                                    <div class="preview-item-content">
+                                        <h6 class="preview-subject font-weight-normal text-dark mb-1">New user registration</h6>
+                                        <p class="font-weight-light small-text mb-0">
+                                            2 days ago
+                                        </p>
+                                    </div>
+                                </a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="icon-equalizer"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item nav-profile">
+                            <a class="nav-link" href="#">
+                                <span class="nav-profile-text">Hello Andre Rivera</span>
+                                <img src="../../images/faces/face1.jpg" class="rounded-circle" alt="profile" />
+                            </a>
+                        </li>
+                    </ul>
+                    <button class="navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                        <span class="icon-menu text-white"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="nav-bottom">
+            <div class="container">
+                <ul class="nav page-navigation">
+                    <li class="nav-item">
+                        <a href="../../index.html" class="nav-link"><i class="link-icon icon-screen-desktop"></i><span class="menu-title">Dashboard</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link"><i class="link-icon icon-wallet"></i><span class="menu-title">Forms</span><i class="menu-arrow"></i></a>
+                        <div class="submenu">
+                            <ul class="submenu-item">
+                                <li class="nav-item"><a class="nav-link" href="../../pages/forms/basic_elements.html">Basic Elements</a></li>
+                                <li class="nav-item"><a class="nav-link" href="../../pages/forms/advanced_elements.html">Advanced Elements</a></li>
+                                <li class="nav-item"><a class="nav-link" href="../../pages/forms/validation.html">Validation</a></li>
+                                <li class="nav-item"><a class="nav-link" href="../../pages/forms/wizard.html">Wizard</a></li>
+                                <li class="nav-item"><a class="nav-link" href="../../pages/forms/text_editor.html">Text Editor</a></li>
+                                <li class="nav-item"><a class="nav-link" href="../../pages/forms/code_editor.html">Code Editor</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div class="main-panel">
+            <div class="content-wrapper">
+                    @RenderBody()
+            </div>
+            <!-- content-wrapper ends -->
+            <!-- partial:../../partials/_footer.html -->
+            <footer class="footer">
+                <div class="w-100 clearfix">
+                    <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2018 <a href="http://www.urbanui.com/" target="_blank">Urbanui</a>. All rights reserved.</span>
+                    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="icon-heart text-danger"></i></span>
+                </div>
+            </footer>
+            <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+    <!-- Alert Danger Modal -->
+    <div class="modal modal-alert fade" id="ExpiredModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="ExpiredLabel" aria-hidden="true">
+        <!-- .modal-dialog -->
+        <div class="modal-dialog" role="document">
+            <!-- .modal-content -->
+            <div class="modal-content">
+                <!-- .modal-header -->
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fa fa-exclamation-triangle text-red mr-1"></i> Phiên làm viêc đã hết hạn
+                    </h5>
+                </div>
+                <!-- /.modal-header -->
+                <!-- .modal-body -->
+                <div class="modal-body">
+                    <p> Phiên làm việc của bạn đã hết hạn, vui lòng đăng nhập lại! </p>
+                </div>
+                <!-- /.modal-body -->
+                <!-- .modal-footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger">Đăng nhập lại</button>
+                </div>
+                <!-- /.modal-footer -->
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    <!-- /.app -->
+    <script src="~/Content/assets/flare/vendors/js/vendor.bundle.base.js"></script>
+    <script src="~/Content/assets/flare/vendors/js/vendor.bundle.addons.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page-->
+    <!-- End plugin js for this page-->
+    <!-- inject:js -->
+    <script src="~/Content/assets/flare/js/template.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page-->
+
+    <!-- End custom js for this page-->
+    <script src="~/Content/assets/javascript/site.js"></script>
+    <script src="~/Content/assets/vendor/lodash/core.js"></script>
+    <script src="~/Content/assets/angular-1.6.3/angular.min.js"></script>
+    <script src="~/Content/assets/javascript/ApiHelper.js"></script>
+    <script src="~/Content/assets/javascript/CommonHelper.js"></script>
+    <script src="~/Content/assets/javascript/UtilFactory.js"></script>
+    <script src="~/Content/assets/javascript/DataFactory.js"></script>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script>
+            var urlApi = "http://localhost:51581/api/";
+        </script>
+    }
+    <script>
+        (function ($) {
+            function InitModal() {
+                var $this = this;
+
+                function initilizeModel() {
+                    $("#modal-action").on('shown.bs.modal', function (e) {
+
+                    }).on('hidden.bs.modal', function (e) {
+                        $(this).removeData('bs.modal');
+                    });
+                }
+                $this.init = function () {
+                    initilizeModel();
+                }
+            }
+            $(function () {
+                var self = new InitModal();
+                self.init();
+            })
+            //form to JSON
+            $.fn.serializeFormJSON = function () {
+                var o = {};
+                var a = this.serializeArray();
+                $.each(a, function () {
+                    if (o[this.name]) {
+                        if (!o[this.name].push) {
+                            o[this.name] = [o[this.name]];
+                        }
+                        o[this.name].push(this.value || '');
+                    } else {
+                        o[this.name] = this.value || '';
+                    }
+                });
+                return o;
+            };
+
+        }(jQuery))
+    </script>
+    <!--ANGULAR-->
+    <script>
+        var addController = function (name, controller) {
+            try {
+                MyApp.controller(name, controller);
+            } catch (e) {
+                console.log(JSON.stringify(e));
+            }
+        }
+        var addFactory = function (name, factory) {
+            try {
+                MyApp.factory(name, factory);
+            } catch (e) {
+                console.log(JSON.stringify(e));
+            }
+        }
+        //var lstDependency = [];
+        //lstDependency.push("ngRoute");
+        //lstDependency.push("angular.filter");
+        var MyApp = angular.module("MyApp", []);
+
+        addFactory("$localstorage", $localstorage);
+        addFactory("ApiHelper", ApiHelper);
+        addFactory("CommonHelper", CommonHelper);
+        addFactory("UtilFactory", UtilFactory);
+        addFactory("DataFactory", DataFactory);
+    </script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>
