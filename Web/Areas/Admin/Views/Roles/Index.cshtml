@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Phân quyền";
 }
 <style>
     ul {
@@ -11,16 +11,18 @@
     <!-- .card -->
     <section class="card">
         <!-- floating action -->
-        <button ng-click="Create()" class="btn btn-success btn-floated">
-            <span class="fa fa-plus"></span>
-        </button>
         <!-- /floating action -->
         <!-- .card-body -->
         <div class="card-body">
-            <fieldset>
-                <legend>@ViewData["Title"].</legend>
-                <table id="myTable" class="table table-hover"></table>
-            </fieldset>
+            <div class="container-fluid d-flex justify-content-between mb-5">
+                <div class="col-md-6 pl-0">
+                    <h3>@ViewData["Title"].</h3>
+                </div>
+                <div class="col-md-6 text-right pr-0">
+                    <button type="button" class="btn btn-primary btn-fw" ng-click="Create()"><i class="icon-plus circle"></i> Thêm mới</button>
+                </div>
+            </div>
+            <table id="myTable" class="table table-hover"></table>
         </div>
         <!-- /.card-body -->
     </section>
@@ -33,6 +35,9 @@
                 <!-- .modal-header -->
                 <div class="modal-header">
                     <h5 class="modal-title"> {{ UpdateMode ? "Cập nhật" : "Thêm mới" }} </h5>
+                    <button type="button" class="close">
+                        <span aria-hidden="true">×</span>
+                    </button>
                 </div>
                 <!-- /.modal-header -->
                 <!-- .modal-body -->
@@ -40,10 +45,9 @@
                 <form id="frmModal" name="frmModal" class="needs-validation" novalidate="">
                     <!-- /form .needs-validation -->
                     <div class="modal-body">
-                        <div class="col-md-12">
+                        <div class="form-group">
                             <label>
-                                Name
-                                <abbr title="Required">*</abbr>
+                                Tên phân quyền
                             </label>
                             <input type="text" class="form-control" ng-model="Role.Name" required="">
                         </div>
@@ -70,7 +74,10 @@
             <div class="modal-content">
                 <!-- .modal-header -->
                 <div class="modal-header">
-                    <h5 class="modal-title"> Cập nhật menu </h5>
+                    <h5 class="modal-title">Cập nhật menu thuộc role</h5>
+                    <button type="button" class="close">
+                        <span aria-hidden="true">×</span>
+                    </button>
                 </div>
                 <!-- /.modal-header -->
                 <!-- .modal-body -->
@@ -81,29 +88,33 @@
                         <div class="col-md-12">
                             <ul>
                                 <li ng-repeat="item in MenuInRole" ng-if="item.Childrens.length > 0">
-                                    <div class="custom-control custom-checkbox mt-3">
-                                        <input type="checkbox" class="custom-control-input" id="{{item.Id}}" ng-checked="{{item.Checked}}" value="{{item.Id}}" ng-model="item.Checked">
-                                        <label class="custom-control-label" for="{{item.Id}}">{{item.Name}}</label>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input" id="{{item.Id}}" ng-checked="{{item.Checked}}" value="{{item.Id}}" ng-model="item.Checked">
+                                            {{item.Name}}
+                                        </label>
                                     </div>
                                     <ul>
                                         <li ng-repeat="itemChild in item.Childrens">
-                                            <div class="custom-control custom-checkbox mt-3">
-                                                <input type="checkbox" class="custom-control-input" id="{{itemChild.Id}}" value="{{itemChild.Id}}" ng-model="itemChild.Checked">
-                                                <label class="custom-control-label" for="{{itemChild.Id}}">{{itemChild.Name}}</label>
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                    <input type="checkbox" class="form-check-input" id="{{itemChild.Id}}" ng-checked="{{itemChild.Checked}}" value="{{itemChild.Id}}" ng-model="itemChild.Checked">
+                                                    {{itemChild.Name}}
+                                                </label>
                                             </div>
                                         </li>
                                     </ul>
 
                                 </li>
                                 <li ng-repeat="item in MenuInRole" ng-if="item.Childrens.length == 0">
-                                    <div class="custom-control custom-checkbox mt-3">
-                                        <input type="checkbox" class="custom-control-input" id="{{item.Id}}" value="{{item.Id}}" ng-model="item.Checked">
-                                        <label class="custom-control-label" for="{{item.Id}}">{{item.Name}}</label>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input" id="{{item.Id}}" ng-checked="{{item.Checked}}" value="{{item.Id}}" ng-model="item.Checked">
+                                            {{item.Name}}
+                                        </label>
                                     </div>
                                 </li>
                             </ul>
-
-
                         </div>
                     </div>
                     <!-- /.modal-body -->
@@ -128,7 +139,10 @@
             <div class="modal-content">
                 <!-- .modal-header -->
                 <div class="modal-header">
-                    <h5 class="modal-title"> Cập nhật menu </h5>
+                    <h5 class="modal-title">Cập nhật role & claims</h5>
+                    <button type="button" class="close">
+                        <span aria-hidden="true">×</span>
+                    </button>
                 </div>
                 <!-- /.modal-header -->
                 <!-- .modal-body -->
@@ -136,34 +150,33 @@
                 <form id="frmEditClaimModal" name="frmEditClaimModal" class="needs-validation" novalidate="">
                     <!-- /form .needs-validation -->
                     <div class="modal-body">
-                        <div class="col-md-12">
+                        <div class="form-group">
                             <label>
-                                Name
-                                <abbr title="Required">*</abbr>
+                                Tên phân quyền
                             </label>
                             <input type="hidden" class="form-control" ng-model="Claim.RoleId" required="">
                             <input type="text" class="form-control" ng-model="Claim.RoleName" required="">
                         </div>
-                        <div class="col-md-12">
-                            <div ng-repeat="item in Claim.ClaimGroups">
-                                <!-- .form-group -->
-                                <hr />
-                                <div class="form-group">
-                                    <label class="d-block">{{item.GroupName}}</label>
-                                    <div ng-repeat="itemOne in item.GroupClaimsCheckboxes" class="custom-control custom-control-inline custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="{{itemOne.Value}}" ng-checked="itemOne.Selected" ng-model="itemOne.Selected">
-                                        <label class="custom-control-label" for="{{itemOne.Value}}">{{itemOne.Text}}</label>
-                                    </div>
+                        <div ng-repeat="item in Claim.ClaimGroups">
+                            <!-- .form-group -->
+                            <hr />
+                            <label class="d-block font-weight-bold">{{item.GroupName}}</label>
+                            <div class="form-inline">
+                                <div class="form-check mr-3" ng-repeat="itemOne in item.GroupClaimsCheckboxes">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" id="{{itemOne.Value}}" ng-checked="itemOne.Selected" ng-model="itemOne.Selected">
+                                        {{itemOne.Text}}
+                                    </label>
                                 </div>
-                                <!-- /.form-group -->
                             </div>
+                            <!-- /.form-group -->
                         </div>
                     </div>
                     <!-- /.modal-body -->
                     <!-- .modal-footer -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-dismiss="modal">Đóng</button>
-                        <button type="submit" class="btn btn-primary" ng-disabled="frmMeneInRoleModal.$invalid" ng-click="SaveEditClaim(roleId)">Cập nhật</button>
+                        <button type="submit" class="btn btn-primary" ng-disabled="frmEditClaimModal.$invalid" ng-click="SaveEditClaim(roleId)">Cập nhật</button>
                     </div>
                 </form>
                 <!-- /.modal-footer -->
@@ -201,20 +214,25 @@
                     "aoColumnDefs": [
                         {
                             "sName": "Name",
-                            "sTitle": "Name",
+                            "sTitle": "Tên quyền",
                             "bSearchable": true,
                             "bSortable": true,
                             "aTargets": [0]
                         },
                         {
                             'mRender': function (data, type, row, meta) {
-                                return `<a class="btn btn-sm btn-secondary" href="javascript:void(0)" ng-click="ReadMenuInRole('` + data + `');"><i class="fa fa-align-justify"></i></a>\n
-                                            <a class="btn btn-sm btn-secondary" href="javascript:void(0)" ng-click="ReadEditClaim('` + data + `');"><i class="fa fa-pencil-alt"></i></a>\n
-                                            <a class="btn btn-sm btn-secondary" href="javascript:void(0)" ng-click="Delete('` + data + `');"><i class="far fa-trash-alt"></i></a>`;
+                                return `
+                                    <div class="text-center">
+                                        <button class="btn btn-outline-success btn-sm" ng-click="ReadMenuInRole('` + data + `');" data-toggle="tooltip" data-placement="top" title="Cập nhật menu"><i class="fa fa-list"></i></button>
+                                        <button class="btn btn-outline-primary btn-sm" ng-click="ReadEditClaim('` + data + `');" data-toggle="tooltip" data-placement="top" title="Cập nhật role & claims"><i class="fa fa-edit"></i></button>
+                                        <button class="btn btn-outline-danger btn-sm" ng-click="Delete('` + data + `');" data-toggle="tooltip" data-placement="top" title="Xóa role"><i class="fa fa-times"></i></button>
+                                    </div>`;
                             },
                             "sName": "Id",
+                            "sTitle": "Thao tác",
                             "bSortable": false,
-                            "aTargets": [1]
+                            "aTargets": [1],
+                            "sWidth": "150px",
                         }
                     ],
                     createdRow: function (row, data, dataIndex) {
@@ -298,11 +316,15 @@
 
             //#region Delete
             $scope.Delete = function (Id) {
-                bootbox.confirm({
-                    title: "Thông báo",
-                    message: "Xác nhận xóa?",
-                    callback: function (result) {
-                        if (result) {
+                swal({
+                    title: "Xác nhận xóa?",
+                    text: "Một khi đã xóa, bạn không thể khôi phục lại",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
                             let strApiEndPoint = CommonHelper.RoleUrl + "?id=" + Id;
                             ApiHelper.DeleteMethod(strApiEndPoint)
                                 .then(function (response) {
@@ -311,8 +333,7 @@
                                 })
                                 .catch(function (response) { sys.Alert(false, response.Message); });
                         }
-                    }
-                })
+                    });
             };
             //#endregion
 

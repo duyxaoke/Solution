@@ -15,24 +15,15 @@
     };
 
     Alert = function (status, text) {
-        toastr.options = {
-            "closeButton": true,
-            "debug": false,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "preventDuplicates": false,
-            "onclick": null,
-            "showDuration": 400,
-            "hideDuration": 500,
-            "timeOut": 5000,
-            "extendedTimeOut": 500,
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
-        }
-        var type = status === true ? "success" : "warning";
-        toastr[type](text);
+        ResetToastPosition();
+        $.toast({
+            heading: 'Thông báo',
+            text: "<strong>" + text + "</strong>",
+            position: "bottom-right",
+            icon: status === true ? "success" : "error",
+            stack: false,
+            loaderBg: status === true ? "#f96868" : "#f2a654",
+        })
     };
     Loading = function () {
         $("body").loading();
@@ -100,7 +91,16 @@
             $(elements).datepicker("setDate", new Date(from[2], from[1] - 1, from[0]));
         }
     }
-    
+
+    ResetToastPosition = function () {
+        $('.jq-toast-wrap').removeClass('bottom-left bottom-right top-left top-right mid-center'); // to remove previous position class
+        $(".jq-toast-wrap").css({
+            "top": "",
+            "left": "",
+            "bottom": "",
+            "right": ""
+        }); //to remove previous position style
+    }
     return {
         Alert: Alert,
         SetCache: SetCache,

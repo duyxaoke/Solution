@@ -13664,7 +13664,9 @@ input[type="button"].btn-block {
   background-color: #fff;
   border: 1px solid #dee2e6;
 }
-
+.page-link {
+    display: inline;
+}
 .page-link:hover, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a:hover,
 .jsgrid .jsgrid-pager .jsgrid-pager-page a:hover {
   z-index: 2;
@@ -20230,6 +20232,9 @@ pre {
 .btn i, .ajax-upload-dragdrop .ajax-file-upload i, .swal2-modal .swal2-buttonswrapper .swal2-styled i, .wizard > .actions a i {
   margin-right: 0.3125rem;
 }
+.btn i{
+    margin-right: 0rem;
+}
 
 .btn .btn-label:before, .ajax-upload-dragdrop .ajax-file-upload .btn-label:before, .swal2-modal .swal2-buttonswrapper .swal2-styled .btn-label:before, .wizard > .actions a .btn-label:before {
   font-size: 1rem;
@@ -24372,7 +24377,7 @@ ul li {
   vertical-align: middle;
   font-size: 0.875rem;
   line-height: 1;
-  padding: 23px 10px;
+  /*padding: 23px 10px;*/
 }
 
 .table td img, .jsgrid .jsgrid-table td img,
@@ -26217,7 +26222,7 @@ body.avgrund-active {
 }
 
 .dataTables_wrapper .dataTable .btn, .dataTables_wrapper .dataTable .ajax-upload-dragdrop .ajax-file-upload, .ajax-upload-dragdrop .dataTables_wrapper .dataTable .ajax-file-upload, .dataTables_wrapper .dataTable .swal2-modal .swal2-buttonswrapper .swal2-styled, .swal2-modal .swal2-buttonswrapper .dataTables_wrapper .dataTable .swal2-styled, .dataTables_wrapper .dataTable .wizard > .actions a, .wizard > .actions .dataTables_wrapper .dataTable a {
-  padding: 0.1rem 1rem;
+  /*padding: 0.1rem 1rem;*/
   vertical-align: top;
 }
 
@@ -28743,7 +28748,13 @@ div.tagsinput span.tag a {
   font-size: 43px;
   margin-right: 0;
 }
-
+thead, th {
+    text-align: center;
+}
+.dataTables_wrapper > .row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
 /*-------------------------------------------------------------------*/
 /* === Layouts === */
 /*-------------------------------------------------------------------*/

@@ -155,7 +155,7 @@
     <div class="container-fluid page-body-wrapper">
         <div class="main-panel">
             <div class="content-wrapper">
-                    @RenderBody()
+                @RenderBody()
             </div>
             <!-- content-wrapper ends -->
             <!-- partial:../../partials/_footer.html -->
@@ -207,9 +207,13 @@
     <!-- End plugin js for this page-->
     <!-- inject:js -->
     <script src="~/Content/assets/flare/js/template.js"></script>
+    <!-- Custom js for this page-->
+    <script src="~/Content/assets/flare/vendors/js/popover.js"></script>
+    <script src="~/Content/assets/flare/vendors/js/tooltips.js"></script>
+    <script src="~/Content/assets/flare/vendors/js/alerts.js"></script>
+
     <!-- endinject -->
     <!-- Custom js for this page-->
-
     <!-- End custom js for this page-->
     <script src="~/Content/assets/javascript/site.js"></script>
     <script src="~/Content/assets/vendor/lodash/core.js"></script>
@@ -224,6 +228,10 @@
             var urlApi = "http://localhost:51581/api/";
         </script>
     }
+    <script>
+        $('body').tooltip({ selector: '[data-toggle="tooltip"]' });
+    </script>
+
     <script>
         (function ($) {
             function InitModal() {
