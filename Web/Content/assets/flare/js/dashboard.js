@@ -69,7 +69,32 @@
         options: earningReportOptions
       });
     }
-    if ($("#issues-chart").length) {
+      if ($("#issues-chart").length) {
+
+          // register plugin
+          Chart.plugins.register({
+              beforeDraw: function (chart) {
+                  var data = chart.data.datasets[0].data;
+                  var sum = data.reduce(function (a, b) {
+                      return a + b;
+                  }, 0);
+                  var width = chart.chart.width,
+                      height = chart.chart.height,
+                      ctx = chart.chart.ctx;
+                  ctx.restore();
+                  var fontSize = (height / 10).toFixed(2);
+                  ctx.font = fontSize + "px Segoe UI";  
+                  ctx.fillStyle = "#ff8c00";
+                  ctx.textBaseline = "middle";
+                  var text = "$156",
+                      textX = Math.round((width - ctx.measureText(text).width) / 2),
+                      textY = height / 2;
+                  ctx.fillText(text, textX, textY);
+                  ctx.save();
+              }
+          });
+
+
       var issuesChartData = {
         datasets: [{
           data: [60, 30, 10],
