@@ -2,14 +2,13 @@
   'use strict';
   $(function() {
     var body = $('body');
-    var footer = $('.footer');
-
-    var current = location.pathname.split("/").slice(-1)[0].replace(/^\/|\/$/g, '');
+      var footer = $('.footer');
+    var current = location.pathname.split("/").slice(-2)[0].replace(/^\/|\/$/g, '');
     $('.navbar.horizontal-layout .nav-bottom .page-navigation .nav-item').each(function() {
       var $this = $(this);
       if (current === "") {
         //for root url
-        if ($this.find(".nav-link").attr('href').indexOf("index.html") !== -1) {
+        if ($this.find(".nav-link").attr('href').indexOf("Home/Index") !== -1) {
           $(this).find(".nav-link").parents('.nav-item').last().addClass('active');
           $(this).addClass("active");
         }
@@ -41,5 +40,41 @@
     //checkbox and radios
     $(".form-check .form-check-label,.form-radio .form-check-label").not(".todo-form-check .form-check-label").append('<i class="input-helper"></i>');
 
+      body.tooltip({ selector: '[data-toggle="tooltip"]' });
   });
+
+    function InitModal() {
+        var $this = this;
+
+        function initilizeModel() {
+            $("#modal-action").on('shown.bs.modal', function (e) {
+
+            }).on('hidden.bs.modal', function (e) {
+                $(this).removeData('bs.modal');
+            });
+        }
+        $this.init = function () {
+            initilizeModel();
+        }
+    }
+    $(function () {
+        var self = new InitModal();
+        self.init();
+    })
+    //form to JSON
+    $.fn.serializeFormJSON = function () {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function () {
+            if (o[this.name]) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
 })(jQuery);

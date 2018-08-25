@@ -97,7 +97,7 @@ var ApiHelper = function ($rootScope, $localstorage, $timeout, $q, $http) {
         let codeStep = jQuery.extend({}, ApiHelper.CodeStep);
         var req = {
             method: 'GET',
-            url: urlApi + url,
+            url: url,
             data: data
         }
         $http(req).then(function (jqXHR) {
@@ -124,7 +124,7 @@ var ApiHelper = function ($rootScope, $localstorage, $timeout, $q, $http) {
 
         var req = {
             method: 'POST',
-            url: urlApi + url,
+            url: url,
             data: data
         }
         $http(req).then(function (jqXHR) {
@@ -150,7 +150,7 @@ var ApiHelper = function ($rootScope, $localstorage, $timeout, $q, $http) {
 
         var req = {
             method: 'PUT',
-            url: urlApi + url,
+            url: url,
             data: data
         }
         $http(req).then(function (jqXHR) {
@@ -176,7 +176,7 @@ var ApiHelper = function ($rootScope, $localstorage, $timeout, $q, $http) {
 
         var req = {
             method: 'DELETE',
-            url: urlApi + url,
+            url: url,
             data: data
         }
         $http(req).then(function (jqXHR) {

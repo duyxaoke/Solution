@@ -1,12 +1,13 @@
 ﻿var CommonHelper = function ($rootScope, $localstorage, $timeout, $q, $http) {
-    var service = {};
+    let urlApi = "http://localhost:51581/api/";
+    let service = {};
 
-    service.ConfigUrl = "Configs/"; 
-    service.MenuUrl = "Menus/"; 
-    service.CurrencyUrl = "Currencies/"; 
-    service.TransactionUrl = "Transactions/"; 
-    service.RoleUrl = "Roles/"; 
-    service.UserUrl = "Users/"; 
+    service.ConfigUrl = urlApi + "Configs/";
+    service.MenuUrl = urlApi + "Menus/";
+    service.CurrencyUrl = urlApi +  "Currencies/";
+    service.TransactionUrl = urlApi +  "Transactions/";
+    service.RoleUrl = urlApi + "Roles/";
+    service.UserUrl = urlApi + "Users/";
 
     service.DepWithType = {};
     service.DepWithType.Deposit = 0;
@@ -16,7 +17,7 @@
     service.StatusTransaction.Pending = 0;
     service.StatusTransaction.Confirmed = 1;
     service.StatusTransaction.Cancel = 2;
-    
+
     return service;
 }
 CommonHelper.$inject = ["$rootScope", "$localstorage", "$timeout", "$q", "$http"];

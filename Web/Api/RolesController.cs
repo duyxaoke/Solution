@@ -33,7 +33,7 @@ namespace Web.Api
             _menuInRolesService = menuInRolesService;
         }
         [HttpGet]
-        [Route("list")]
+        [Route("List")]
         public IHttpActionResult List()
         {
             var result = _roleServices.GetAll();
@@ -90,7 +90,7 @@ namespace Web.Api
 
 
         [HttpPost]
-        [Route("create")]
+        [Route("Create")]
         [EnableThrottling(PerSecond = 1)]
         public async System.Threading.Tasks.Task<IHttpActionResult> PostAsync([FromBody]CreateRoleViewModel model)
         {
@@ -98,8 +98,12 @@ namespace Web.Api
             {
                 Name = model.Name,
             };
-            await _roleManager.CreateAsync(newRole);
-            return CCOk(true);
+            var result = await _roleManager.CreateAsync(newRole);
+            if (result.Succeeded)
+            {
+                return CCOk(result.Succeeded);
+            }
+            return CCNotAcceptable(result.Errors);
         }
         [HttpGet]
         [Route("EditClaims/{id}")]
@@ -186,22 +190,19 @@ namespace Web.Api
         public async System.Threading.Tasks.Task<IHttpActionResult> DeleteAsync(string id)
         {
             var role = await _roleManager.FindByIdAsync(id);
-            if (role != null)
+            var roleClaims = await _roleManager.GetClaimsAsync(role.Name);
+            // this is ugly. Deletes all the claims and adds them back in.
+            // can be done in a better fashion
+            foreach (var removedClaim in roleClaims)
             {
-                var roleClaims = await _roleManager.GetClaimsAsync(role.Name);
-                // this is ugly. Deletes all the claims and adds them back in.
-                // can be done in a better fashion
-                foreach (var removedClaim in roleClaims)
-                {
-                    await _roleManager.RemoveClaimAsync(role.Id, removedClaim);
-                }
-                var roleRuslt = _roleManager.DeleteAsync(role).Result;
-                if (roleRuslt.Succeeded)
-                {
-                    return CCOk(true);
-                }
+                await _roleManager.RemoveClaimAsync(role.Id, removedClaim);
             }
-            return CCOk(false);
+            var result = _roleManager.DeleteAsync(role).Result;
+            if (result.Succeeded)
+            {
+                return CCOk(result.Succeeded);
+            }
+            return CCNotAcceptable(result.Errors);
         }
 
         #region Helper

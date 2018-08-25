@@ -164,13 +164,19 @@
             //#region ReadById
             var ReadById = (Id) => {
                 let defer = $q.defer();
+                $rootScope.MasterPage.IsLoading = true;
                 let strApiEndPoint = CommonHelper.MenuUrl + Id;
                 ApiHelper.GetMethod(strApiEndPoint)
                     .then(function (response) {
+                        $rootScope.MasterPage.IsLoading = false;
                         $scope.Menu = response.Data;
                         defer.resolve(response);
                     })
-                    .catch(function (response) { sys.Alert(false, response.Message); });
+                    .catch(function (response) {
+                        sys.Alert(false, response.Message);
+                        defer.reject(response);
+                        $rootScope.MasterPage.IsLoading = false;
+                    });
                 return defer.promise;
             };
             //#endregion
@@ -202,13 +208,19 @@
                 })
                     .then((willDelete) => {
                         if (willDelete) {
+                            $rootScope.MasterPage.IsLoading = true;
                             let strApiEndPoint = CommonHelper.MenuUrl + "?id=" + Id;
                             ApiHelper.DeleteMethod(strApiEndPoint)
                                 .then(function (response) {
+                                    $rootScope.MasterPage.IsLoading = false;
                                     $('#myTable').DataTable().ajax.reload(null, false);
                                     sys.Alert(true, 'Xóa thành công!');
                                 })
-                                .catch(function (response) { sys.Alert(false, response.Message); });
+                                .catch(function (response) {
+                                    sys.Alert(false, response.Message);
+                                    defer.reject(response);
+                                    $rootScope.MasterPage.IsLoading = false;
+                                });
                         }
                     });
             };
@@ -217,29 +229,42 @@
             //#region Save
             $scope.Save = function () {
                 if (!$scope.UpdateMode) {
-                    let strApiEndPoint = CommonHelper.MenuUrl + "create";
+                    $rootScope.MasterPage.IsLoading = true;
+                    let strApiEndPoint = CommonHelper.MenuUrl + "Create";
                     ApiHelper.PostMethod(strApiEndPoint, $scope.Menu)
                         .then(function (response) {
+                            $rootScope.MasterPage.IsLoading = false;
                             $('#myTable').DataTable().ajax.reload(null, false);
                             sys.Alert(true, 'Thêm thành công');
                         })
-                        .catch(function (response) { sys.Alert(false, response.Message); });
+                        .catch(function (response) {
+                            sys.Alert(false, response.Message);
+                            defer.reject(response);
+                            $rootScope.MasterPage.IsLoading = false;
+                        });
                     $('#PnModal').modal('hide');
                 }
                 else {
-                    let strApiEndPoint = CommonHelper.MenuUrl + "update";
+                    $rootScope.MasterPage.IsLoading = true;
+                    let strApiEndPoint = CommonHelper.MenuUrl + "Update";
                     ApiHelper.PutMethod(strApiEndPoint, $scope.Menu)
                         .then(function (response) {
+                            $rootScope.MasterPage.IsLoading = false;
                             $('#myTable').DataTable().ajax.reload(null, false);
                             sys.Alert(true, 'Cập nhật thành công');
                         })
-                        .catch(function (response) { sys.Alert(false, response.Message); });
+                        .catch(function (response) {
+                            sys.Alert(false, response.Message);
+                            defer.reject(response);
+                            $rootScope.MasterPage.IsLoading = false;
+                        });
                     $('#PnModal').modal('hide');
                 }
             };
             //#endregion
 
             //#region GetAll
+            $rootScope.MasterPage.IsLoading = true;
             UtilFactory.WaitingLoadDirective(
                 [
                 ]).then(() => {
@@ -251,113 +276,10 @@
                 }).catch((response) => {
                     throw response;
                 });
+            $rootScope.MasterPage.IsLoading = false;
             //#endregion
         }
         IndexController.$inject = ["$scope", "$rootScope", "$timeout", "$filter", "$compile", "ApiHelper", "CommonHelper", "UtilFactory", "DataFactory", "$q"];
         addController("IndexController", IndexController);
     </script>
 }
-
-
-@*@model IEnumerable<Shared.Models.MenuViewModel>
-
-    @{
-        ViewBag.Title = "Quản lý menu";
-    }
-
-    <div class="col-sm-12">
-        <div class="panel panel-default">
-            <div class="panel-heading b-b b-light">
-                <span class="pull-right">
-                    <a href="@Url.Action("Add", "Menu")" data-toggle="modal" data-target="#modal-action" class="btn btn-addon btn-sm btn-info" style="margin-top:-5px">
-                        <i class="fa fa-plus"></i> Thêm mới
-                    </a>
-                </span>
-                <a class="font-bold">@ViewBag.Title</a>
-            </div>
-            <div class="panel-body">
-                <table class="table table-striped b-t b-b" id="tblMain">
-                    <thead>
-                        <tr>
-                            <th>STT</th>
-                            <th>Tên menu</th>
-                            <th>Menu cha</th>
-                            <th>Đường dẫn</th>
-                            <th>Sắp xếp</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                </table>
-
-            </div>
-        </div>
-    </div>
-    @section scripts
-    {
-        <script>
-            $('#tblMain').DataTable({
-                "language": {
-                    "search": "Tìm kiếm:",
-                    "paginate": {
-                        "first": "Trang đầu",
-                        "last": "Trang cuối",
-                        "next": "Trang kế tiếp",
-                        "previous": "Trang trước"
-                    },
-                    "lengthMenu": "Hiển thị _MENU_ dòng",
-                    "info": "Đang hiển thị _START_ đến _END_ của _TOTAL_ dòng",
-                    "infoEmpty": "Đang hiển thị 0 đến 0 của 0 dòng",
-                    "infoFiltered": "(lọc từ tổng số _MAX_ dòng)",
-                    "zeroRecords": "Không tìm thấy kết quả",
-                    "emptyTable": "Không có dữ liệu nào trong bảng",
-                    "loadingRecords": "Đang tải...",
-                    "processing": "Đang xử lý...",
-                },
-                autoWidth: false,
-                processing: true,
-                serverSide: true,
-                order: [[1, "asc"]],
-                pageLength: 10,
-                ajax: {
-                    url: '/Menu/GetDataTable',
-                },
-                columnDefs: [
-                    {
-                        targets: 0,
-                        searchable: false,
-                        orderable: false,
-                        data: "Id",
-                        render: function (data, type, row, meta) {
-                            return meta.row + meta.settings._iDisplayStart + 1;
-                        }
-                    },
-                    { targets: 1, data: 'Name' },
-                    { targets: 2, data: 'ParentName' },
-                    { targets: 3, data: 'Url' },
-                    { targets: 4, data: 'Order' },
-                    {
-                        targets: 5,
-                        data: 'Id',
-                        searchable: false,
-                        orderable: false,
-                        render: function (data, type, row, meta) {
-                            var html = '<div class="btn-group dropdown">';
-                            html += '<button class="btn btn-default btn-sm btn-bg dropdown-toggle" data-toggle="dropdown">';
-                            html += '<span class="dropdown-label"><i class="fa fa-dedent fa-fw text"></i></span>';
-                            html += '<span class="caret"></span>';
-                            html += '</button>';
-                            html += '<ul class="dropdown-menu text-sm">';
-                            html += '<li><a data-toggle="modal" href="/Menu/Edit?id=' + data + '" data-target="#modal-action"><i class="fa fa-pencil"></i> Sửa</a></li>';
-                            html += '<li><a data-toggle="modal" href="/Menu/Delete?id=' + data + '" data-target="#modal-action"><i class="fa fa-trash"></i> Xóa</a></li>';
-                            html += '</ul>';
-                            html += '</div>';
-                            return html;
-                        }
-                    }
-                ]
-            }).on('draw', function () {
-                $('div.btn-group').parent().css('text-align', 'center');
-                $('tr').find('td:eq(0)').css('text-align', 'center');
-            });
-        </script>
-    }*@

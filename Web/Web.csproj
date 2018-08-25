@@ -23,6 +23,8 @@
     <UseGlobalApplicationHostFile />
     <Use64BitIISExpress />
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -214,6 +216,7 @@
     <Compile Include="Api\ApiController.cs" />
     <Compile Include="Api\MenusController.cs" />
     <Compile Include="Api\ConfigsController.cs" />
+    <Compile Include="Api\UsersController.cs" />
     <Compile Include="Api\RolesController.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -228,7 +231,7 @@
     <Compile Include="Areas\Admin\Controllers\MenusController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProfilerController.cs" />
     <Compile Include="Areas\Admin\Controllers\ClaimsController.cs" />
-    <Compile Include="Areas\Admin\Controllers\TemplateController.cs" />
+    <Compile Include="Controllers\TemplateController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="App_Start\AutofacConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -257,8 +260,37 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\assets\angular-1.6.3\angular-route.min.js" />
     <Content Include="Content\assets\angular-1.6.3\angular.min.js" />
     <Content Include="Content\assets\apple-touch-icon.png" />
+    <Content Include="Content\assets\app\app-bundle.js" />
+    <Content Include="Content\assets\app\app-bundle.min.js">
+      <DependentUpon>app-bundle.js</DependentUpon>
+    </Content>
+    <Content Include="Content\assets\app\app.js" />
+    <Content Include="Content\assets\app\controller\indexcontroller.js" />
+    <Content Include="Content\assets\app\controller\indexcontroller.min.js">
+      <DependentUpon>indexcontroller.js</DependentUpon>
+    </Content>
+    <Content Include="Content\assets\app\controller\master-page-controller.js" />
+    <Content Include="Content\assets\app\controller\master-page-controller.min.js">
+      <DependentUpon>master-page-controller.js</DependentUpon>
+    </Content>
+    <Content Include="Content\assets\app\directive\compile.js" />
+    <Content Include="Content\assets\app\directive\directive.js" />
+    <Content Include="Content\assets\app\directive\directive.min.js">
+      <DependentUpon>directive.js</DependentUpon>
+    </Content>
+    <Content Include="Content\assets\app\directive\formatmoney.js" />
+    <Content Include="Content\assets\app\directive\getWidth.js" />
+    <Content Include="Content\assets\app\directive\inputFormat.js" />
+    <Content Include="Content\assets\app\directive\lazyLoad.js" />
+    <Content Include="Content\assets\app\directive\noInput.js" />
+    <Content Include="Content\assets\app\directive\whenEnter.js" />
+    <Content Include="Content\assets\app\factory\factory.js" />
+    <Content Include="Content\assets\app\factory\factory.min.js">
+      <DependentUpon>factory.js</DependentUpon>
+    </Content>
     <Content Include="Content\assets\favicon.ico" />
     <Content Include="Content\assets\flare\css\style.css" />
     <Content Include="Content\assets\flare\images\dashboard\cover.png" />
@@ -286,6 +318,7 @@
     <Content Include="Content\assets\flare\vendors\images\transparent.png" />
     <Content Include="Content\assets\flare\vendors\img\sprite-skin-flat.png" />
     <Content Include="Content\assets\flare\vendors\js\alerts.js" />
+    <Content Include="Content\assets\flare\vendors\js\angular-preload-image.js" />
     <Content Include="Content\assets\flare\vendors\js\popover.js" />
     <Content Include="Content\assets\flare\vendors\js\toastr\toastr.min.css" />
     <Content Include="Content\assets\flare\vendors\js\toastr\toastr.min.js" />
@@ -337,10 +370,10 @@
     <Content Include="Content\assets\images\illustration\img-2.png" />
     <Content Include="Content\assets\images\illustration\img-5.png" />
     <Content Include="Content\assets\images\illustration\img-7.png" />
-    <Content Include="Content\assets\javascript\DataFactory.js" />
-    <Content Include="Content\assets\javascript\UtilFactory.js" />
-    <Content Include="Content\assets\javascript\ApiHelper.js" />
-    <Content Include="Content\assets\javascript\CommonHelper.js" />
+    <Content Include="Content\assets\app\factory\DataFactory.js" />
+    <Content Include="Content\assets\app\factory\UtilFactory.js" />
+    <Content Include="Content\assets\app\factory\ApiHelper.js" />
+    <Content Include="Content\assets\app\factory\CommonHelper.js" />
     <Content Include="Content\assets\javascript\main.min.js" />
     <Content Include="Content\assets\javascript\pages\ace-demo.js" />
     <Content Include="Content\assets\javascript\pages\atwho-demo.js" />
@@ -949,25 +982,7 @@
     <Content Include="Areas\Admin\Views\Profiler\AddClaims.cshtml" />
     <Content Include="Areas\Admin\Views\Profiler\AddRandomClaims.cshtml" />
     <Content Include="Areas\Admin\Views\Profiler\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Roles\_Create.cshtml" />
-    <Content Include="Areas\Admin\Views\Roles\_Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\Roles\_EditClaims.cshtml" />
-    <Content Include="Areas\Admin\Views\Roles\_MenuInRoles.cshtml" />
     <Content Include="Areas\Admin\Views\Roles\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\_Footer.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\_Modal.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\_ModalFooter.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\_ModalHeader.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\Error.cshtml" />
-    <Content Include="Areas\Admin\Views\Template\Footer.cshtml" />
-    <Content Include="Areas\Admin\Views\Template\Header.cshtml" />
-    <Content Include="Areas\Admin\Views\Template\Sidebar.cshtml" />
-    <Content Include="Areas\Admin\Views\Users\_AddUser.cshtml" />
-    <Content Include="Areas\Admin\Views\Users\_DeleteUser.cshtml" />
-    <Content Include="Areas\Admin\Views\Users\_EditRoles.cshtml" />
-    <Content Include="Areas\Admin\Views\Users\_EditUser.cshtml" />
-    <Content Include="Areas\Admin\Views\Users\_ViewClaims.cshtml" />
     <Content Include="Areas\Admin\Views\Users\Index.cshtml" />
     <Content Include="Content\assets\vendor\angular-validate-1.1.1\.gitignore" />
     <Content Include="Content\assets\vendor\angular-validate-1.1.1\bower.json" />
@@ -986,6 +1001,7 @@
     <Content Include="Areas\Admin\Views\Shared\_LayoutFlare.cshtml" />
     <Content Include="Content\assets\flare\vendors\iconfonts\font-awesome\fonts\fontawesome-webfont.woff" />
     <Content Include="Content\assets\flare\vendors\iconfonts\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="bundleconfig.json" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -1017,9 +1033,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Shared\_Modal.cshtml" />
-    <Content Include="Views\Shared\_ModalFooter.cshtml" />
-    <Content Include="Views\Shared\_ModalHeader.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
@@ -1040,7 +1053,6 @@
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Template\Footer.cshtml" />
     <Content Include="Views\Template\Header.cshtml" />
-    <Content Include="Views\Template\Sidebar.cshtml" />
     <Content Include="Views\Account\AccessDenied.cshtml" />
     <Content Include="Views\Account\ExternalLogin.cshtml" />
     <Content Include="Views\Account\Lockout.cshtml" />
@@ -1052,7 +1064,6 @@
     <Content Include="Views\Account\SignedOut.cshtml" />
     <Content Include="Views\Account\VerifyCode.cshtml" />
     <Content Include="Views\Home\Test.cshtml" />
-    <Content Include="Views\ApiRoles\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1111,6 +1122,13 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="..\packages\BuildBundlerMinifier.2.8.391\build\BuildBundlerMinifier.targets" Condition="Exists('..\packages\BuildBundlerMinifier.2.8.391\build\BuildBundlerMinifier.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\BuildBundlerMinifier.2.8.391\build\BuildBundlerMinifier.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\BuildBundlerMinifier.2.8.391\build\BuildBundlerMinifier.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

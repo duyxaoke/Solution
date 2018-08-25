@@ -245,13 +245,19 @@
             //#region ReadById
             var ReadById = (Id) => {
                 let defer = $q.defer();
+                $rootScope.MasterPage.IsLoading = true;
                 let strApiEndPoint = CommonHelper.RoleUrl + Id;
                 ApiHelper.GetMethod(strApiEndPoint)
                     .then(function (response) {
+                        $rootScope.MasterPage.IsLoading = false;
                         $scope.Role = response.Data;
                         defer.resolve(response);
                     })
-                    .catch(function (response) { sys.Alert(false, response.Message); });
+                    .catch(function (response) {
+                        sys.Alert(false, response.Message);
+                        defer.reject(response);
+                        $rootScope.MasterPage.IsLoading = false;
+                    });
                 return defer.promise;
             };
             //#endregion
@@ -259,13 +265,19 @@
             //#region ReadMenuInRoleById
             var ReadMenuInRoleById = (Id) => {
                 let defer = $q.defer();
+                $rootScope.MasterPage.IsLoading = true;
                 let strApiEndPoint = CommonHelper.RoleUrl + "MenuInRoles/" + Id;
                 ApiHelper.GetMethod(strApiEndPoint)
                     .then(function (response) {
+                        $rootScope.MasterPage.IsLoading = false;
                         $scope.MenuInRole = response.Data;
                         defer.resolve(response);
                     })
-                    .catch(function (response) { sys.Alert(false, response); });
+                    .catch(function (response) {
+                        sys.Alert(false, response.Message);
+                        defer.reject(response);
+                        $rootScope.MasterPage.IsLoading = false;
+                    });
                 return defer.promise;
             };
             //#endregion
@@ -273,13 +285,19 @@
             //#region ReadEditClaim
             var ReadEditClaimById = (Id) => {
                 let defer = $q.defer();
+                $rootScope.MasterPage.IsLoading = true;
                 let strApiEndPoint = CommonHelper.RoleUrl + "EditClaims/" + Id;
                 ApiHelper.GetMethod(strApiEndPoint)
                     .then(function (response) {
+                        $rootScope.MasterPage.IsLoading = false;
                         $scope.Claim = response.Data;
                         defer.resolve(response);
                     })
-                    .catch(function (response) { sys.Alert(false, response); });
+                    .catch(function (response) {
+                        sys.Alert(false, response.Message);
+                        defer.reject(response);
+                        $rootScope.MasterPage.IsLoading = false;
+                    });
                 return defer.promise;
             };
             //#endregion
@@ -325,13 +343,19 @@
                 })
                     .then((willDelete) => {
                         if (willDelete) {
+                            $rootScope.MasterPage.IsLoading = true;
                             let strApiEndPoint = CommonHelper.RoleUrl + "?id=" + Id;
                             ApiHelper.DeleteMethod(strApiEndPoint)
                                 .then(function (response) {
+                                    $rootScope.MasterPage.IsLoading = false;
                                     $('#myTable').DataTable().ajax.reload(null, false);
                                     sys.Alert(true, 'Xóa thành công!');
                                 })
-                                .catch(function (response) { sys.Alert(false, response.Message); });
+                                .catch(function (response) {
+                                    sys.Alert(false, response.Message);
+                                    defer.reject(response);
+                                    $rootScope.MasterPage.IsLoading = false;
+                                });
                         }
                     });
             };
@@ -340,23 +364,36 @@
             //#region Save
             $scope.Save = function () {
                 if (!$scope.UpdateMode) {
+                    $rootScope.MasterPage.IsLoading = true;
                     let strApiEndPoint = CommonHelper.RoleUrl + "create";
                     ApiHelper.PostMethod(strApiEndPoint, $scope.Role)
                         .then(function (response) {
+                            $rootScope.MasterPage.IsLoading = false;
                             $('#myTable').DataTable().ajax.reload(null, false);
                             sys.Alert(true, 'Thêm thành công');
                         })
-                        .catch(function (response) { sys.Alert(false, response.Message); });
+                        .catch(function (response) {
+                            $rootScope.MasterPage.IsLoading = false;
+                            sys.Alert(false, response.Message);
+                            defer.reject(response);
+                            $rootScope.MasterPage.IsLoading = false;
+                        });
                     $('#PnModal').modal('hide');
                 }
                 else {
+                    $rootScope.MasterPage.IsLoading = true;
                     let strApiEndPoint = CommonHelper.RoleUrl + "update";
                     ApiHelper.PutMethod(strApiEndPoint, $scope.Role)
                         .then(function (response) {
+                            $rootScope.MasterPage.IsLoading = false;
                             $('#myTable').DataTable().ajax.reload(null, false);
                             sys.Alert(true, 'Cập nhật thành công');
                         })
-                        .catch(function (response) { sys.Alert(false, response.Message); });
+                        .catch(function (response) {
+                            sys.Alert(false, response.Message);
+                            defer.reject(response);
+                            $rootScope.MasterPage.IsLoading = false;
+                        });
                     $('#PnModal').modal('hide');
                 }
             };
@@ -364,6 +401,7 @@
 
             //#region Save MenuInRole
             $scope.SaveMenuInRole = function () {
+                $rootScope.MasterPage.IsLoading = true;
                 let strApiEndPoint = CommonHelper.RoleUrl + "MenuInRoles";
                 let obj = new Object();
                 obj.roleId = "";
@@ -380,16 +418,22 @@
                 });
                 ApiHelper.PostMethod(strApiEndPoint, obj)
                     .then(function (response) {
+                        $rootScope.MasterPage.IsLoading = false;
                         $('#myTable').DataTable().ajax.reload(null, false);
                         sys.Alert(true, 'Cập nhật thành công');
                     })
-                    .catch(function (response) { sys.Alert(false, response.Message); });
+                    .catch(function (response) {
+                        sys.Alert(false, response.Message);
+                        defer.reject(response);
+                        $rootScope.MasterPage.IsLoading = false;
+                    });
                 $('#MenuInRoleModal').modal('hide');
             };
             //#endregion
 
             //#region Save EditClaim
             $scope.SaveEditClaim = function () {
+                $rootScope.MasterPage.IsLoading = true;
                 let SelectedClaims = [];
                 $scope.Claim.ClaimGroups.forEach((item) => {
                     item.GroupClaimsCheckboxes.forEach((x) => {
@@ -400,10 +444,15 @@
                 let strApiEndPoint = CommonHelper.RoleUrl + "EditClaims";
                 ApiHelper.PostMethod(strApiEndPoint, $scope.Claim)
                     .then(function (response) {
+                        $rootScope.MasterPage.IsLoading = false;
                         $('#myTable').DataTable().ajax.reload(null, false);
                         sys.Alert(true, 'Cập nhật thành công');
                     })
-                    .catch(function (response) { sys.Alert(false, response); });
+                    .catch(function (response) {
+                        sys.Alert(false, response.Message);
+                        defer.reject(response);
+                        $rootScope.MasterPage.IsLoading = false;
+                    });
                 $('#EditClaimModal').modal('hide');
             };
             //#endregion

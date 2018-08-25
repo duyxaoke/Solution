@@ -16,8 +16,8 @@ using DataTablesDotNet;
 
 namespace Web.Areas.Admin.Controllers
 {
-    [ClaimsGroup(ClaimResources.Menus)]
     [MvcAuthorize]
+    [ClaimsGroup(ClaimResources.Menus)]
     public class MenusController : BaseController
     {
         private readonly IMenuServices _menuServices;

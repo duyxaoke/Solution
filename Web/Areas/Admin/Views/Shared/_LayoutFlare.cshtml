@@ -34,137 +34,19 @@
 </head>
 <body ng-app="MyApp">
     <!-- .app -->
-    <!-- partial:../../partials/_horizontal-navbar.html -->
-    <nav class="navbar horizontal-layout col-lg-12 col-12 p-0">
-        <div class="nav-top flex-grow-1">
-            <div class="container d-flex flex-row h-100">
-                <div class="text-center navbar-brand-wrapper d-flex align-items-top">
-                    <a class="navbar-brand brand-logo" href="../../index.html"><img src="../../images/logo.svg" alt="logo" /></a>
-                    <a class="navbar-brand brand-logo-mini" href="../../index.html"><img src="../../images/logo-mini.svg" alt="logo" /></a>
-                </div>
-                <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-                    <form class="search-field" action="#">
-                        <div class="form-group mb-0">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="search">
-                                <div class="input-group-append">
-                                    <span class="input-group-text"><i class="icon-magnifier"></i></span>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                    <ul class="navbar-nav navbar-nav-right mr-0">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
-                                <i class="icon-bell"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-                                <a class="dropdown-item py-3">
-                                    <p class="mb-0 font-weight-medium float-left">
-                                        You have 4 new notifications
-                                    </p>
-                                    <span class="badge badge-pill badge-inverse-info float-right">View all</span>
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item preview-item">
-                                    <div class="preview-thumbnail">
-                                        <div class="preview-icon bg-inverse-success">
-                                            <i class="icon-exclamation mx-0"></i>
-                                        </div>
-                                    </div>
-                                    <div class="preview-item-content">
-                                        <h6 class="preview-subject font-weight-normal text-dark mb-1">Application Error</h6>
-                                        <p class="font-weight-light small-text mb-0">
-                                            Just now
-                                        </p>
-                                    </div>
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item preview-item">
-                                    <div class="preview-thumbnail">
-                                        <div class="preview-icon bg-inverse-warning">
-                                            <i class="icon-bubble mx-0"></i>
-                                        </div>
-                                    </div>
-                                    <div class="preview-item-content">
-                                        <h6 class="preview-subject font-weight-normal text-dark mb-1">Settings</h6>
-                                        <p class="font-weight-light small-text mb-0">
-                                            Private message
-                                        </p>
-                                    </div>
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item preview-item">
-                                    <div class="preview-thumbnail">
-                                        <div class="preview-icon bg-inverse-info">
-                                            <i class="icon-user-following mx-0"></i>
-                                        </div>
-                                    </div>
-                                    <div class="preview-item-content">
-                                        <h6 class="preview-subject font-weight-normal text-dark mb-1">New user registration</h6>
-                                        <p class="font-weight-light small-text mb-0">
-                                            2 days ago
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="icon-equalizer"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item nav-profile">
-                            <a class="nav-link" href="#">
-                                <span class="nav-profile-text">Hello Andre Rivera</span>
-                                <img src="../../images/faces/face1.jpg" class="rounded-circle" alt="profile" />
-                            </a>
-                        </li>
-                    </ul>
-                    <button class="navbar-toggler align-self-center" type="button" data-toggle="minimize">
-                        <span class="icon-menu text-white"></span>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="nav-bottom">
-            <div class="container">
-                <ul class="nav page-navigation">
-                    <li class="nav-item">
-                        <a href="../../index.html" class="nav-link"><i class="link-icon icon-screen-desktop"></i><span class="menu-title">Dashboard</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link"><i class="link-icon icon-wallet"></i><span class="menu-title">Forms</span><i class="menu-arrow"></i></a>
-                        <div class="submenu">
-                            <ul class="submenu-item">
-                                <li class="nav-item"><a class="nav-link" href="../../pages/forms/basic_elements.html">Basic Elements</a></li>
-                                <li class="nav-item"><a class="nav-link" href="../../pages/forms/advanced_elements.html">Advanced Elements</a></li>
-                                <li class="nav-item"><a class="nav-link" href="../../pages/forms/validation.html">Validation</a></li>
-                                <li class="nav-item"><a class="nav-link" href="../../pages/forms/wizard.html">Wizard</a></li>
-                                <li class="nav-item"><a class="nav-link" href="../../pages/forms/text_editor.html">Text Editor</a></li>
-                                <li class="nav-item"><a class="nav-link" href="../../pages/forms/code_editor.html">Code Editor</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
+    @Html.Action("Header", "Template", new { Area = "" })
+    <div ng-controller="MasterPageController" ng-cloak>
+        <div id="cover-spin" ng-show="MasterPage.IsLoading"></div>
+    </div>s
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
         <div class="main-panel">
-            <div class="content-wrapper">
-                @RenderBody()
-            </div>
+            @RenderBody()
+            @*<div class="content-wrapper">
+        </div>*@
             <!-- content-wrapper ends -->
             <!-- partial:../../partials/_footer.html -->
-            <footer class="footer">
-                <div class="w-100 clearfix">
-                    <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2018 <a href="http://www.urbanui.com/" target="_blank">Urbanui</a>. All rights reserved.</span>
-                    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="icon-heart text-danger"></i></span>
-                </div>
-            </footer>
+            @Html.Action("Footer", "Template", new { Area = "" })
             <!-- partial -->
         </div>
         <!-- main-panel ends -->
@@ -211,94 +93,15 @@
     <script src="~/Content/assets/flare/vendors/js/popover.js"></script>
     <script src="~/Content/assets/flare/vendors/js/tooltips.js"></script>
     <script src="~/Content/assets/flare/vendors/js/alerts.js"></script>
-
     <!-- endinject -->
     <!-- Custom js for this page-->
     <!-- End custom js for this page-->
     <script src="~/Content/assets/javascript/site.js"></script>
     <script src="~/Content/assets/vendor/lodash/core.js"></script>
     <script src="~/Content/assets/angular-1.6.3/angular.min.js"></script>
-    <script src="~/Content/assets/javascript/ApiHelper.js"></script>
-    <script src="~/Content/assets/javascript/CommonHelper.js"></script>
-    <script src="~/Content/assets/javascript/UtilFactory.js"></script>
-    <script src="~/Content/assets/javascript/DataFactory.js"></script>
-    @if (User.Identity.IsAuthenticated)
-    {
-        <script>
-            var urlApi = "http://localhost:51581/api/";
-        </script>
-    }
-    <script>
-        $('body').tooltip({ selector: '[data-toggle="tooltip"]' });
-    </script>
-
-    <script>
-        (function ($) {
-            function InitModal() {
-                var $this = this;
-
-                function initilizeModel() {
-                    $("#modal-action").on('shown.bs.modal', function (e) {
-
-                    }).on('hidden.bs.modal', function (e) {
-                        $(this).removeData('bs.modal');
-                    });
-                }
-                $this.init = function () {
-                    initilizeModel();
-                }
-            }
-            $(function () {
-                var self = new InitModal();
-                self.init();
-            })
-            //form to JSON
-            $.fn.serializeFormJSON = function () {
-                var o = {};
-                var a = this.serializeArray();
-                $.each(a, function () {
-                    if (o[this.name]) {
-                        if (!o[this.name].push) {
-                            o[this.name] = [o[this.name]];
-                        }
-                        o[this.name].push(this.value || '');
-                    } else {
-                        o[this.name] = this.value || '';
-                    }
-                });
-                return o;
-            };
-
-        }(jQuery))
-    </script>
+    <script src="~/Content/assets/angular-1.6.3/angular-route.min.js"></script>
+    <script src="~/Content/assets/app/app-bundle.js"></script>
     <!--ANGULAR-->
-    <script>
-        var addController = function (name, controller) {
-            try {
-                MyApp.controller(name, controller);
-            } catch (e) {
-                console.log(JSON.stringify(e));
-            }
-        }
-        var addFactory = function (name, factory) {
-            try {
-                MyApp.factory(name, factory);
-            } catch (e) {
-                console.log(JSON.stringify(e));
-            }
-        }
-        //var lstDependency = [];
-        //lstDependency.push("ngRoute");
-        //lstDependency.push("angular.filter");
-        var MyApp = angular.module("MyApp", []);
-
-        addFactory("$localstorage", $localstorage);
-        addFactory("ApiHelper", ApiHelper);
-        addFactory("CommonHelper", CommonHelper);
-        addFactory("UtilFactory", UtilFactory);
-        addFactory("DataFactory", DataFactory);
-    </script>
-
     @RenderSection("scripts", required: false)
 </body>
 </html>

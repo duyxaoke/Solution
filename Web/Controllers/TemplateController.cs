@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace Web.Areas.Admin.Controllers
+namespace Web.Controllers
 {
     public class TemplateController : Controller
     {
@@ -26,9 +26,9 @@ namespace Web.Areas.Admin.Controllers
             _menuAppService = menuAppService;
         }
 
-        // GET: Template
-        public PartialViewResult Sidebar()
+        public PartialViewResult Header()
         {
+
             var lsCurrentRole = new List<string>();
             //Da login => lay list role
             if (User.Identity.IsAuthenticated)
@@ -39,7 +39,7 @@ namespace Web.Areas.Admin.Controllers
                     lsCurrentRole.Add(roleManager.FindByNameAsync(name).Result.Id);
                 }
                 string userId = User.Identity.GetUserId();
-                var Name = userManager.Users.FirstOrDefault(c=> c.Id == userId).Name;
+                var Name = userManager.Users.FirstOrDefault(c => c.Id == userId).Name;
                 ViewBag.Name = Name;
             }
             //chua login/ thi lay role la anomymous
@@ -65,11 +65,6 @@ namespace Web.Areas.Admin.Controllers
                     Childrens = GetChildren(l.Id)
                 });
             return PartialView(model);
-        }
-        public PartialViewResult Header()
-        {
-
-            return PartialView();
         }
         public PartialViewResult Footer()
         {

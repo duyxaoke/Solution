@@ -7,7 +7,7 @@ using Web.Infrastructure;
 
 namespace Web.Controllers
 {
-    public class HomeController : Controller
+    public class DashboardController : Controller
     {
         #region Fields
 
@@ -16,19 +16,16 @@ namespace Web.Controllers
 
         #region Constructor
 
-        public HomeController(
-            UserManager userManager)
+        public DashboardController(UserManager userManager)
         {
             _userManager = userManager;
         }
 
         #endregion
 
-        // GET: /Home/
         public ActionResult Index()
         {
             return View();
         }
-
     }
 }

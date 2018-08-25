@@ -21,7 +21,7 @@ namespace Web.Api
             _menuServices = menuServices;
         }
         [HttpGet]
-        [Route("list")]
+        [Route("List")]
         public IHttpActionResult List()
         {
             var result = _menuServices.GetAll();
@@ -37,7 +37,7 @@ namespace Web.Api
         }
 
         [HttpPost]
-        [Route("create")]
+        [Route("Create")]
         [EnableThrottling(PerSecond = 1)]
         public IHttpActionResult Post([FromBody]MenuViewModel model)
         {
@@ -47,7 +47,7 @@ namespace Web.Api
         }
 
         [HttpPut]
-        [Route("update")]
+        [Route("Update")]
         [EnableThrottling(PerSecond = 1)]
         public IHttpActionResult Put([FromBody]MenuViewModel model)
         {
