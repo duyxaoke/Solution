@@ -1,187 +1,555 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Dashboard";
 }
+<style>
+    .divBet {
+        width: 100%;
+        display: table;
+        table-layout: fixed;
+    }
+
+    .child {
+        display: table-cell;
+    }
+</style>
+
+
+<!--WHEEL-->
+<link href="~/prizewheel/index.css" rel="stylesheet" />
+<script src="~/prizewheel/dist/lottery-wheel.min.js"></script>
+
+<!--WHEEL-->
 
 <div class="row">
     <div class="col-lg-12">
-        <div class="card">
-            <div class="card-body">
+        <div class="bg-white p-4">
+            <div class="row">
+                <div class="col-md-2 border-right">
 
-                <div class="row">
-                    <div class="col-md-2 border-right">
-                        
-                        <div class="wrapper mt-4">
-                            <div class="item-wrapper d-flex pb-4 border-bottom">
-                                <div class="status-wrapper d-flex align-items-start pr-3">
-                                    <span class="bg-success rounded-circle p-1 mt-2 mx-auto"></span>
-                                </div>
-                                <div class="text-wrapper">
-                                    <h6 class="d-block mb-1 text-warning">Phòng 1</h6>
-                                    <small class="d-block mb-2">3 người chơi</small>
-                                    <small class="text-gray d-block font-weight-bold">Tổng tiền: $15</small>
-                                </div>
+                    <div class="">
+                        <div class="item-wrapper d-flex pb-4 border-bottom">
+                            <div class="status-wrapper d-flex align-items-start pr-3">
+                                <span class="bg-success rounded-circle p-1 mt-2 mx-auto"></span>
                             </div>
-                            <div class="item-wrapper d-flex py-4 border-bottom">
-                                <div class="status-wrapper d-flex align-items-start pr-3">
-                                    <span class="bg-success rounded-circle p-1 mt-2 mx-auto"></span>
-                                </div>
-                                <div class="text-wrapper">
-                                    <h6 class="d-block mb-1 text-warning">Phòng 2</h6>
-                                    <small class="d-block mb-2">5 người chơi</small>
-                                    <small class="text-gray d-block font-weight-bold">Tổng tiền: $50</small>
-                                </div>
-                            </div>
-
-                            <div class="item-wrapper d-flex py-4 border-bottom">
-                                <div class="status-wrapper d-flex align-items-start pr-3">
-                                    <span class="bg-success rounded-circle p-1 mt-2 mx-auto"></span>
-                                </div>
-                                <div class="text-wrapper">
-                                    <h6 class="d-block mb-1 text-warning">Phòng 3</h6>
-                                    <small class="d-block mb-2">5 người chơi</small>
-                                    <small class="text-gray d-block font-weight-bold">Tổng tiền: $150</small>
-                                </div>
+                            <div class="text-wrapper">
+                                <h6 class="d-block mb-1 text-warning">Phòng 1</h6>
+                                <small class="d-block mb-2">3 người chơi</small>
+                                <small class="text-gray d-block font-weight-bold">Giải thưởng: $15</small>
                             </div>
                         </div>
-                        <div class="wrapper">
-                            <div class="wrapper d-flex justify-content-between align-items-center mb-4 mt-4">
-                                <div class="d-flex align-items-center">
-                                    <small class="font-weight-bold mr-2 mb-0">Lịch sử cá nhân</small>
-                                </div>
+                        <div class="item-wrapper d-flex py-4 border-bottom">
+                            <div class="status-wrapper d-flex align-items-start pr-3">
+                                <span class="bg-success rounded-circle p-1 mt-2 mx-auto"></span>
                             </div>
-                            <div class="calendar-aside">
-                                <table class="table">
-                                    <tbody>
-                                        <tr>
-                                            <td class="py-1 pl-0">
-                                                <div class="d-flex align-items-center">
-                                                    Sophia Brown
-                                                </div>
-                                            </td>
-                                            <td>
-                                                $50
-                                            </td>
-                                            <td>
-                                                <label class="text-success font-weight-bold">20%</label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="py-1 pl-0">
-                                                <div class="d-flex align-items-center">
-                                                    Sophia Brown
-                                                </div>
-                                            </td>
-                                            <td>
-                                                $100
-                                            </td>
-                                            <td>
-                                                <label class="text-success font-weight-bold">30%</label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="py-1 pl-0">
-                                                <div class="d-flex align-items-center">
-                                                    Sophia Brown
-                                                </div>
-                                            </td>
-                                            <td>
-                                                $200
-                                            </td>
-                                            <td>
-                                                <label class="text-success font-weight-bold">50%</label>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div class="text-wrapper">
+                                <h6 class="d-block mb-1 text-warning">Phòng 2</h6>
+                                <small class="d-block mb-2">5 người chơi</small>
+                                <small class="text-gray d-block font-weight-bold">Giải thưởng: $50</small>
+                            </div>
+                        </div>
+
+                        <div class="item-wrapper d-flex py-4 border-bottom">
+                            <div class="status-wrapper d-flex align-items-start pr-3">
+                                <span class="bg-success rounded-circle p-1 mt-2 mx-auto"></span>
+                            </div>
+                            <div class="text-wrapper">
+                                <h6 class="d-block mb-1 text-warning">Phòng 3</h6>
+                                <small class="d-block mb-2">5 người chơi</small>
+                                <small class="text-gray d-block font-weight-bold">Giải thưởng: $150</small>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-10">
-                        <div class="row">
-                            <div class="col-md-4 d-flex align-items-center pr-4">
-                                <canvas id="issues-chart" width="100" height="100"></canvas>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="row">
-                                    <div class="add-items d-flex col-md-6 offset-3">
-                                        <input type="text" class="form-control text-center" data-inputmask="'alias': 'currency'">
-                                        <button class="btn btn-primary"><i class="fa fa-usd"></i> BET</button>
+                </div>
+                <div class="col-md-10">
+                    <div class="row">
+                        <!--WHEEL-->
+
+
+                        <div class="col-md-12 d-flex align-items-center pr-4 mb-4 text-center">
+
+                            <style>
+
+
+                                .rafflebox {
+                                    z-index: 55;
+                                    height: 150px;
+                                    width: 700px !important;
+                                    overflow: hidden;
+                                }
+
+                                    .rafflebox .pointer {
+                                        z-index: 50;
+                                        position: absolute;
+                                        top: 50%;
+                                        left: 50%;
+                                        -webkit-transform: translate(-50%, -50%);
+                                        transform: translate(-50%, -50%);
+                                        width: 0;
+                                        height: 0;
+                                        border-left: 50px solid transparent;
+                                        border-right: 50px solid transparent;
+                                        border-top: 100px solid red;
+                                    }
+
+                                    .rafflebox .boxwrapper {
+                                        width: 700px;
+                                        height: 100%;
+                                        overflow: hidden;
+                                        white-space: nowrap;
+                                        position: absolute;
+                                    }
+
+                                        .rafflebox .boxwrapper .giftwrapper {
+                                            list-style-type: none;
+                                            position: absolute;
+                                        }
+
+                                            .rafflebox .boxwrapper .giftwrapper .gift {
+                                                z-index: 40;
+                                                display: block;
+                                                float: left;
+                                                margin: 25px 5px;
+                                                height: 100px;
+                                                width: 100px;
+                                                overflow: hidden;
+                                                color: white;
+                                            }
+
+                                                .rafflebox .boxwrapper .giftwrapper .gift img {
+                                                    width: 100%;
+                                                    height: 100%;
+                                                }
+
+                                .buttonspin {
+                                    display: inline-block;
+                                    text-align: center;
+                                    vertical-align: middle;
+                                    padding: 12px 24px;
+                                    border: 1px solid #a12727;
+                                    border-radius: 8px;
+                                    background: #ff4a4a;
+                                    background: linear-gradient(to bottom, #ff4a4a, #992727);
+                                    text-shadow: #591717 1px 1px 1px;
+                                    font: normal normal bold 20px arial;
+                                    color: #ffffff;
+                                    text-decoration: none;
+                                    position: absolute;
+                                    top: 50%;
+                                    left: 50%;
+                                    -webkit-transform: translate(-50%, -50%);
+                                    transform: translate(-50%, -50%);
+                                }
+
+                                    .buttonspin:hover,
+                                    .buttonspin:focus {
+                                        background: #ff5959;
+                                        background: linear-gradient(to bottom, #ff5959, #b62f2f);
+                                        color: #ffffff;
+                                        text-decoration: none;
+                                    }
+
+                                    .buttonspin:active {
+                                        background: #982727;
+                                        background: linear-gradient(to bottom, #982727, #982727);
+                                    }
+
+                                    .buttonspin:before {
+                                        content: "\0000a0";
+                                        display: inline-block;
+                                        height: 24px;
+                                        width: 24px;
+                                        line-height: 24px;
+                                        margin: 0 4px -6px -4px;
+                                        position: relative;
+                                        top: 0px;
+                                        left: 0px;
+                                        background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAEx0lEQVRIia2VfWhVdRjHP/ecc7frvXvVtbeYzusLy5fJjHxBSVkGUkynJf4ziJQCq1mJEYJJEtEfEQUGEUqiQVR/aC++FtV0c7pw0ticOt3ddvd2d7fde3ffz73nnF9/nDO9hEmDHng48OP5fV+e5+H8ZGYY9QspXlfG6ifymSNpxMdUkjPFeGQ0vVVyXIw2C6P3rAg2faR2fr61+fud2bvKHDj+F4JfGsu+E7EhISKDQkSGhIj7hBi5JHqPbbv1aS3r/1kvzZhBCFBDVgYh5gd7Ie5tH1a9cuj9306+6NyVWa7M3IMBqTDoBiBMQpMZ16JNWS806l+GIh/49l7kHIA8U/iGFWKHOz+y1KZOQnYe6BroCdCToMWxF8yVKnKiz7Zdu/PVYIyEXF1EztPlLOwOMGlKenRsmZ/e4fJ3Lo12XcbmuUD27DngKAQtDloS0jFyy+a5SoJX9G9uqL/LR7ay9+CBhh92b3hs90s1tlWbK6by1ZiI3Q4SfBjhunlsyHOwTFGwJ5MqmudPXGXlYHeCljDdCLCl/BXHzg9+Yft6O4cb3nz9EK55Jl4qSHrCYwx6vf1To4Otnr6Ri8fbROvZXjwWx2ygsqqIqlef5OXnFlFb4S6VnOv3gK5bkgTqWBeb955ersRT6AQ8ILnuC7YXzpPcs+e7qTHcNVqooW7HoDE0MnwvMuFrudkz/uvRZlqavNzYd5Fz3jDvvZvn2+dUvWBzmkPXIdthZ0ERc5WbfnpEaABbbgUI40FXJGEusSTIKiqT3MWPL0YyFq+ondq1fafPaG/vurD+cPj5z65yePNyNpYagZWgmgSGDSbbkGQU5coQt6OBcXKLgyaBTZi7lbF+5keAAUjgsAWkrMlwFeaah6W8WbeR1JXoqgke6AZ1AGRQun0M+QPhUK4aKADjAbicAc60GwMxchf/tTEiMTTAOPgMS1atLdmCMQV6GsL3QA2ABFoaQ0kYhCZDqndBsLuAnCJANl1IwsS/70RH7+3H1x5nRCV8ooOPjzZQW19XeDy/ODsHtRcS45gDgLgfhsNMKIAWiOMhOVqN4QOnCxxOsNlBsmUsqI4oBmeNgjEmAgfXyO+459sXy0oaUnfN9trNFpKCgT5CV4fwKABjUbpRqEcRQBT0KGiAJJkp28AGSh4UFsLqpVQi0iBSpstsU/h0Jm5Ch5/LkaTpgA4fHQKwKdbYFEw1imGldSZbabMSzMEbFrgBWieMDKOd7OAIYCgAl/roSajgzLMA7KZNBJCTcSZbRJn/YGERqJBuBb8HzvRz8vwtLmOV0zXKkD9CqLKUAuwgpiDQbra1sBLk5UBJBomU4UAF0QfRFggmodlP076fOWBJNAlSOqHxMN5KOwViFMa7YVgQlUGJ9uNweSCnHLKrQCoFHCA00Ccg3gNTXkgJjDP9nNr/E28bBv5pg9PvgTY1yT29i2r/OPRp+PZfYE8gRvyNdTSuLWdjSYAcpQ2UWSBbm4wG0TTGjQDdx65z5Ewn3wLhjAY+eHCGE3SNhdj+V5yu106ze2CS64DReIqWHAdL6paxafVcnipyUZyloERUQnfG6fmxkz/u+GgFJqxpPDzqqlnzST0nnFm4/7UIHNbY8wAnM3wRJSBrJhf+S/wNbS430494JFMAAAAASUVORK5CYII=") no-repeat left center transparent;
+                                        background-size: 100% 100%;
+                                    }
+                            </style>
+
+                            <div class='container' style="width:700px">
+                                <div class='rafflebox border border-warning'>
+                                    <div class='pointer'></div>
+                                    <div class='boxwrapper'>
+                                        <ul class='giftwrapper'>
+                                            <li class='gift'>
+                                                <img src='http://placehold.it/125x125?text=Prize+1'>
+                                                <p>Gift 1</p>
+                                            </li>
+                                            <li class='gift'>
+                                                <img src='http://placehold.it/125x125?text=Prize+2'>
+                                                <p>Gift 2</p>
+                                            </li>
+                                            <li class='gift'>
+                                                <img src='http://placehold.it/125x125?text=Prize+3'>
+                                                <p>Gift 3</p>
+                                            </li>
+                                            <li class='gift'>
+                                                <img src='http://placehold.it/125x125?text=Prize+4'>
+                                                <p>Gift 4</p>
+                                            </li>
+                                            <li class='gift'>
+                                                <img src='http://placehold.it/125x125?text=Prize+5'>
+                                                <p>Gift 5</p>
+                                            </li>
+                                            <li class='gift'>
+                                                <img src='http://placehold.it/125x125?text=Prize+6'>
+                                                <p>Gift 6</p>
+                                            </li>
+                                        </ul>
                                     </div>
-
-                                    <div class="col-md-6 offset-3">
-                                        <div class="pb-4 mt-2 mt-md-0">
-                                            <h2 class="text-center text-md-left">Thời gian còn lại: <span class="text-warning">00:23</span></h2>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 border-bottom"></div>
-                                </div>
-
-                               
-                                <div class="pt-4">
-                                    <div id="issues-chart-legend" class="issues-chart-legend"></div>
                                 </div>
                             </div>
-                        </div>
+                            <button class='buttonspin'>Let's Go Luck</button>
 
-                        
-                        <style>
-                            .divBet {
-                                width: 100%;
-                                display: table;
-                                table-layout: fixed;
+
+                            @section scripts{
+                                <script>
+                                    var giftamount = 6;
+                                    var gw = $('.gift').outerWidth(true);
+                                    var giftcenter = gw / 2;
+                                    var cycle = 7;
+
+                                    var containercenter = $('.boxwrapper').outerWidth(true) / 2;
+                                    for (var i = 0; i <= 4; i++) {
+                                        var giftduplicate = $('.giftwrapper').children().clone(true, true);
+                                        $('.giftwrapper').append(giftduplicate);
+                                    }
+
+                                    $('.buttonspin').click(function () {
+                                        var btn = $(this);
+                                        btn.hide();
+                                        var randomgift = Math.floor((Math.random() * 6) + 1);
+                                        var distance = giftamount * gw * cycle + containercenter + (randomgift * gw) - giftcenter;
+
+                                        $(".giftwrapper").css({ left: "0" });
+
+                                        $('.giftwrapper').animate({ left: "-=" + distance }, 3000, function () {
+                                            alert('You Won Gift' + randomgift);
+                                            btn.show();
+                                        });
+                                    });
+                                </script>
                             }
 
-                            .child {
-                                display: table-cell;
-                            }
-                        </style>
 
 
-                        <div class="row">
-                            <div class="divBet mt-4 text-center">
-                                <div class="child border border-left-0" style="width:60%">
-                                    <div class="d-flex flex-column justify-content-between m-2">
-                                        <div>
-                                            <p class="mb-1"><span class="h4 mb-0 mr-2">$50</span></p>
-                                        </div>
-                                        <div>
-                                            <h6 class="font-weight-normal text-muted">duyxaoke</h6>
-                                            <span class="text-primary font-weight-bold">3.53%</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="child border border-left-0" style="width:20%">
-                                    <div class="d-flex flex-column justify-content-between m-2">
-                                        <div>
-                                            <p class="mb-1"><span class="h4 mb-0 mr-2">$50</span></p>
-                                        </div>
-                                        <div>
-                                            <h6 class="font-weight-normal text-muted">duyxaoke</h6>
-                                            <span class="text-primary font-weight-bold">3.53%</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="child border border-left-0" style="width:20%">
-                                    <div class="d-flex flex-column justify-content-between m-2">
-                                        <div>
-                                            <p class="mb-1"><span class="h4 mb-0 mr-2">$50</span></p>
-                                        </div>
-                                        <div>
-                                            <h6 class="font-weight-normal text-muted">duyxaoke</h6>
-                                            <span class="text-primary font-weight-bold">3.53%</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
+
+
+
+                            @*<div class="wheel-container">
+            <svg id="wheel"></svg>
+        </div>
+        <script type="text/javascript">
+            wheel({
+                el: document.getElementById('wheel'),
+                radius: 200,
+                buttonWidth: 70,
+                fontSize: 26,
+                buttonFontSize: 26,
+                buttonText: '$550',
+                duration: 7000,
+                color: {
+                    border: 'silver',
+                    prize: 'dimgray',
+                    line: 'lightgreen',
+                    prizeFont: 'white',
+                    button: '#fef5e7',
+                    buttonFont: '#34495e'
+                },
+                onSuccess(data) {
+                    alert(`You picked up ${data.text}`);
+                },
+                data: [
+                    {
+                        text: 'duy',
+                        chance: 63
+                    }
+                    , {
+                        text: 'nhat',
+                        chance: 13
+                    }
+                    , {
+                        text: 'dao',
+                        chance: 17
+                    }
+                    , {
+                        text: 'thy',
+                        chance: 5
+                    }
+
+                ]
+            });
+        </script>
+        <div id="three-container"></div>*@
+
+
+                            @*<canvas id="issues-chart" width="100" height="100"></canvas>*@
                         </div>
 
 
 
 
 
+
+
+
+                        <!--WHEEL-->
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="add-items d-flex col-md-8 offset-2">
+                                    <input type="text" class="form-control text-center" data-inputmask="'alias': 'currency'">
+                                    <button class="btn btn-primary"><i class="fa fa-usd"></i> BET</button>
+                                </div>
+
+                                <div class="col-md-8 offset-2">
+                                    <div class="pb-4 mt-2 mt-md-0">
+                                        <h3 class="text-center text-md-left">Thời gian còn lại: <span class="text-warning">00:23</span></h3>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 border-bottom"></div>
+                            </div>
+
+                            <div class="pt-4">
+                                <div id="issues-chart-legend" class="issues-chart-legend"></div>
+                            </div>
+                        </div>
                     </div>
+                    <div class="row">
+                        <div class="divBet mt-4 text-center">
+                            <div class="child border-left-0" style="width:50%;background:#fff1d3">
+                                <div class="rounded mb-2">
+                                    <div class="card-body p-0 pt-2 pf-1">
+                                        <div class="media">
+                                            <div class="media-body text-warning">
+                                                <img src="http://www.urbanui.com/flare/template/images/faces/face1.jpg" alt="image" class="img-sm mb-2 rounded-circle">
+                                                <h6 class="mb-1">$50</h6>
+                                                <p class="mb-1">
+                                                    Software engineer
+                                                </p>
+                                                <h3 class="text-warning font-weight-bold">50%</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="child border-left-0" style="width:25%;background:#d9fffb">
+                                <div class="rounded mb-2">
+                                    <div class="card-body p-0 pt-2 pf-1">
+                                        <div class="media">
+                                            <div class="media-body text-success">
+                                                <img src="http://www.urbanui.com/flare/template/images/faces/face1.jpg" alt="image" class="img-sm mb-2 rounded-circle">
+
+                                                <h6 class="mb-1 font-weight-bold">$50</h6>
+                                                <p class="mb-1">
+                                                    Software engineer
+                                                </p>
+                                                <h3 class="text-success font-weight-bold">25%</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="child border-left-0" style="width:25%;background:#fff1d3">
+                                <div class="rounded mb-2">
+                                    <div class="card-body p-0 pt-2 pf-1">
+                                        <div class="media">
+                                            <div class="media-body text-warning">
+                                                <img src="http://www.urbanui.com/flare/template/images/faces/face1.jpg" alt="image" class="img-sm mb-2 rounded-circle">
+                                                <h6 class="mb-1">$50</h6>
+                                                <p class="mb-1">
+                                                    Software engineer
+                                                </p>
+                                                <h3 class="text-warning font-weight-bold">25%</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mt-4 grid-margin stretch-card">
+        <div class="card border-0">
+            <div class="p-3">
+                <h4 class="card-title text-center">BET ROOM</h4>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    #
+                                </th>
+                                <th>
+                                    Người chơi
+                                </th>
+                                <th>
+                                    BET
+                                </th>
+                                <th>
+                                    Tỷ lệ thắng
+                                </th>
+                                <th>
+                                    Giải thưởng
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-center">
+                                    14021992
+                                </td>
+                                <td class="py-1">
+                                    <img src="http://www.urbanui.com/flare/template/images/faces/face1.jpg" alt="image" />
+                                    Herman Beck
+                                </td>
+                                <td class="text-center">
+                                    <span class="ml-auto">$13</span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="ml-auto">70%</span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="ml-auto text-success">$135</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">
+                                    14021992
+                                </td>
+                                <td class="py-1">
+                                    <img src="http://www.urbanui.com/flare/template/images/faces/face1.jpg" alt="image" />
+                                    Herman Beck
+                                </td>
+                                <td class="text-center">
+                                    <span class="ml-auto">$13</span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="ml-auto">70%</span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="ml-auto text-success">$135</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">
+                                    14021992
+                                </td>
+                                <td class="py-1">
+                                    <img src="http://www.urbanui.com/flare/template/images/faces/face1.jpg" alt="image" />
+                                    Herman Beck
+                                </td>
+                                <td class="text-center">
+                                    <span class="ml-auto">$13</span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="ml-auto">70%</span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="ml-auto text-success">$135</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mt-4 grid-margin stretch-card">
+        <div class="card border-0">
+            <div class="p-3">
+                <h4 class="card-title text-center">MY BET</h4>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    #
+                                </th>
+                                <th>
+                                    BET
+                                </th>
+                                <th>
+                                    Tỷ lệ
+                                </th>
+                                <th>
+                                    Kết quả
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-center">
+                                    14021992
+                                </td>
+
+                                <td class="text-center">
+                                    <span class="ml-auto">$135</span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="ml-auto">70%</span>
+                                </td>
+                                <td class="text-center text-success"> $28.76</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">
+                                    14021992
+                                </td>
+
+                                <td class="text-center">
+                                    <span class="ml-auto">$135</span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="ml-auto">15%</span>
+                                </td>
+                                <td class="text-center text-danger"> $28.76</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mt-4 grid-margin stretch-card">
+        <div class="card border-0">
+            <div class="p-3">
+                <h4 class="card-title text-center">WITHDRAW</h4>
+                <div class="new-accounts text-center">
+                    <ul class="chats">
+                        <li class="chat-persons">
+                            <a href="#">
+                                <span class="pro-pic"><img src="http://www.urbanui.com/flare/template/images/faces/face2.jpg" alt="profile image"></span>
+                                <div class="user">
+                                    <p class="u-name">Đã thanh toán: <span class="text-success">$150</span></p>
+                                    <p class="u-designation">duyxaoke - @DateTime.Now.ToString("HH:mm dd/MM/yyyy")</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="chat-persons">
+                            <a href="#">
+                                <span class="pro-pic"><img src="http://www.urbanui.com/flare/template/images/faces/face2.jpg" alt="profile image"></span>
+                                <div class="user">
+                                    <p class="u-name">Đã thanh toán: <span class="text-success">$250</span></p>
+                                    <p class="u-designation">buinhat - @DateTime.Now.ToString("HH:mm dd/MM/yyyy")</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="chat-persons">
+                            <a href="#">
+                                <span class="pro-pic"><img src="http://www.urbanui.com/flare/template/images/faces/face2.jpg" alt="profile image"></span>
+                                <div class="user">
+                                    <p class="u-name">Đã thanh toán: <span class="text-success">$240</span></p>
+                                    <p class="u-designation">anhdao - @DateTime.Now.ToString("HH:mm dd/MM/yyyy")</p>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

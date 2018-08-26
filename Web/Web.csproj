@@ -375,6 +375,7 @@
     <Content Include="Content\assets\app\factory\UtilFactory.js" />
     <Content Include="Content\assets\app\factory\ApiHelper.js" />
     <Content Include="Content\assets\app\factory\CommonHelper.js" />
+    <Content Include="Content\assets\images\roulette_back.png" />
     <Content Include="Content\assets\javascript\main.min.js" />
     <Content Include="Content\assets\javascript\pages\ace-demo.js" />
     <Content Include="Content\assets\javascript\pages\atwho-demo.js" />
@@ -1003,7 +1004,16 @@
     <Content Include="Content\assets\flare\vendors\iconfonts\font-awesome\fonts\fontawesome-webfont.woff" />
     <Content Include="Content\assets\flare\vendors\iconfonts\font-awesome\fonts\fontawesome-webfont.woff2" />
     <Content Include="bundleconfig.json" />
+    <Content Include="prizewheel1\game.js" />
+    <Content Include="prizewheel1\icons.png" />
+    <Content Include="prizewheel1\index.html" />
+    <Content Include="prizewheel1\phaser.min.js" />
+    <Content Include="prizewheel1\pin.png" />
+    <Content Include="prizewheel\README.md" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
+    <Content Include="prizewheel\dist\lottery-wheel.min.js" />
+    <Content Include="prizewheel\index.css" />
+    <Content Include="prizewheel\index.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
