@@ -72,7 +72,7 @@
 
                                 .rafflebox {
                                     z-index: 55;
-                                    height: 150px;
+                                    height: 120px;
                                     width: 700px !important;
                                     overflow: hidden;
                                 }
@@ -108,9 +108,9 @@
                                                 z-index: 40;
                                                 display: block;
                                                 float: left;
-                                                margin: 25px 5px;
-                                                height: 100px;
-                                                width: 100px;
+                                                margin: 20px 0px;
+                                                height: 80px;
+                                                width: 80px;
                                                 overflow: hidden;
                                                 color: white;
                                             }
@@ -168,9 +168,9 @@
                                     }
                             </style>
 
-                            <div class='container' style="width:700px">
-                                <div class='rafflebox border border-warning'>
-                                    <div class='pointer'></div>
+                            <div class='container' style="margin-right: auto;margin-left: auto;width:700px; background-image:url(/Content/assets/images/roulette_back.png);background-repeat:no-repeat;">
+                                <div class='rafflebox'>
+                                    @*<div class='pointer'></div>*@
                                     <div class='boxwrapper'>
                                         <ul class='giftwrapper'>
                                             <li class='gift'>
@@ -197,7 +197,16 @@
                                                 <img src='http://placehold.it/125x125?text=Prize+6'>
                                                 <p>Gift 6</p>
                                             </li>
+                                            <li class='gift'>
+                                                <img src='http://placehold.it/125x125?text=Prize+7'>
+                                                <p>Gift 7</p>
+                                            </li>
+                                            <li class='gift'>
+                                                <img src='http://placehold.it/125x125?text=Prize+8'>
+                                                <p>Gift 8</p>
+                                            </li>
                                         </ul>
+
                                     </div>
                                 </div>
                             </div>
@@ -206,13 +215,13 @@
 
                             @section scripts{
                                 <script>
-                                    var giftamount = 6;
+                                    var giftamount = 8;
                                     var gw = $('.gift').outerWidth(true);
                                     var giftcenter = gw / 2;
                                     var cycle = 7;
 
                                     var containercenter = $('.boxwrapper').outerWidth(true) / 2;
-                                    for (var i = 0; i <= 4; i++) {
+                                    for (var i = 0; i <= 8; i++) {
                                         var giftduplicate = $('.giftwrapper').children().clone(true, true);
                                         $('.giftwrapper').append(giftduplicate);
                                     }
@@ -220,12 +229,12 @@
                                     $('.buttonspin').click(function () {
                                         var btn = $(this);
                                         btn.hide();
-                                        var randomgift = Math.floor((Math.random() * 6) + 1);
+                                        var randomgift = Math.floor((Math.random() * 8) + 1);
                                         var distance = giftamount * gw * cycle + containercenter + (randomgift * gw) - giftcenter;
 
                                         $(".giftwrapper").css({ left: "0" });
 
-                                        $('.giftwrapper').animate({ left: "-=" + distance }, 3000, function () {
+                                        $('.giftwrapper').animate({ left: "-=" + distance }, 8000, function () {
                                             alert('You Won Gift' + randomgift);
                                             btn.show();
                                         });
