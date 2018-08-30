@@ -214,6 +214,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ApiController.cs" />
+    <Compile Include="Api\BetsController.cs" />
+    <Compile Include="Api\RoomsController.cs" />
     <Compile Include="Api\MenusController.cs" />
     <Compile Include="Api\ConfigsController.cs" />
     <Compile Include="Api\UsersController.cs" />
@@ -221,6 +223,7 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\RoomsController.cs" />
     <Compile Include="Areas\Admin\Controllers\ConfigsController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Product\Controllers\ProductController.cs" />
@@ -376,6 +379,7 @@
     <Content Include="Content\assets\app\factory\ApiHelper.js" />
     <Content Include="Content\assets\app\factory\CommonHelper.js" />
     <Content Include="Content\assets\images\roulette_back.png" />
+    <Content Include="Content\assets\images\alert-wait.gif" />
     <Content Include="Content\assets\javascript\main.min.js" />
     <Content Include="Content\assets\javascript\pages\ace-demo.js" />
     <Content Include="Content\assets\javascript\pages\atwho-demo.js" />
@@ -1010,6 +1014,7 @@
     <Content Include="prizewheel1\phaser.min.js" />
     <Content Include="prizewheel1\pin.png" />
     <Content Include="prizewheel\README.md" />
+    <Content Include="Areas\Admin\Views\Rooms\Index.cshtml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="prizewheel\dist\lottery-wheel.min.js" />
     <Content Include="prizewheel\index.css" />

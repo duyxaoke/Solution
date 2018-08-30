@@ -59,6 +59,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Transaction.cs" />
+    <Compile Include="Data\Bet.cs" />
+    <Compile Include="Data\Room.cs" />
     <Compile Include="Data\DB_LOG.cs" />
     <Compile Include="Data\MenuInRoles.cs" />
     <Compile Include="Data\Menu.cs" />

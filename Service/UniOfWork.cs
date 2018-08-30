@@ -29,6 +29,8 @@ namespace Service
         private BaseRepository<ApplicationUser> _applicationUserRepository;
         private BaseRepository<IdentityUserRole> _identityUserRoleRepository;
         private BaseRepository<DB_LOG> _dbLogRepository;
+        private BaseRepository<Room> _roomRepository;
+        private BaseRepository<Bet> _betRepository;
         #endregion
 
         #endregion
@@ -127,6 +129,28 @@ namespace Service
                 return _userViewRepository;
             }
         }
+        #endregion
+
+        #region Bussiness
+        public BaseRepository<Bet> BetRepository
+        {
+            get
+            {
+                if (_betRepository == null)
+                    _betRepository = new BaseRepository<Bet>(Context);
+                return _betRepository;
+            }
+        }
+        public BaseRepository<Room> RoomRepository
+        {
+            get
+            {
+                if (_roomRepository == null)
+                    _roomRepository = new BaseRepository<Room>(Context);
+                return _roomRepository;
+            }
+        }
+
         #endregion
 
         #endregion

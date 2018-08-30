@@ -46,6 +46,8 @@ namespace Web
             builder.RegisterType<AccountServices>().As<IAccountServices>().InstancePerDependency();
             builder.RegisterType<RoleServices>().As<IRoleServices>().InstancePerDependency();
             builder.RegisterType<DbLogServices>().As<IDbLogServices>().InstancePerDependency();
+            builder.RegisterType<RoomServices>().As<IRoomServices>().InstancePerDependency();
+            builder.RegisterType<BetServices>().As<IBetServices>().InstancePerDependency();
 
             // Set the dependency resolver to be Autofac.
             var container = builder.Build();

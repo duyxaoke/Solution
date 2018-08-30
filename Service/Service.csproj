@@ -76,6 +76,8 @@
     <Compile Include="AccountServices.cs" />
     <Compile Include="BaseRepository.cs" />
     <Compile Include="CacheService\CacheService.cs" />
+    <Compile Include="BetServices.cs" />
+    <Compile Include="RoomServices.cs" />
     <Compile Include="DbLogService.cs" />
     <Compile Include="MenuInRoleServices.cs" />
     <Compile Include="RoleServices.cs" />

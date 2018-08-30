@@ -28,8 +28,12 @@ namespace Data.DAL
         public DbSet<Config> Config { get; set; }
         public DbSet<Menu> Menu { get; set; }
         public DbSet<MenuInRoles> MenuInRoles { get; set; }
-        public DbSet<DB_LOG> DB_LOG { get; set; }
+        public DbSet<DB_LOG> Logs { get; set; }
         public DbSet<RoleClaim> RoleClaims { get; set; }
+
+        //Business
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<Bet> Bets { get; set; }
 
         public override int SaveChanges()
         {
