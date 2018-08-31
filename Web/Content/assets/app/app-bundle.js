@@ -538,6 +538,7 @@ var CommonHelper = function ($rootScope, $localstorage, $timeout, $q, $http) {
     service.UserUrl = urlApi + "Users/";
     service.RoomUrl = urlApi + "Rooms/";
     service.BetUrl = urlApi + "Bets/";
+    service.TransactionUrl = urlApi + "Transactions/";
 
     service.DepWithType = {};
     service.DepWithType.Deposit = 0;

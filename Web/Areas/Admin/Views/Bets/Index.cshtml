@@ -1,0 +1,184 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+<div ng-controller="IndexController" ng-cloak>
+    <!-- .card -->
+    <section class="card">
+        <!-- .card-body -->
+        <div class="card-body">
+            <div class="container-fluid d-flex justify-content-between mb-5">
+                <div class="col-md-6 pl-0">
+                    <h3>@ViewData["Title"].</h3>
+                </div>
+            </div>
+            <table id="myTable" class="table table-hover"></table>
+        </div>
+        <!-- /.card-body -->
+    </section>
+    <!-- Large modal -->
+    <div id="PnModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="PnModalLabel" aria-hidden="true">
+        <!-- .modal-dialog -->
+        <div class="modal-dialog modal-lg" role="document">
+            <!-- .modal-content -->
+            <div class="modal-content">
+                <!-- .modal-header -->
+                <div class="modal-header">
+                    <h5 class="modal-title"> Chi tiết </h5>
+                </div>
+                <!-- /.modal-header -->
+                <!-- .modal-body -->
+                <!-- form .needs-validation -->
+                <form id="frmModal" name="frmModal" class="needs-validation" novalidate="">
+                    <!-- /form .needs-validation -->
+                    <div class="modal-body">
+                        <table id="tblDetail" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Người chơi</th>
+                                    <th>Bet</th>
+                                    <th>Tỷ lệ thắng</th>
+                                    <th>Ngày tạo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in Transaction | orderBy:'-CreateDate'" class="text-center">
+                                    <td>{{item.Id}}</td>
+                                    <td>{{item.UserName}}</td>
+                                    <td>{{item.AmountBet}}</td>
+                                    <td>{{item.Percent}}%</td>
+                                    <td>{{item.CreateDate}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.modal-body -->
+                    <!-- .modal-footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Đóng</button>
+                    </div>
+                </form>
+                <!-- /.modal-footer -->
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</div>
+
+@section scripts{
+    <script>
+        var IndexController = ($scope, $rootScope, $timeout, $filter, $compile, ApiHelper, CommonHelper, $q) => {
+
+            //#region declare variable
+            $scope.UpdateMode = false;
+            $scope.Bet = {};
+            //#endregion
+
+            //#region Datatable
+            $(function () {
+                var peopleList = $('#myTable').DataTable({
+                    "bProcessing": true,
+                    "bSort": true,
+                    "bServerSide": true,
+                    "language": {
+                        paginate: {
+                            previous: '<i class="fa fa-lg fa-angle-left"></i>',
+                            next: '<i class="fa fa-lg fa-angle-right"></i>'
+                        }
+                    },
+                    "sAjaxSource": "/Bets/Data",
+                    "aoColumnDefs": [
+                        {
+                            "sName": "Code",
+                            "sTitle": "Code",
+                            "className": "text-center",
+                            "bSearchable": true,
+                            "bSortable": true,
+                            "aTargets": [0]
+                        },
+                        {
+                            "sName": "RoomName",
+                            "sTitle": "Tên phòng",
+                            "className": "text-center",
+                            "bSearchable": true,
+                            "bSortable": true,
+                            "aTargets": [1]
+                        },
+                        {
+                            "sName": "UserWin",
+                            "sTitle": "Người thắng",
+                            "className": "text-center",
+                            "bSearchable": true,
+                            "bSortable": true,
+                            "aTargets": [2]
+                        },
+                        {
+                            "sName": "TotalBet",
+                            "sTitle": "Tổng tiền",
+                            "className": "text-center",
+                            "bSearchable": true,
+                            "bSortable": true,
+                            "aTargets": [3]
+                        },
+                        {
+                            "sName": "Profit",
+                            "sTitle": "Lợi nhuận",
+                            "className": "text-center",
+                            "bSearchable": true,
+                            "bSortable": true,
+                            "aTargets": [4]
+                        },
+                        {
+                            "sName": "IsComplete",
+                            "sTitle": "Kết thúc",
+                            "className": "text-center",
+                            "bSearchable": true,
+                            "bSortable": true,
+                            "aTargets": [5],
+                            'mRender': function (data, type, row, meta) {
+                                return data == 'True' ? '<label class="badge badge-success">Hoàn tất</label>' : '<label class="badge badge-danger">Đang chơi</label>';
+                            }
+                        },
+                        {
+                            'mRender': function (data, type, row, meta) {
+                                return `
+                                    <button class="btn btn-outline-success btn-sm" ng-click="Detail('` + data + `');" data-toggle="tooltip" data-placement="top" title="Chi tiết Bet"><i class="fa fa-list"></i></button>`;
+                            },
+                            "sName": "Id",
+                            "sTitle": "Thao tác",
+                            "className": "text-center",
+                            "bSortable": false,
+                            "aTargets": [6]
+                        }
+                    ],
+                    createdRow: function (row, data, dataIndex) {
+                        $compile(angular.element(row).contents())($scope);
+                    }
+                });
+            });
+            //#endregion
+
+            //#region Detail
+            $scope.Detail = function (Id) {
+                $rootScope.MasterPage.IsLoading = true;
+                let strApiEndPoint = CommonHelper.TransactionUrl + "GetByBet/" + Id;
+                ApiHelper.GetMethod(strApiEndPoint)
+                    .then(function (response) {
+                        $rootScope.MasterPage.IsLoading = false;
+                        $scope.Transaction = response.Data;
+                        $('#PnModal').modal('show');
+                    })
+                    .catch(function (response) {
+                        sys.Alert(false, response.Message);
+                        $rootScope.MasterPage.IsLoading = false;
+                    });
+            };
+            //#endregion
+        }
+        IndexController.$inject = ["$scope", "$rootScope", "$timeout", "$filter", "$compile", "ApiHelper", "CommonHelper", "$q"];
+        addController("IndexController", IndexController);
+    </script>
+}

@@ -1,8 +1,8 @@
 ﻿[
   {
-    "outputFileName": "Content/assets/app/controller/indexcontroller.js",
+    "outputFileName": "Content/assets/app/controller/Master/indexcontroller.js",
     "inputFiles": [
-      "Content/assets/app/controller/master-page-controller.js"
+      "Content/assets/app/controller/Master/master-page-controller.js"
     ]
   },
   {
@@ -29,16 +29,16 @@
   {
     "outputFileName": "Content/assets/app/app-bundle.js",
     "inputFiles": [
-      "Content/assets/app/controller/indexcontroller.js",
+      "Content/assets/app/controller/Master/indexcontroller.js",
       "Content/assets/app/directive/directive.js",
       "Content/assets/app/factory/factory.js",
       "Content/assets/app/app.js"
     ]
   },
   {
-    "outputFileName": "Content/assets/app/controller/master-page-controller.min.js",
+    "outputFileName": "Content/assets/app/controller/Master/master-page-controller.min.js",
     "inputFiles": [
-      "Content/assets/app/controller/master-page-controller.js"
+      "Content/assets/app/controller/Master/master-page-controller.js"
     ]
   },
   {

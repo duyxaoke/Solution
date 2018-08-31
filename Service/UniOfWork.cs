@@ -31,6 +31,7 @@ namespace Service
         private BaseRepository<DB_LOG> _dbLogRepository;
         private BaseRepository<Room> _roomRepository;
         private BaseRepository<Bet> _betRepository;
+        private BaseRepository<Transaction> _transactionRepository;
         #endregion
 
         #endregion
@@ -132,6 +133,15 @@ namespace Service
         #endregion
 
         #region Bussiness
+        public BaseRepository<Transaction> TransactionRepository
+        {
+            get
+            {
+                if (_transactionRepository == null)
+                    _transactionRepository = new BaseRepository<Transaction>(Context);
+                return _transactionRepository;
+            }
+        }
         public BaseRepository<Bet> BetRepository
         {
             get

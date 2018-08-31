@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="AccountServices.cs" />
     <Compile Include="BaseRepository.cs" />
+    <Compile Include="TransactionServices.cs" />
     <Compile Include="CacheService\CacheService.cs" />
     <Compile Include="BetServices.cs" />
     <Compile Include="RoomServices.cs" />

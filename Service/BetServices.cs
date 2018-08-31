@@ -8,12 +8,13 @@ using Service.CacheService;
 using System.Linq;
 using Core.DTO.Response;
 using System;
+using Shared.Models;
 
 namespace Service
 {
     public interface IBetServices
     {
-        CRUDResult<IEnumerable<Bet>> GetAll();
+        CRUDResult<IEnumerable<BetViewModel>> GetAll();
         CRUDResult<Bet> GetById(int id);
         CRUDResult<Bet> GetByCode(Guid code);
         CRUDResult<bool> Create(Bet model);
@@ -29,10 +30,24 @@ namespace Service
         {
             _unitOfWork = unitOfWork;
         }
-        public CRUDResult<IEnumerable<Bet>> GetAll()
+        public CRUDResult<IEnumerable<BetViewModel>> GetAll()
         {
-            var result = _unitOfWork.BetRepository.GetAll();
-            return new CRUDResult<IEnumerable<Bet>> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
+            var result = _unitOfWork.BetRepository.GetAll()
+                .Select(c => new BetViewModel
+                {
+                    Id = c.Id,
+                    Code = c.Code,
+                    RoomId = c.RoomId,
+                    RoomName = _unitOfWork.RoomRepository.GetById(c.RoomId)?.Name ?? string.Empty,
+                    UserIdWin = c.UserIdWin,
+                    UserWin = _unitOfWork.ApplicationUserRepository.GetById(c.UserIdWin)?.UserName ?? string.Empty,
+                    TotalBet = c.TotalBet,
+                    Profit = c.Profit,
+                    IsComplete = c.IsComplete,
+                    CreateDate = c.CreateDate,
+                    UpdateDate = c.UpdateDate
+                }); ;
+            return new CRUDResult<IEnumerable<BetViewModel>> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
         }
         public CRUDResult<Bet> GetById(int id)
         {
@@ -58,7 +73,6 @@ namespace Service
                 return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.ResetContent, Data = false };
             }
             model.UpdateDate = DateTime.Now;
-            model.IsComplete = true;
             var result = _unitOfWork.BetRepository.Update(model);
             if (result)
                 return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.Success, Data = true };

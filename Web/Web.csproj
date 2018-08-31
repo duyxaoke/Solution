@@ -214,6 +214,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ApiController.cs" />
+    <Compile Include="Api\TransactionsController.cs" />
     <Compile Include="Api\BetsController.cs" />
     <Compile Include="Api\RoomsController.cs" />
     <Compile Include="Api\MenusController.cs" />
@@ -223,6 +224,7 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\BetsController.cs" />
     <Compile Include="Areas\Admin\Controllers\RoomsController.cs" />
     <Compile Include="Areas\Admin\Controllers\ConfigsController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
@@ -272,12 +274,12 @@
       <DependentUpon>app-bundle.js</DependentUpon>
     </Content>
     <Content Include="Content\assets\app\app.js" />
-    <Content Include="Content\assets\app\controller\indexcontroller.js" />
-    <Content Include="Content\assets\app\controller\indexcontroller.min.js">
+    <Content Include="Content\assets\app\controller\Master\indexcontroller.js" />
+    <Content Include="Content\assets\app\controller\Master\indexcontroller.min.js">
       <DependentUpon>indexcontroller.js</DependentUpon>
     </Content>
-    <Content Include="Content\assets\app\controller\master-page-controller.js" />
-    <Content Include="Content\assets\app\controller\master-page-controller.min.js">
+    <Content Include="Content\assets\app\controller\Master\master-page-controller.js" />
+    <Content Include="Content\assets\app\controller\Master\master-page-controller.min.js">
       <DependentUpon>master-page-controller.js</DependentUpon>
     </Content>
     <Content Include="Content\assets\app\directive\compile.js" />
@@ -295,6 +297,7 @@
     <Content Include="Content\assets\app\factory\factory.min.js">
       <DependentUpon>factory.js</DependentUpon>
     </Content>
+    <Content Include="Content\assets\app\controller\Home\indexController.js" />
     <Content Include="Content\assets\favicon.ico" />
     <Content Include="Content\assets\flare\css\style.css" />
     <Content Include="Content\assets\flare\images\dashboard\cover.png" />
@@ -1015,6 +1018,7 @@
     <Content Include="prizewheel1\pin.png" />
     <Content Include="prizewheel\README.md" />
     <Content Include="Areas\Admin\Views\Rooms\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Bets\Index.cshtml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="prizewheel\dist\lottery-wheel.min.js" />
     <Content Include="prizewheel\index.css" />

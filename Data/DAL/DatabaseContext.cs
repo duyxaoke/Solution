@@ -34,6 +34,7 @@ namespace Data.DAL
         //Business
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Bet> Bets { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
 
         public override int SaveChanges()
         {
