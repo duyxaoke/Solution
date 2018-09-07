@@ -53,5 +53,15 @@ namespace Web.Api
             _transactionServices.Save();
             return ApiHelper.ReturnHttpAction(result, this);
         }
+        [HttpPut]
+        [Route("Update")]
+        [EnableThrottling(PerSecond = 1)]
+        public IHttpActionResult Put([FromBody]Transaction model)
+        {
+            var result = _transactionServices.Update(model);
+            _transactionServices.Save();
+            return ApiHelper.ReturnHttpAction(result, this);
+        }
+
     }
 }

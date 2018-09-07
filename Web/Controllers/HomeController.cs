@@ -25,8 +25,9 @@ namespace Web.Controllers
         #endregion
 
         // GET: /Home/
-        public ActionResult Index()
+        public ActionResult Index(int? room = 1)
         {
+            ViewBag.Room = room;
             return View();
         }
         public ActionResult Test()

@@ -1,167 +1,374 @@
 ﻿@{
+    ViewBag.Title = "Test";
     Layout = null;
 }
+<!DOCTYPE html>
+<html lang="en">
 
-<style>
-    body {
-        background: #f2f2f2 url("//cdn.backgroundhost.com/backgrounds/subtlepatterns/diamond_upholstery.png");
-    }
+<head>
+    <title>eByte eSports Blockchain</title>
+    <meta name="description" content="The eByte project, using the blockchain technology and its smart contracts, is the first internationally established money system for the E-Sports community.">
+    <meta name="keywords" content="eSports, blockchain, bitcoin, eByte, cryptocurrency, ico, crowdfunding, crowdsale">
+    <meta charset="utf-8">
+    <meta name="author" content="eByte Development Team">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
+    <meta property="og:site_name" content="eByte - eSports Community">
+    <meta property="og:title" content="eByte eSports Blockchain">
+    <meta property="og:description" content="The eByte project, using the blockchain technology and its smart contracts, is the first internationally established money system for the E-Sports community.">
+    <meta property="og:image" content="https://www.ebyte.sale/images/logo.png">
+    <meta property="og:url" content="https://www.ebyte.sale/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image:alt" content="eByte Logo">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-config" content="/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="canonical" href="en.html">
+    <link rel="apple-touch-icon" sizes="180x180" href="~/Content/assets/template/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="~/Content/assets/template/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/Content/assets/template/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="~/Content/assets/template/images/icons/site.webmanifest">
+    <link rel="mask-icon" href="~/Content/assets/template/images/icons/safari-pinned-tab.svg" color="#ffffff">
+    <link rel="shortcut icon" href="~/Content/assets/template/images/icons/favicon.ico">
+    <link rel="preload" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" as="style" onload='this.rel="stylesheet"'>
+    <noscript>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css">
+    </noscript>
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans" as="style" onload='this.rel="stylesheet"'>
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
+    </noscript>
+    <link rel="preload" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous" as="style" onload='this.rel="stylesheet"'>
+    <noscript>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    </noscript>
+    <link rel="preload" href="~/Content/assets/template/css/style.min.css" as="style" onload='this.rel="stylesheet"'>
+    <noscript>
+        <link rel="stylesheet" href="~/Content/assets/template/css/style.min.css">
+    </noscript>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+</head>
 
-    .container {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        -webkit-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
-    }
+<body ng-app="MyApp">
+    <div class="blur-wrapper" ng-controller="IndexController" ng-cloak>
+        <div class="header-wrapper navbar-fixed-top">
+            <nav id="navbar-main" class="navbar main-menu">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false"><span class="sr-only">Toggle Navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button>
+                        <a class="navbar-brand page-scroll" href="#intro-section"><img src="~/Content/assets/template/images/brand-header.svg" alt="Brand" class="img-responsive logo"></a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="#the-problem" class="blue-underline page-scroll">Problem</a></li>
+                            <li><a href="#the-solution" class="blue-underline page-scroll">Solution</a></li>
+                            <li><a href="#token-details" class="blue-underline page-scroll">ICO Details</a></li>
+                            <li><a href="#community" class="blue-underline page-scroll">Partners</a></li>
+                            <li><a href="#team" class="blue-underline page-scroll">Team</a></li>
+                            <li><a href="#roadmap" class="blue-underline page-scroll">Roadmap</a></li>
+                            <li class="hidden-sm hidden-md wp-nav" style="margin-top:3px">
+                                <a href="https://www.ebyte.sale/files/Whitepaper-eByte.pdf" target="_blank" style="padding-top:0">
+                                    <button type="button" class="btn btn-fill" style="width:100%">Whitepaper <i class="fas fa-angle-right"></i></button>
+                                </a>
+                            </li>
+                            <li class="hidden-sm hidden-md wp-contr" style="margin-top:30px">
+                                <button type="button" class="btn btn-fill ico-reg-btn" style="width:100%">BUY EBYTE NOW <i class="fas fa-angle-right"></i></button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
 
-    .rafflebox {
-        z-index: 55;
-        height: 200px;
-        width: 600px;
-        background: #f2f2f2;
-        overflow: hidden;
-        box-shadow: inset 0px 2px 31px 10px rgba(0, 0, 0, 0.5);
-        border: 2px solid gold;
-        border-radius: 10px;
-    }
 
-        .rafflebox .pointer {
-            z-index: 50;
-            width: 1px;
-            height: 190px;
-            border: 1px solid gold;
-            background-color: gold;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            -webkit-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
-        }
 
-        .rafflebox .boxwrapper {
-            width: 570px;
-            height: 100%;
-            margin: 0 18px;
-            overflow: hidden;
-            white-space: nowrap;
-            position: absolute;
-        }
 
-            .rafflebox .boxwrapper .giftwrapper {
-                list-style-type: none;
-                position: absolute;
+        <section class="intro-section" id="intro-section">
+            <div class="content-wrapper">
+
+
+                <div class="container crowdsale-content hidden">
+                    <div class="row body-row">
+
+
+
+
+                        <div class="col-md-6 center-align-hero" ng-show="Status == 3 || Status == 4" ng-class="Status == 4 ? 'col-md-offset-3' : ''">
+                            <div ng-show="Status == 4">
+                                <h2 class="title-1">Chúc mừng người thắng cuộc: </h2>
+                                <h2 class="title-2">{{UserWin.UserName}}</h2>
+                                <p class="para-1">Với cơ hội thắng là <span style="color:#03d1fd;font-weight:700">{{UserWin.Chance}}</span> - giải thưởng nhận được là <span style="color:#00ff07;font-weight:700;font-size:20px">{{TotalAmount}}</span></p>
+                            </div>
+                            <div ng-show="Status == 3">
+                                <h2 class="title-2">Đang tìm kiếm người thắng cuộc:</h2>
+                            </div>
+                            <div class='container-spin' ng-show="Status == 3 || Status == 4">
+                                <div class='rafflebox'>
+                                    <div class='arrow-down'></div>
+                                    <div class='arrow-up'></div>
+                                    <div class='boxwrapper'>
+                                        <ul class='giftwrapper'>
+                                            <li class='gift'>
+                                                <img src='https://pp.userapi.com/c831309/v831309844/160fa8/sxptfBwOmm0.jpg?ava=1'>
+                                                <p>chim canh cuc</p>
+                                            </li>
+                                            <li class='gift'>
+                                                <img src='https://pp.userapi.com/c834402/v834402744/5fde9/nVkQf2okxd0.jpg?ava=1'>
+                                                <p>co gai</p>
+                                            </li>
+                                            <li class='gift'>
+                                                <img src='https://pp.userapi.com/c850220/v850220288/3081/ZPR8AvYn96w.jpg?ava=1'>
+                                                <p>ba map</p>
+                                            </li>
+                                            <li class='gift'>
+                                                <img src='https://pp.userapi.com/c840420/v840420201/1d40a/6HoJoxOYISw.jpg?ava=1'>
+                                                <p>Sat thu</p>
+                                            </li>
+                                            <li class='gift'>
+                                                <img src='https://pp.userapi.com/c848520/v848520312/66897/1oXlgwvgNfU.jpg?ava=1'>
+                                                <p>darknet</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            @*<button class='button-spin'>Let's Go Luck</button>*@
+
+
+                        </div>
+                        <div class="col-md-6 center-align-hero text-center" ng-show="Status == 1 || Status == 2 || Status == 3">
+                            <div id="container" style="width:100%;height:500px; margin: 0 auto"></div>
+                        </div>
+                        <div class="col-md-6 crowdsale-sale-box" ng-show="Status == 1 || Status == 2">
+                            <div class="ticker-bg-top text-center">
+                                <div class="col-xs-8">
+                                    <h2 class="title-3">Giải thưởng vòng này:</h2>
+                                </div>
+                                <div class="col-xs-4">
+                                    <p class="title-bonus">{{TotalAmount}}</p>
+                                </div>
+                            </div>
+                            <div class="ticker-bg-bottom text-center">
+                                <div class="bet-waiting" ng-show="Status == 1">
+                                    <h3 class="title-2" style="color:#00ff07;line-height:30px">BET sẽ bắt đầu khi có ít nhất 2 người chơi...</h3>
+                                </div>
+                                <div class="bet-started" ng-show="Status == 2">
+                                    <h1 class="title-3">Sẽ kết thúc trong:</h1>
+                                    <div class="crowdsale-countdown">
+                                        <table class="countdown-table">
+                                            <tr>
+                                                <td>
+                                                    <div class="time">
+                                                        <div class="minutes">?</div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="time">
+                                                        <div class="seconds">?</div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="time tdesc">phút</div>
+                                                </td>
+                                                <td>
+                                                    <div class="time tdesc">giây</div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="progress-bar-img-bg">
+                                    <div class="">
+                                        <input ng-model="ObjBet.Amount" type="text" class="form-control text-center" style="height:50px;font-size:20px;font-weight:bold;" placeholder="Số tiền" />
+                                    </div>
+                                </div>
+                                <a class="medium-btn btn btn-fill ico-reg-btn pulse-button" style="width:50%">BET</a>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <style>
+            #footer {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
             }
 
-                .rafflebox .boxwrapper .giftwrapper .gift {
-                    z-index: 40;
-                    display: block;
-                    float: left;
-                    margin: 25px 5px;
-                    height: 125px;
-                    width: 125px;
-                    overflow: hidden;
-                    color: white;
-                }
-
-                    .rafflebox .boxwrapper .giftwrapper .gift img {
-                        width: 100%;
-                        height: 100%;
-                    }
-
-    .button {
-        display: inline-block;
-        text-align: center;
-        vertical-align: middle;
-        padding: 12px 24px;
-        border: 1px solid #a12727;
-        border-radius: 8px;
-        background: #ff4a4a;
-        background: linear-gradient(to bottom, #ff4a4a, #992727);
-        text-shadow: #591717 1px 1px 1px;
-        font: normal normal bold 20px arial;
-        color: #ffffff;
-        text-decoration: none;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        -webkit-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
-    }
-
-        .button:hover,
-        .button:focus {
-            background: #ff5959;
-            background: linear-gradient(to bottom, #ff5959, #b62f2f);
-            color: #ffffff;
-            text-decoration: none;
-        }
-
-        .button:active {
-            background: #982727;
-            background: linear-gradient(to bottom, #982727, #982727);
-        }
-
-        .button:before {
-            content: "\0000a0";
-            display: inline-block;
-            height: 24px;
-            width: 24px;
-            line-height: 24px;
-            margin: 0 4px -6px -4px;
-            position: relative;
-            top: 0px;
-            left: 0px;
-            background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAEx0lEQVRIia2VfWhVdRjHP/ecc7frvXvVtbeYzusLy5fJjHxBSVkGUkynJf4ziJQCq1mJEYJJEtEfEQUGEUqiQVR/aC++FtV0c7pw0ticOt3ddvd2d7fde3ffz73nnF9/nDO9hEmDHng48OP5fV+e5+H8ZGYY9QspXlfG6ifymSNpxMdUkjPFeGQ0vVVyXIw2C6P3rAg2faR2fr61+fud2bvKHDj+F4JfGsu+E7EhISKDQkSGhIj7hBi5JHqPbbv1aS3r/1kvzZhBCFBDVgYh5gd7Ie5tH1a9cuj9306+6NyVWa7M3IMBqTDoBiBMQpMZ16JNWS806l+GIh/49l7kHIA8U/iGFWKHOz+y1KZOQnYe6BroCdCToMWxF8yVKnKiz7Zdu/PVYIyEXF1EztPlLOwOMGlKenRsmZ/e4fJ3Lo12XcbmuUD27DngKAQtDloS0jFyy+a5SoJX9G9uqL/LR7ay9+CBhh92b3hs90s1tlWbK6by1ZiI3Q4SfBjhunlsyHOwTFGwJ5MqmudPXGXlYHeCljDdCLCl/BXHzg9+Yft6O4cb3nz9EK55Jl4qSHrCYwx6vf1To4Otnr6Ri8fbROvZXjwWx2ygsqqIqlef5OXnFlFb4S6VnOv3gK5bkgTqWBeb955ersRT6AQ8ILnuC7YXzpPcs+e7qTHcNVqooW7HoDE0MnwvMuFrudkz/uvRZlqavNzYd5Fz3jDvvZvn2+dUvWBzmkPXIdthZ0ERc5WbfnpEaABbbgUI40FXJGEusSTIKiqT3MWPL0YyFq+ondq1fafPaG/vurD+cPj5z65yePNyNpYagZWgmgSGDSbbkGQU5coQt6OBcXKLgyaBTZi7lbF+5keAAUjgsAWkrMlwFeaah6W8WbeR1JXoqgke6AZ1AGRQun0M+QPhUK4aKADjAbicAc60GwMxchf/tTEiMTTAOPgMS1atLdmCMQV6GsL3QA2ABFoaQ0kYhCZDqndBsLuAnCJANl1IwsS/70RH7+3H1x5nRCV8ooOPjzZQW19XeDy/ODsHtRcS45gDgLgfhsNMKIAWiOMhOVqN4QOnCxxOsNlBsmUsqI4oBmeNgjEmAgfXyO+459sXy0oaUnfN9trNFpKCgT5CV4fwKABjUbpRqEcRQBT0KGiAJJkp28AGSh4UFsLqpVQi0iBSpstsU/h0Jm5Ch5/LkaTpgA4fHQKwKdbYFEw1imGldSZbabMSzMEbFrgBWieMDKOd7OAIYCgAl/roSajgzLMA7KZNBJCTcSZbRJn/YGERqJBuBb8HzvRz8vwtLmOV0zXKkD9CqLKUAuwgpiDQbra1sBLk5UBJBomU4UAF0QfRFggmodlP076fOWBJNAlSOqHxMN5KOwViFMa7YVgQlUGJ9uNweSCnHLKrQCoFHCA00Ccg3gNTXkgJjDP9nNr/E28bBv5pg9PvgTY1yT29i2r/OPRp+PZfYE8gRvyNdTSuLWdjSYAcpQ2UWSBbm4wG0TTGjQDdx65z5Ewn3wLhjAY+eHCGE3SNhdj+V5yu106ze2CS64DReIqWHAdL6paxafVcnipyUZyloERUQnfG6fmxkz/u+GgFJqxpPDzqqlnzST0nnFm4/7UIHNbY8wAnM3wRJSBrJhf+S/wNbS430494JFMAAAAASUVORK5CYII=") no-repeat left center transparent;
-            background-size: 100% 100%;
-        }
-</style>
-<div class='container'>
-    <div class='rafflebox'>
-        <div class='pointer'></div>
-        <div class='boxwrapper'>
-            <ul class='giftwrapper'>
-                <li class='gift'>
-                    <img src='http://placehold.it/125x125?text=Prize+1'>
-                    <p>Gift 1</p>
-                </li>
-                <li class='gift'>
-                    <img src='http://placehold.it/125x125?text=Prize+2'>
-                    <p>Gift 2</p>
-                </li>
-                <li class='gift'>
-                    <img src='http://placehold.it/125x125?text=Prize+3'>
-                    <p>Gift 3</p>
-                </li>
-                <li class='gift'>
-                    <img src='http://placehold.it/125x125?text=Prize+4'>
-                    <p>Gift 4</p>
-                </li>
-            </ul>
+            #footer {
+                background: rgba(29, 77, 117, .5);
+                text-align: center;
+                height: 90px;
+            }
+            .room_div {
+                display: inline-block;
+                font-size: 14px;
+                font-weight: bold;
+                padding: 4px;
+                vertical-align: top;
+                border: 2px solid #1f5380;
+            }
+            .active_room {
+                /* background: #18191b !important; */
+                border: 2px solid #ec9604;
+            }
+        </style>
+        <div id="footer">
+            <div class="hidden-xs" align="center">
+                <a href="/?room=1">
+                    <div class="room_div ">
+                        @*active_room*@
+                        <h5 style="color:#00ff07">PHÒNG 1</h5>
+                        <div style="display: block; color: rgb(255, 255, 255);">Đang chơi: <span>6</span></div>
+                        <div style="display: block; color:rgb(255, 225, 0)">Giải thưởng: <span>$10</span> </div>
+                        <div id="div_room_wait_1" style="display: none;"> <img src="/img/wait.gif" style="width: 35px;"> </div>
+                    </div>
+                </a>
+                <a href="/?room=2">
+                    <div class="room_div ">
+                        <h5 style="color:#00ff07">PHÒNG 2</h5>
+                        <div style="display: block; color: rgb(255, 255, 255);">Đang chơi: <span>6</span></div>
+                        <div style="display: block; color:rgb(255, 225, 0);">Giải thưởng: <span>$10</span> </div>
+                        <div id="div_room_wait_1" style="display: none;"> <img src="/img/wait.gif" style="width: 35px;"> </div>
+                    </div>
+                </a>
+                <a href="/?room=3">
+                    <div class="room_div ">
+                        <h5 style="color:#00ff07">PHÒNG 3</h5>
+                        <div style="display: block; color: rgb(255, 255, 255);">Đang chơi: <span>6</span></div>
+                        <div style="display: block; color: rgb(255, 225, 0)">Giải thưởng: <span>$10</span> </div>
+                        <div id="div_room_wait_1" style="display: none;"> <img src="/img/wait.gif" style="width: 35px;"> </div>
+                    </div>
+                </a>
+            </div>
         </div>
+
+
     </div>
-</div>
-<button class='button'>Let's Go Luck</button>
-
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="~/Content/assets/template/js/script.min.js"></script>
+    <script type="text/javascript">
+        var language = "en";
+    </script>
     <script>
-        var giftamount = 4;
+        // Create the chart
+        Highcharts.chart('container', {
+            chart: {
+                type: 'column',
+                backgroundColor: 'rgba(255, 255, 255, 0.0)'
+            },
+            title: {
+                text: 'Tỷ lệ thắng',
+                style: {
+                    color: '#03d1fd',
+                    font: 'bold 25px "Tahoma", Verdana, sans-serif'
+                }
+            },
+            xAxis: {
+                type: 'category',
+                labels: {
+                    style: {
+                        color: 'white'
+                    }
+                },
+            },
+            yAxis: {
+                min: 0, max: 100,
+                tickInterval: 20,
+                title: {
+                    text: '',
+                },
+                labels: {
+                    style: {
+                        color: 'white'
+                    }
+                },
+                gridLineColor: 'white'
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.1f}%',
+                        color: 'white'
+                    }
+                }
+            },
+
+            tooltip: {
+                headerFormat: '<span style="font-size:11px">{point.name}</span><br>',
+                pointFormat: 'Tiền cược: <b>${point.y:.2f}</b><br/>'
+            },
+
+            "series": [
+                {
+                    "name": "Browsers",
+                    "colorByPoint": true,
+                    "data": [
+                        {
+                            "name": "Chrome",
+                            "y": 62.74
+                        },
+                        {
+                            "name": "Firefox",
+                            "y": 40.57
+                        },
+                        {
+                            "name": "Internet Explorer",
+                            "y": 71.23
+                        },
+                        {
+                            "name": "Safari",
+                            "y": 55.58
+                        },
+                        {
+                            "name": "Edge",
+                            "y": 47.02
+                        },
+                        {
+                            "name": "Opera",
+                            "y": 80.92
+                        },
+                        {
+                            "name": "Other",
+                            "y": 77.62
+                        }
+                    ]
+                }
+            ],
+            credits: {
+                enabled: false
+            },
+        });
+    </script>
+    <script>
+        var giftamount = 5;
         var gw = $('.gift').outerWidth(true);
         var giftcenter = gw / 2;
         var cycle = 7;
 
         var containercenter = $('.boxwrapper').outerWidth(true) / 2;
-        for (var i = 0; i <= 4; i++) {
+        for (var i = 0; i <= giftamount; i++) {
             var giftduplicate = $('.giftwrapper').children().clone(true, true);
             $('.giftwrapper').append(giftduplicate);
         }
 
-        $('.button').click(function () {
+        $('.button-spin').click(function () {
             var btn = $(this);
             btn.hide();
-            var randomgift = Math.floor((Math.random() * 4) + 1);
-            var distance = giftamount * gw * cycle + containercenter + (randomgift * gw) - giftcenter;
+            //random result
+            var randomgift = Math.floor((Math.random() * giftamount) + 1);
+            var distance = (giftamount) * gw * cycle + containercenter + (randomgift * gw) - giftcenter;
 
             $(".giftwrapper").css({ left: "0" });
 
@@ -171,3 +378,58 @@
             });
         });
     </script>
+
+    <!-- End custom js for this page-->
+    <script src="~/Content/assets/javascript/site.js"></script>
+    <script src="~/Content/assets/vendor/lodash/core.js"></script>
+    <script src="~/Content/assets/angular-1.6.3/angular.min.js"></script>
+    <script src="~/Content/assets/angular-1.6.3/angular-route.min.js"></script>
+    <script src="~/Content/assets/app/app-bundle.js"></script>
+    <script>
+        var IndexController = ($scope, $rootScope, $timeout, $filter, $compile, ApiHelper, CommonHelper, $q) => {
+            //GIẢI THƯỞNG VÒNG NÀY
+            $scope.RoomId = @ViewBag.Room;
+
+            $scope.Bet = {};
+
+            $scope.TotalAmount = "$150";
+            //show SẼ KẾT THÚC TRONG hoac BET SẼ BẮT ĐẦU KHI CÓ ÍT NHẤT 2 NGƯỜI CHƠI...
+            $scope.IsStart = true;
+            $scope.IsFinished = false;
+            $scope.UserWin = {
+                UserName: "duyxaoke",
+                Chance: "18%"
+            };
+            $scope.Status = 2;// chưa có người chơi => hiển thị text "BET SẼ BẮT ĐẦU KHI CÓ ÍT NHẤT 2 NGƯỜI CHƠI..." và HighCharts
+            //$scope.Status = 2;// đã có 2 người chơi trở lên => hiển thị ô đếm thời gian => bắt đầu đếm giờ, vẫn giữ HighCharts
+            //$scope.Status = 3;// Kết thúc đếm giờ => ẩn ô cược, ô đếm, text.. bên phải, show vòng chạy và text Đang tìm người thắng cuộc + hiển thị HighCharts
+            //$scope.Status = 4;// Kết thúc vòng chạy => show người thắng cuộc, giữ 5s quay lại bước 1
+            $scope.ObjBet = {};
+
+            function GetBet() {
+                let defer = $q.defer();
+                let strApiEndPoint = CommonHelper.BetUrl + "List";
+                ApiHelper.GetMethod(strApiEndPoint)
+                    .then(function (response) {
+                        $scope.Bet = response.Data;
+                        defer.resolve(response);
+                    })
+                    .catch(function (response) {
+                        defer.reject(response);
+                    });
+                return defer.promise;
+            }
+
+
+            //setInterval(GetBet, 2000);
+
+
+
+        }
+        IndexController.$inject = ["$scope", "$rootScope", "$timeout", "$filter", "$compile", "ApiHelper", "CommonHelper", "$q"];
+        addController("IndexController", IndexController);
+    </script>
+
+</body>
+
+</html>

@@ -13,6 +13,7 @@ namespace Service
         CRUDResult<Transaction> GetById(int id);
         CRUDResult<IEnumerable<TransactionViewModel>> GetByBet(int betId);
         CRUDResult<bool> Create(Transaction model);
+        CRUDResult<bool> Update(Transaction model);
         void Save();
         void Dispose();
 
@@ -52,6 +53,13 @@ namespace Service
         public CRUDResult<bool> Create(Transaction model)
         {
             var result = _unitOfWork.TransactionRepository.Insert(model);
+            if (result)
+                return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.Success, Data = true };
+            return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.ResetContent, Data = false };
+        }
+        public CRUDResult<bool> Update(Transaction model)
+        {
+            var result = _unitOfWork.TransactionRepository.Update(model);
             if (result)
                 return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.Success, Data = true };
             return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.ResetContent, Data = false };
