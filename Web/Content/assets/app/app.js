@@ -1,7 +1,9 @@
 ﻿var lstDependency = [];
 lstDependency.push("ngRoute");
 
+
 var MyApp = angular.module("MyApp", lstDependency);
+MyApp.value('$', $);
 ////#region Khai báo Factories
 
 var addFactory = function (name, factory) {
@@ -52,3 +54,11 @@ addDirective("inputFormat", inputFormat);
 addDirective("lazyLoad", lazyLoad);
 addDirective("noInput", noInput);
 addDirective("whenEnter", whenEnter);
+
+var addService = function (name, service) {
+    try {
+        MyApp.service(name, service);
+    } catch (e) {
+        console.log(JSON.stringify(e));
+    }
+}

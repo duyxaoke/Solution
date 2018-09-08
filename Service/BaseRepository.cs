@@ -249,8 +249,9 @@ namespace Service
             {
                 if (entities == null)
                     throw new ArgumentNullException("entities");
-
-                _context.BulkUpdate(entities);
+                foreach (var entity in entities)
+                    Table.Attach(entity);
+                //_context.BulkUpdate(entities);
                 result = true;
             }
             catch (DbEntityValidationException dbEx)

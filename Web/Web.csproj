@@ -95,6 +95,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.1.0\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.3.0\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.3.0\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
@@ -220,6 +226,8 @@
     <Compile Include="Api\ConfigsController.cs" />
     <Compile Include="Api\UsersController.cs" />
     <Compile Include="Api\RolesController.cs" />
+    <Compile Include="Api\ServiceController.cs" />
+    <Compile Include="Api\WidgetController.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
@@ -253,6 +261,9 @@
     <Compile Include="Helpers\ApiHelper.cs" />
     <Compile Include="Helpers\CustomIpAddressParser.cs" />
     <Compile Include="Helpers\EnumExtensions.cs" />
+    <Compile Include="Hubs\SignalRBase.cs" />
+    <Compile Include="Hubs\BetHub.cs" />
+    <Compile Include="Hubs\WidgetHub.cs" />
     <Compile Include="Infrastructure\ApiAuthorizeAttribute.cs" />
     <Compile Include="Helpers\HtmlHelpers.cs" />
     <Compile Include="Helpers\StringExtensions.cs" />
@@ -1030,24 +1041,17 @@
     <Content Include="Content\assets\flare\vendors\iconfonts\font-awesome\fonts\fontawesome-webfont.woff" />
     <Content Include="Content\assets\flare\vendors\iconfonts\font-awesome\fonts\fontawesome-webfont.woff2" />
     <Content Include="bundleconfig.json" />
-    <Content Include="prizewheel1\game.js" />
-    <Content Include="prizewheel1\icons.png" />
-    <Content Include="prizewheel1\index.html" />
-    <Content Include="prizewheel1\phaser.min.js" />
-    <Content Include="prizewheel1\pin.png" />
-    <Content Include="prizewheel\README.md" />
     <Content Include="Areas\Admin\Views\Rooms\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Bets\Index.cshtml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
-    <Content Include="prizewheel\dist\lottery-wheel.min.js" />
-    <Content Include="prizewheel\index.css" />
-    <Content Include="prizewheel\index.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.signalR-2.3.0.js" />
+    <Content Include="Scripts\jquery.signalR-2.3.0.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -1104,6 +1108,8 @@
     <Content Include="Views\Account\VerifyCode.cshtml" />
     <Content Include="Views\Home\Test.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
+    <Content Include="Views\Home\Sender.cshtml" />
+    <Content Include="Views\Home\Receiver.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

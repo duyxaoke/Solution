@@ -18,6 +18,8 @@ namespace Web
         {
             ConfigureAuth(app);
             InitializeAutoMapper();
+            app.MapSignalR();
+
         }
     }
 }

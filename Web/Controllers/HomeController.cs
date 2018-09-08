@@ -34,6 +34,16 @@ namespace Web.Controllers
         {
             return View();
         }
+        public ActionResult Sender()
+        {
+            return View();
+        }
+
+        public ActionResult Receiver()
+        {
+            return View();
+        }
+
 
     }
 }

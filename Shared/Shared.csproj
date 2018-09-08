@@ -118,6 +118,7 @@
     <Compile Include="Common\RoleData.cs" />
     <Compile Include="Common\Command.cs" />
     <Compile Include="Common\Enum.cs" />
+    <Compile Include="Models\CreateBetViewModel.cs" />
     <Compile Include="Models\BootstrapModel.cs" />
     <Compile Include="Models\UpdateMenuInRoleViewModel.cs" />
     <Compile Include="Models\RoleClaimsViewModel.cs" />

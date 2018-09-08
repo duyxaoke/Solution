@@ -43,16 +43,6 @@ namespace Web.Api
             var result = _transactionServices.GetByBet(betId);
             return ApiHelper.ReturnHttpAction(result, this);
         }
-
-        [HttpPost]
-        [Route("Create")]
-        [EnableThrottling(PerSecond = 1)]
-        public IHttpActionResult Post([FromBody]Transaction model)
-        {
-            var result = _transactionServices.Create(model);
-            _transactionServices.Save();
-            return ApiHelper.ReturnHttpAction(result, this);
-        }
         [HttpPut]
         [Route("Update")]
         [EnableThrottling(PerSecond = 1)]

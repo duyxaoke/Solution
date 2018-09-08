@@ -206,6 +206,7 @@
                 text-align: center;
                 height: 90px;
             }
+
             .room_div {
                 display: inline-block;
                 font-size: 14px;
@@ -214,35 +215,20 @@
                 vertical-align: top;
                 border: 2px solid #1f5380;
             }
+
             .active_room {
                 /* background: #18191b !important; */
                 border: 2px solid #ec9604;
             }
         </style>
         <div id="footer">
-            <div class="hidden-xs" align="center">
+            <div align="center">
                 <a href="/?room=1">
-                    <div class="room_div ">
+                    <div class="room_div" ng-repeat="item in bets">
                         @*active_room*@
-                        <h5 style="color:#00ff07">PHÒNG 1</h5>
-                        <div style="display: block; color: rgb(255, 255, 255);">Đang chơi: <span>6</span></div>
-                        <div style="display: block; color:rgb(255, 225, 0)">Giải thưởng: <span>$10</span> </div>
-                        <div id="div_room_wait_1" style="display: none;"> <img src="/img/wait.gif" style="width: 35px;"> </div>
-                    </div>
-                </a>
-                <a href="/?room=2">
-                    <div class="room_div ">
-                        <h5 style="color:#00ff07">PHÒNG 2</h5>
-                        <div style="display: block; color: rgb(255, 255, 255);">Đang chơi: <span>6</span></div>
-                        <div style="display: block; color:rgb(255, 225, 0);">Giải thưởng: <span>$10</span> </div>
-                        <div id="div_room_wait_1" style="display: none;"> <img src="/img/wait.gif" style="width: 35px;"> </div>
-                    </div>
-                </a>
-                <a href="/?room=3">
-                    <div class="room_div ">
-                        <h5 style="color:#00ff07">PHÒNG 3</h5>
-                        <div style="display: block; color: rgb(255, 255, 255);">Đang chơi: <span>6</span></div>
-                        <div style="display: block; color: rgb(255, 225, 0)">Giải thưởng: <span>$10</span> </div>
+                        <h5 style="color:#00ff07">{{item.RoomName}}</h5>
+                        <div style="display: block; color: rgb(255, 255, 255);">Đang chơi: <span>{{item.TotalUser}}</span></div>
+                        <div style="display: block; color:rgb(255, 225, 0)">Giải thưởng: <span>{{item.TotalAmount}}</span> </div>
                         <div id="div_room_wait_1" style="display: none;"> <img src="/img/wait.gif" style="width: 35px;"> </div>
                     </div>
                 </a>
@@ -257,98 +243,100 @@
         var language = "en";
     </script>
     <script>
-        // Create the chart
-        Highcharts.chart('container', {
-            chart: {
-                type: 'column',
-                backgroundColor: 'rgba(255, 255, 255, 0.0)'
-            },
-            title: {
-                text: 'Tỷ lệ thắng',
-                style: {
-                    color: '#03d1fd',
-                    font: 'bold 25px "Tahoma", Verdana, sans-serif'
-                }
-            },
-            xAxis: {
-                type: 'category',
-                labels: {
-                    style: {
-                        color: 'white'
-                    }
+        $(document).ready(function () {
+            // Create the chart
+            Highcharts.chart('container', {
+                chart: {
+                    type: 'column',
+                    backgroundColor: 'rgba(255, 255, 255, 0.0)'
                 },
-            },
-            yAxis: {
-                min: 0, max: 100,
-                tickInterval: 20,
                 title: {
-                    text: '',
-                },
-                labels: {
+                    text: 'Tỷ lệ thắng',
                     style: {
-                        color: 'white'
+                        color: '#03d1fd',
+                        font: 'bold 25px "Tahoma", Verdana, sans-serif'
                     }
                 },
-                gridLineColor: 'white'
-            },
-            legend: {
-                enabled: false
-            },
-            plotOptions: {
-                series: {
-                    borderWidth: 0,
-                    dataLabels: {
-                        enabled: true,
-                        format: '{point.y:.1f}%',
-                        color: 'white'
-                    }
-                }
-            },
-
-            tooltip: {
-                headerFormat: '<span style="font-size:11px">{point.name}</span><br>',
-                pointFormat: 'Tiền cược: <b>${point.y:.2f}</b><br/>'
-            },
-
-            "series": [
-                {
-                    "name": "Browsers",
-                    "colorByPoint": true,
-                    "data": [
-                        {
-                            "name": "Chrome",
-                            "y": 62.74
-                        },
-                        {
-                            "name": "Firefox",
-                            "y": 40.57
-                        },
-                        {
-                            "name": "Internet Explorer",
-                            "y": 71.23
-                        },
-                        {
-                            "name": "Safari",
-                            "y": 55.58
-                        },
-                        {
-                            "name": "Edge",
-                            "y": 47.02
-                        },
-                        {
-                            "name": "Opera",
-                            "y": 80.92
-                        },
-                        {
-                            "name": "Other",
-                            "y": 77.62
+                xAxis: {
+                    type: 'category',
+                    labels: {
+                        style: {
+                            color: 'white'
                         }
-                    ]
-                }
-            ],
-            credits: {
-                enabled: false
-            },
+                    },
+                },
+                yAxis: {
+                    min: 0, max: 100,
+                    tickInterval: 20,
+                    title: {
+                        text: '',
+                    },
+                    labels: {
+                        style: {
+                            color: 'white'
+                        }
+                    },
+                    gridLineColor: 'white'
+                },
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y:.1f}%',
+                            color: 'white'
+                        }
+                    }
+                },
+
+                tooltip: {
+                    headerFormat: '<span style="font-size:11px">{point.name}</span><br>',
+                    pointFormat: 'Tiền cược: <b>${point.y:.2f}</b><br/>'
+                },
+
+                "series": [
+                    {
+                        "name": "Browsers",
+                        "colorByPoint": true,
+                        "data": [
+                            {
+                                "name": "Chrome",
+                                "y": 62.74
+                            },
+                            {
+                                "name": "Firefox",
+                                "y": 40.57
+                            },
+                            {
+                                "name": "Internet Explorer",
+                                "y": 71.23
+                            },
+                            {
+                                "name": "Safari",
+                                "y": 55.58
+                            },
+                            {
+                                "name": "Edge",
+                                "y": 47.02
+                            },
+                            {
+                                "name": "Opera",
+                                "y": 80.92
+                            },
+                            {
+                                "name": "Other",
+                                "y": 77.62
+                            }
+                        ]
+                    }
+                ],
+                credits: {
+                    enabled: false
+                },
+            });
         });
     </script>
     <script>
@@ -385,8 +373,66 @@
     <script src="~/Content/assets/angular-1.6.3/angular.min.js"></script>
     <script src="~/Content/assets/angular-1.6.3/angular-route.min.js"></script>
     <script src="~/Content/assets/app/app-bundle.js"></script>
+    <!-- SIGNALR-->
+    <script src="~/Scripts/jquery.signalR-2.3.0.min.js"></script>
+    <script src="~/signalr/hubs"></script>
     <script>
-        var IndexController = ($scope, $rootScope, $timeout, $filter, $compile, ApiHelper, CommonHelper, $q) => {
+        var widgetSvc = function ($, $rootScope) {
+            var proxy = null;
+
+            var initialize = function () {
+
+                // fetch connection object and create proxy
+                var connection = $.hubConnection();
+                this.proxy = connection.createHubProxy('bet');
+
+                // start connection
+                connection.start();
+
+                this.proxy.on('newBet', function (data) {
+                    $rootScope.$emit("newBet", data);
+                });
+            };
+
+            var sendRequest = function () {
+                // invoke sendWidget method defined in hub
+                this.proxy.invoke('sendBet');
+            };
+
+            return {
+                initialize: initialize,
+                sendRequest: sendRequest
+            };
+        };
+        widgetSvc.$inject = ["$", "$rootScope"];
+
+        addFactory("widgetSvc", widgetSvc);
+
+    </script>
+
+    <script>
+        var IndexController = ($scope, $rootScope, $timeout, $filter, $compile, ApiHelper, CommonHelper, widgetSvc, $q) => {
+
+            $scope.bets = [];
+
+            $scope.sendBet = function () {
+                widgetSvc.sendRequest();
+            };
+
+            var addBet = function (data) {
+                debugger;
+                $scope.bets = data;
+            };
+
+            widgetSvc.initialize();
+
+            $scope.$parent.$on("newBet", function (e, data) {
+                $scope.$apply(function () {
+                    addBet(data);
+                });
+            });
+
+
             //GIẢI THƯỞNG VÒNG NÀY
             $scope.RoomId = @ViewBag.Room;
 
@@ -400,7 +446,7 @@
                 UserName: "duyxaoke",
                 Chance: "18%"
             };
-            $scope.Status = 2;// chưa có người chơi => hiển thị text "BET SẼ BẮT ĐẦU KHI CÓ ÍT NHẤT 2 NGƯỜI CHƠI..." và HighCharts
+            $scope.Status = 1;// chưa có người chơi => hiển thị text "BET SẼ BẮT ĐẦU KHI CÓ ÍT NHẤT 2 NGƯỜI CHƠI..." và HighCharts
             //$scope.Status = 2;// đã có 2 người chơi trở lên => hiển thị ô đếm thời gian => bắt đầu đếm giờ, vẫn giữ HighCharts
             //$scope.Status = 3;// Kết thúc đếm giờ => ẩn ô cược, ô đếm, text.. bên phải, show vòng chạy và text Đang tìm người thắng cuộc + hiển thị HighCharts
             //$scope.Status = 4;// Kết thúc vòng chạy => show người thắng cuộc, giữ 5s quay lại bước 1
@@ -426,7 +472,7 @@
 
 
         }
-        IndexController.$inject = ["$scope", "$rootScope", "$timeout", "$filter", "$compile", "ApiHelper", "CommonHelper", "$q"];
+        IndexController.$inject = ["$scope", "$rootScope", "$timeout", "$filter", "$compile", "ApiHelper", "CommonHelper","widgetSvc", "$q"];
         addController("IndexController", IndexController);
     </script>
 

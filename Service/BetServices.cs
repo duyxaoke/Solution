@@ -16,6 +16,7 @@ namespace Service
     {
         CRUDResult<IEnumerable<BetViewModel>> GetAll();
         CRUDResult<Bet> GetById(int id);
+        CRUDResult<Bet> GetByRoomAvailable(int roomId);
         CRUDResult<Bet> GetByCode(Guid code);
         CRUDResult<bool> Create(Bet model);
         CRUDResult<bool> Update(Bet model);
@@ -52,6 +53,11 @@ namespace Service
         public CRUDResult<Bet> GetById(int id)
         {
             var result = _unitOfWork.BetRepository.GetById(id);
+            return new CRUDResult<Bet> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
+        }
+        public CRUDResult<Bet> GetByRoomAvailable(int roomId)
+        {
+            var result = _unitOfWork.BetRepository.Get(c=> c.RoomId == roomId && c.IsComplete == false);
             return new CRUDResult<Bet> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
         }
         public CRUDResult<Bet> GetByCode(Guid code)

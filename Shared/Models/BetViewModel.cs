@@ -16,8 +16,8 @@ namespace Shared.Models
         public decimal TotalBet { get; set; } //sum tat ca
         public decimal Profit { get; set; } // lãi từ phí
         public bool IsComplete { get; set; }
-        public DateTime CreateDate { get; set; }
-        public DateTime UpdateDate { get; set; }
+        public DateTime? CreateDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
 
     }
 
