@@ -310,6 +310,7 @@ var CommonHelper = function ($rootScope, $localstorage, $timeout, $q, $http) {
     service.RoomUrl = urlApi + "Rooms/";
     service.BetUrl = urlApi + "Bets/";
     service.TransactionUrl = urlApi + "Transactions/";
+    service.ServiceUrl = urlApi + "Services/";
 
     service.DepWithType = {};
     service.DepWithType.Deposit = 0;
@@ -360,12 +361,6 @@ var DataFactory = function ($rootScope, $localstorage, $timeout, UtilFactory, $q
 
         $localstorage.remove(CacheKeyClient);
         $localstorage.setObject(CacheKeyClient, storerage);
-    };
-
-    //#region UserTypes
-    service.UserTypes_Get = function () {
-        let strApiEndPoint = ApiEndPoint.UserTypeResource;
-        return ApiHelper.GetMethod(strApiEndPoint);
     };
 
     service.Users_Get = () => {
@@ -421,6 +416,20 @@ var DataFactory = function ($rootScope, $localstorage, $timeout, UtilFactory, $q
                 defer.reject(response);
             });
         return defer.promise;
+    };
+    //#endregion
+
+    //#region Room
+    service.Rooms_Get = function () {
+        let strApiEndPoint = CommonHelper.ServiceUrl + "GetInfoRooms";
+        return ApiHelper.GetMethod(strApiEndPoint);
+    };
+    //#endregion
+
+    //#region GetInfoChartsByRoom
+    service.GetInfoChartsByRooms_Get = function (roomId) {
+        let strApiEndPoint = CommonHelper.ServiceUrl + "GetInfoChartsByRoom?roomId=" + roomId;
+        return ApiHelper.GetMethod(strApiEndPoint);
     };
     //#endregion
 

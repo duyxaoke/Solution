@@ -16,6 +16,8 @@ namespace Shared.Common
 {
     public static class Command
     {
+        public const int Percent = 15;
+        public const int Seconds = 15;
         public const int Enable = 1;
         public const int Disable = 0;
         public const bool Active = true;

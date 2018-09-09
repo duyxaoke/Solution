@@ -11,6 +11,7 @@
     service.RoomUrl = urlApi + "Rooms/";
     service.BetUrl = urlApi + "Bets/";
     service.TransactionUrl = urlApi + "Transactions/";
+    service.ServiceUrl = urlApi + "Services/";
 
     service.DepWithType = {};
     service.DepWithType.Deposit = 0;

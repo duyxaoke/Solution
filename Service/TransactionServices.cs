@@ -6,6 +6,7 @@ using System.Linq;
 using Shared.Models;
 using Data.DAL;
 using System.Data.Entity;
+using Shared.Common;
 
 namespace Service
 {
@@ -13,6 +14,7 @@ namespace Service
     {
         CRUDResult<IEnumerable<Transaction>> GetAll();
         CRUDResult<Transaction> GetById(int id);
+        CRUDResult<IEnumerable<TransactionViewModel>> GetInfoChartsByRoom(int roomId);
         CRUDResult<IEnumerable<Transaction>> GetByBet(int betId);
         CRUDResult<bool> Create(CreateBetViewModel model);
         CRUDResult<bool> Update(Transaction model);
@@ -40,19 +42,36 @@ namespace Service
             var result = _unitOfWork.TransactionRepository.GetById(id);
             return new CRUDResult<Transaction> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
         }
+        public CRUDResult<IEnumerable<TransactionViewModel>> GetInfoChartsByRoom(int roomId)
+        {
+            var result = new List<TransactionViewModel>();
+            var bet = _unitOfWork.BetRepository.Get(c => c.RoomId == roomId && c.IsComplete == false);
+            if (bet != null)
+            {
+                var trans = _unitOfWork.TransactionRepository.GetMany(c => c.BetId == bet.Id);
+                if (trans != null)
+                {
+                    foreach (var item in trans)
+                    {
+                        var data = new TransactionViewModel();
+                        data.Id = item.Id;
+                        data.BetId = item.BetId;
+                        data.UserId = item.UserId;
+                        data.name = data.UserName = _unitOfWork.ApplicationUserRepository.GetById(item.UserId).UserName;
+                        data.y = data.Percent = item.Percent;
+                        data.AmountBet = item.AmountBet;
+                        data.CreateDate = item.CreateDate;
+                        //cho chart
+                        
+                        result.Add(data);
+                    }
+                }
+            }
+            return new CRUDResult<IEnumerable<TransactionViewModel>> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
+        }
         public CRUDResult<IEnumerable<Transaction>> GetByBet(int betId)
         {
             var result = _unitOfWork.TransactionRepository.GetMany(c => c.BetId == betId);
-                //.Select(c => new TransactionViewModel
-                //{
-                //    Id = c.Id,
-                //    AmountBet = c.AmountBet,
-                //    BetId = c.BetId,
-                //    CreateDate = c.CreateDate,
-                //    Percent = c.Percent,
-                //    UserId = c.UserId,
-                //    UserName = _unitOfWork.ApplicationUserRepository.GetById(c.UserId)?.UserName ?? string.Empty
-                //});
             return new CRUDResult<IEnumerable<Transaction>> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
         }
         public CRUDResult<bool> Create(CreateBetViewModel model)
@@ -61,6 +80,12 @@ namespace Service
             {
                 try
                 {
+                    ////Kiểm tra user có đủ tiền ko?
+                    var checkBalance = _context.Users.Find(model.UserId);
+                    if (checkBalance == null || (model.AmountBet > checkBalance.Balance))
+                    {
+                        return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.ResetContent, Data = false, ErrorMessage = "Bạn không đủ số dư để cược" };
+                    }
                     //kiểm tra đã có Bet cho phòng đó chưa?
                     var bet = _context.Bets.FirstOrDefault(c => c.RoomId == model.RoomId && c.IsComplete == false);
                     if (bet == null)
@@ -71,7 +96,6 @@ namespace Service
                         bet.TotalBet = model.AmountBet;
                         bet.CreateDate = DateTime.Now;
                         bet.IsComplete = false;
-                        bet.Profit = Math.Round(bet.TotalBet * 15 / 100, 2);
                         _context.Bets.Add(bet);
                     }
                     else
@@ -81,16 +105,21 @@ namespace Service
                         // = null: user chưa cược, có thể chơi
                         if (checkBetIdByUser != null)
                         {
-                            return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.ResetContent, Data = false, ErrorMessage = "Người chơi đã cược rồi" };
+                            return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.ResetContent, Data = false, ErrorMessage = "Bạn đã cược rồi" };
                         }
                         bet.TotalBet += model.AmountBet;
-                        bet.Profit = Math.Round(bet.TotalBet * 15 / 100, 2);
                         bet.UpdateDate = DateTime.Now;
                         _context.Bets.Attach(bet);
                         _context.Entry(bet).State = EntityState.Modified;
                     }
                     //Lưu bet
                     _context.SaveChanges();
+                    //Trừ tiền user
+                    var user = _context.Users.Find(model.UserId);
+                    user.Balance -= model.AmountBet;
+                    _context.Users.Attach(user);
+                    _context.Entry(user).State = EntityState.Modified;
+
                     var tran = new Transaction();
                     tran.BetId = bet.Id;
                     tran.UserId = model.UserId;
@@ -111,6 +140,16 @@ namespace Service
                         _context.Transactions.Attach(trans);
                         _context.Entry(trans).State = EntityState.Modified;
                     }
+                    //nếu >= 2 người chơi => set time finish
+                    var checkUser = _context.Transactions.Count(c => c.BetId == bet.Id);
+                    if (checkUser > 1)
+                    {
+                        //====================================================================================================================
+                        bet.Finished = DateTime.Now.AddSeconds(Command.Seconds);
+                    }
+                    _context.Bets.Attach(bet);
+                    _context.Entry(bet).State = EntityState.Modified;
+
                     _context.SaveChanges();
                     dbContextTransaction.Commit();
                     return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.Success, Data = true };

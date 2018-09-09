@@ -51,7 +51,6 @@
         </header>
         <!-- form -->
         <form action="@Url.Action("Login","Account", new {returnUrl = ViewData["ReturnUrl"]})" method="post" class="auth-form">
-            @Html.AntiForgeryToken()
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <!-- .form-group -->
             <div class="form-group">

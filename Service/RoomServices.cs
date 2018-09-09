@@ -7,6 +7,9 @@ using System.Transactions;
 using Service.CacheService;
 using System.Linq;
 using Core.DTO.Response;
+using Shared.Models;
+using System;
+using Shared.Common;
 
 namespace Service
 {
@@ -14,6 +17,7 @@ namespace Service
     {
         CRUDResult<IEnumerable<Room>> GetAll();
         CRUDResult<Room> GetById(int id);
+        CRUDResult<IEnumerable<InfoRoomsViewModel>> GetInfoRooms();
         CRUDResult<bool> Create(Room model);
         CRUDResult<bool> Update(Room model);
         CRUDResult<bool> Delete(int id);
@@ -37,6 +41,34 @@ namespace Service
         {
             var result = _unitOfWork.RoomRepository.GetById(id);
             return new CRUDResult<Room> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
+        }
+        public CRUDResult<IEnumerable<InfoRoomsViewModel>> GetInfoRooms()
+        {
+            var rooms = _unitOfWork.RoomRepository.GetAll();
+            var result = new List<InfoRoomsViewModel>();
+            foreach (var item in rooms)
+            {
+                var data = new InfoRoomsViewModel();
+                data.RoomId = item.Id;
+                data.RoomName = item.Name;
+                data.TotalAmount = 0;
+                data.TotalUser = 0;
+               //select room chưa chạy xong
+               var betInRoom = _unitOfWork.BetRepository.Get(c => c.RoomId == item.Id && c.IsComplete == false);
+                if (betInRoom != null)
+                {
+                    data.BetId = betInRoom.Id;
+                    data.TotalAmount = Math.Round(betInRoom.TotalBet * (100 - Command.Percent) / 100, 2);
+                    data.Finished = betInRoom.Finished;
+                    var transInBet = _unitOfWork.TransactionRepository.GetMany(c => c.BetId == betInRoom.Id);
+                    if (transInBet != null)
+                    {
+                        data.TotalUser = transInBet.Count();
+                    }
+                }
+                result.Add(data);
+            }
+            return new CRUDResult<IEnumerable<InfoRoomsViewModel>> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
         }
         public CRUDResult<bool> Create(Room model)
         {

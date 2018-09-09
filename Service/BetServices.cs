@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using Core.Data;
-
-using System.Data.SqlClient;
 using System.Data;
-using System.Transactions;
-using Service.CacheService;
 using System.Linq;
 using Core.DTO.Response;
 using System;
 using Shared.Models;
+using Data.DAL;
+using System.Data.Entity;
+using Shared.Common;
 
 namespace Service
 {
@@ -17,6 +16,7 @@ namespace Service
         CRUDResult<IEnumerable<BetViewModel>> GetAll();
         CRUDResult<Bet> GetById(int id);
         CRUDResult<Bet> GetByRoomAvailable(int roomId);
+        CRUDResult<ResultBetViewModel> GetResultBet(int roomId);
         CRUDResult<Bet> GetByCode(Guid code);
         CRUDResult<bool> Create(Bet model);
         CRUDResult<bool> Update(Bet model);
@@ -27,9 +27,13 @@ namespace Service
     public class BetServices : IBetServices
     {
         private readonly UnitOfWork _unitOfWork;
-        public BetServices(UnitOfWork unitOfWork)
+        public static Random rnd = new Random();
+        private DatabaseContext _context;
+
+        public BetServices(UnitOfWork unitOfWork, DatabaseContext context)
         {
             _unitOfWork = unitOfWork;
+            _context = context;
         }
         public CRUDResult<IEnumerable<BetViewModel>> GetAll()
         {
@@ -43,7 +47,6 @@ namespace Service
                     UserIdWin = c.UserIdWin,
                     UserWin = _unitOfWork.ApplicationUserRepository.GetById(c.UserIdWin)?.UserName ?? string.Empty,
                     TotalBet = c.TotalBet,
-                    Profit = c.Profit,
                     IsComplete = c.IsComplete,
                     CreateDate = c.CreateDate,
                     UpdateDate = c.UpdateDate
@@ -57,8 +60,67 @@ namespace Service
         }
         public CRUDResult<Bet> GetByRoomAvailable(int roomId)
         {
-            var result = _unitOfWork.BetRepository.Get(c=> c.RoomId == roomId && c.IsComplete == false);
+            var result = _unitOfWork.BetRepository.Get(c => c.RoomId == roomId && c.IsComplete == false);
             return new CRUDResult<Bet> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
+        }
+        public CRUDResult<ResultBetViewModel> GetResultBet(int betId)
+        {
+            var result = new ResultBetViewModel();
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var bet = _context.Bets.Find(betId);
+                    if(bet.IsComplete)
+                    {
+                        var trans = _context.Transactions.Where(c => c.BetId == bet.Id).ToList();
+                        var tranWin = trans.FirstOrDefault(c => c.BetId == bet.Id && c.UserId == bet.UserIdWin);
+                        result.RoomId = bet.RoomId;
+                        result.TotalUser = trans.Count;
+                        result.Winner = trans.FindIndex(a => a.UserId == bet.UserIdWin) + 1;
+                        result.Percent = tranWin.Percent;
+                        result.UserName = _context.Users.Find(bet.UserIdWin)?.UserName ?? string.Empty;
+                        result.TotalBet = bet.TotalBet * (100 - Command.Percent) / 100;
+                    }
+                    else
+                    {
+                        var trans = _context.Transactions.Where(c => c.BetId == bet.Id).ToList();
+                        //random result
+                        var data = SelectItem(trans);
+                        result.RoomId = bet.RoomId;
+                        result.TotalUser = trans.Count;
+                        result.Winner = trans.FindIndex(a => a.Id == data.Id) + 1;
+                        result.Percent = data.Percent;
+                        result.UserName = _unitOfWork.ApplicationUserRepository.GetById(data.UserId)?.UserName ?? string.Empty;
+                        result.TotalBet = bet.TotalBet * (100 - Command.Percent) / 100;
+
+                        //update Bet
+                        bet.UserIdWin = data.UserId;
+                        bet.UpdateDate = DateTime.Now;
+                        bet.IsComplete = true;
+                        _context.Bets.Attach(bet);
+                        _context.Entry(bet).State = EntityState.Modified;
+
+                        //cong tien cho user win
+                        var user = _context.Users.Find(data.UserId);
+                        user.Balance += result.TotalBet;
+                        _context.Users.Attach(user);
+                        _context.Entry(user).State = EntityState.Modified;
+                    }
+
+                    _context.SaveChanges();
+
+                    dbContextTransaction.Commit();
+                    return new CRUDResult<ResultBetViewModel> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
+
+                }
+                catch (Exception ex)
+                {
+                    dbContextTransaction.Rollback(); //Required according to MSDN article 
+                    return new CRUDResult<ResultBetViewModel> { StatusCode = CRUDStatusCodeRes.ResetContent, Data = result, ErrorMessage = ex.Message };
+
+                }
+            }
         }
         public CRUDResult<Bet> GetByCode(Guid code)
         {
@@ -93,5 +155,36 @@ namespace Service
         {
             _unitOfWork.Dispose();
         }
+
+        // Static method for using from anywhere. You can make its overload for accepting not only List, but arrays also:
+        // public static Item SelectItem (Item[] items)...
+        public static Transaction SelectItem(List<Transaction> items)
+        {
+            // Calculate the summa of all portions.
+            double poolSize = 0;
+            for (int i = 0; i < items.Count; i++)
+            {
+                poolSize += (double)items[i].Percent;
+            }
+
+            double randomNumber = GetRandomDouble(rnd, 0, poolSize) + 1;
+
+            // Detect the item, which corresponds to current random number.
+            double accumulatedProbability = 0;
+            for (int i = 0; i < items.Count; i++)
+            {
+                accumulatedProbability += (double)items[i].Percent;
+                if (randomNumber <= accumulatedProbability)
+                    return items[i];
+            }
+            return items[0];    // this code will never come while you use this programm right :)
+        }
+
+        private static double GetRandomDouble(Random random, double min, double max)
+        {
+            return min + (random.NextDouble() * (max - min));
+        }
+
     }
+
 }

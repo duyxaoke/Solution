@@ -6,7 +6,7 @@
 <html lang="en">
 
 <head>
-    <title>eByte eSports Blockchain</title>
+    <title>Demo</title>
     <meta name="description" content="The eByte project, using the blockchain technology and its smart contracts, is the first internationally established money system for the E-Sports community.">
     <meta name="keywords" content="eSports, blockchain, bitcoin, eByte, cryptocurrency, ico, crowdfunding, crowdsale">
     <meta charset="utf-8">
@@ -48,27 +48,35 @@
     <script src="https://code.highcharts.com/highcharts.js"></script>
 </head>
 
-<body ng-app="MyApp">
-    <div class="blur-wrapper" ng-controller="IndexController" ng-cloak>
+<body ng-app="MyApp" ng-cloak>
+    <div class="blur-wrapper" ng-controller="IndexController">
+
         <div class="header-wrapper navbar-fixed-top">
             <nav id="navbar-main" class="navbar main-menu">
                 <div class="container">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false"><span class="sr-only">Toggle Navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button>
-                        <a class="navbar-brand page-scroll" href="#intro-section"><img src="~/Content/assets/template/images/brand-header.svg" alt="Brand" class="img-responsive logo"></a>
+                        @*<a class="navbar-brand page-scroll" href="#intro-section"><img src="~/Content/assets/template/images/brand-header.svg" alt="Brand" class="img-responsive logo"></a>*@
                     </div>
                     <div class="collapse navbar-collapse" id="navbar-collapse-1">
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a href="#the-problem" class="blue-underline page-scroll">Problem</a></li>
-                            <li><a href="#the-solution" class="blue-underline page-scroll">Solution</a></li>
-                            <li><a href="#token-details" class="blue-underline page-scroll">ICO Details</a></li>
-                            <li><a href="#community" class="blue-underline page-scroll">Partners</a></li>
-                            <li><a href="#team" class="blue-underline page-scroll">Team</a></li>
-                            <li><a href="#roadmap" class="blue-underline page-scroll">Roadmap</a></li>
+                            <li><a href="#" class="blue-underline page-scroll">Trang chủ</a></li>
+                            <li><a href="#token-details" class="blue-underline page-scroll">Tài khoản</a></li>
+                            <li><a href="#community" class="blue-underline page-scroll">Hướng dẫn</a></li>
+                            <li><a href="#team" class="blue-underline page-scroll">Liên hệ</a></li>
                             <li class="hidden-sm hidden-md wp-nav" style="margin-top:3px">
-                                <a href="https://www.ebyte.sale/files/Whitepaper-eByte.pdf" target="_blank" style="padding-top:0">
-                                    <button type="button" class="btn btn-fill" style="width:100%">Whitepaper <i class="fas fa-angle-right"></i></button>
-                                </a>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <a href="#" style="padding-top:0">
+                                        <button type="button" class="btn btn-fill" style="width:100%">${{Balance}}</button>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a href="/account/login" target="_blank" style="padding-top:0">
+                                        <button type="button" class="btn btn-fill" style="width:100%">Đăng nhập <i class="fas fa-angle-right"></i></button>
+                                    </a>
+                                }
                             </li>
                             <li class="hidden-sm hidden-md wp-contr" style="margin-top:30px">
                                 <button type="button" class="btn btn-fill ico-reg-btn" style="width:100%">BUY EBYTE NOW <i class="fas fa-angle-right"></i></button>
@@ -84,19 +92,13 @@
 
         <section class="intro-section" id="intro-section">
             <div class="content-wrapper">
-
-
-                <div class="container crowdsale-content hidden">
+                <div class="container crowdsale-content">
                     <div class="row body-row">
-
-
-
-
                         <div class="col-md-6 center-align-hero" ng-show="Status == 3 || Status == 4" ng-class="Status == 4 ? 'col-md-offset-3' : ''">
                             <div ng-show="Status == 4">
                                 <h2 class="title-1">Chúc mừng người thắng cuộc: </h2>
                                 <h2 class="title-2">{{UserWin.UserName}}</h2>
-                                <p class="para-1">Với cơ hội thắng là <span style="color:#03d1fd;font-weight:700">{{UserWin.Chance}}</span> - giải thưởng nhận được là <span style="color:#00ff07;font-weight:700;font-size:20px">{{TotalAmount}}</span></p>
+                                <p class="para-1">Với cơ hội thắng là <span style="color:#03d1fd;font-weight:700">{{UserWin.Percent}}%</span> - giải thưởng nhận được là <span style="color:#00ff07;font-weight:700;font-size:20px">${{UserWin.TotalBet}}</span></p>
                             </div>
                             <div ng-show="Status == 3">
                                 <h2 class="title-2">Đang tìm kiếm người thắng cuộc:</h2>
@@ -115,18 +117,6 @@
                                                 <img src='https://pp.userapi.com/c834402/v834402744/5fde9/nVkQf2okxd0.jpg?ava=1'>
                                                 <p>co gai</p>
                                             </li>
-                                            <li class='gift'>
-                                                <img src='https://pp.userapi.com/c850220/v850220288/3081/ZPR8AvYn96w.jpg?ava=1'>
-                                                <p>ba map</p>
-                                            </li>
-                                            <li class='gift'>
-                                                <img src='https://pp.userapi.com/c840420/v840420201/1d40a/6HoJoxOYISw.jpg?ava=1'>
-                                                <p>Sat thu</p>
-                                            </li>
-                                            <li class='gift'>
-                                                <img src='https://pp.userapi.com/c848520/v848520312/66897/1oXlgwvgNfU.jpg?ava=1'>
-                                                <p>darknet</p>
-                                            </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -135,20 +125,32 @@
 
 
                         </div>
+
                         <div class="col-md-6 center-align-hero text-center" ng-show="Status == 1 || Status == 2 || Status == 3">
-                            <div id="container" style="width:100%;height:500px; margin: 0 auto"></div>
+                            <div style="width:550px;height:500px; margin: 0 auto">
+                                <div id="raw-chart"></div>
+                            </div>
                         </div>
-                        <div class="col-md-6 crowdsale-sale-box" ng-show="Status == 1 || Status == 2">
+                        <div class="col-md-6 center-align-hero text-center" ng-show="Status == 0">
+                            <div style="width:550px;height:500px; margin: 0 auto">
+                                <div style="margin-top:100px">
+                                    <h3 class="title-3" style="color:#00ff07;line-height:30px">Đang đợi người tham gia</h3>
+                                    <img src="https://loading.io/spinners/gears/index.dual-gear-loading-icon.svg" />
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 crowdsale-sale-box" ng-show="Status == 0 || Status == 1 || Status == 2">
                             <div class="ticker-bg-top text-center">
                                 <div class="col-xs-8">
                                     <h2 class="title-3">Giải thưởng vòng này:</h2>
                                 </div>
                                 <div class="col-xs-4">
-                                    <p class="title-bonus">{{TotalAmount}}</p>
+                                    <p class="title-bonus">${{TotalAmount}}</p>
                                 </div>
                             </div>
                             <div class="ticker-bg-bottom text-center">
-                                <div class="bet-waiting" ng-show="Status == 1">
+                                <div class="bet-waiting" ng-show="Status == 0 || Status == 1">
                                     <h3 class="title-2" style="color:#00ff07;line-height:30px">BET sẽ bắt đầu khi có ít nhất 2 người chơi...</h3>
                                 </div>
                                 <div class="bet-started" ng-show="Status == 2">
@@ -158,12 +160,12 @@
                                             <tr>
                                                 <td>
                                                     <div class="time">
-                                                        <div class="minutes">?</div>
+                                                        <div class="minutes">{{CountDown.minutes}}</div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="time">
-                                                        <div class="seconds">?</div>
+                                                        <div class="seconds"><span ng-class="CountDown.seconds < 10 ? 'animated infinite rollOut delay-1s' : ''">{{CountDown.seconds}}</span></div>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -178,12 +180,15 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="progress-bar-img-bg">
-                                    <div class="">
-                                        <input ng-model="ObjBet.Amount" type="text" class="form-control text-center" style="height:50px;font-size:20px;font-weight:bold;" placeholder="Số tiền" />
+                                <form id="frmBet" name="frmBet" class="needs-validation" novalidate="">
+                                    <div class="progress-bar-img-bg">
+                                        <div class="">
+                                            <input ng-model="ObjBet.AmountBet" type="text" required="" class="form-control text-center" style="height:50px;font-size:20px;font-weight:bold;" placeholder="Số tiền" />
+                                        </div>
                                     </div>
-                                </div>
-                                <a class="medium-btn btn btn-fill ico-reg-btn pulse-button" style="width:50%">BET</a>
+                                    <input type="submit" ng-disabled="frmBet.$invalid" class="medium-btn btn btn-fill pulse-button" ng-click="Bet()" style="width:50%" value="BET">
+                                </form>
+
                             </div>
                         </div>
 
@@ -214,157 +219,117 @@
                 padding: 4px;
                 vertical-align: top;
                 border: 2px solid #1f5380;
+                margin-right: 10px;
+                width:150px;
+                height:90px;
             }
 
             .active_room {
-                /* background: #18191b !important; */
-                border: 2px solid #ec9604;
+                border: 2px solid #00ff07;
             }
         </style>
         <div id="footer">
             <div align="center">
-                <a href="/?room=1">
-                    <div class="room_div" ng-repeat="item in bets">
-                        @*active_room*@
+                <div class="room_div" ng-repeat="item in Rooms" ng-class="RoomId == item.RoomId ? 'active_room' : ''" id="Room_{{item.RoomId}}">
+                    <a href="/?room={{item.RoomId}}">
                         <h5 style="color:#00ff07">{{item.RoomName}}</h5>
-                        <div style="display: block; color: rgb(255, 255, 255);">Đang chơi: <span>{{item.TotalUser}}</span></div>
-                        <div style="display: block; color:rgb(255, 225, 0)">Giải thưởng: <span>{{item.TotalAmount}}</span> </div>
-                        <div id="div_room_wait_1" style="display: none;"> <img src="/img/wait.gif" style="width: 35px;"> </div>
-                    </div>
-                </a>
+                        <img ng-show="item.TotalUser == 0" src="https://loading.io/spinners/gears/index.dual-gear-loading-icon.svg" style="height:35px" />
+                        <div ng-show="item.TotalUser > 0">
+                            <div style="display: block; color: rgb(255, 255, 255);">Đang chơi: <span>{{item.TotalUser}}</span></div>
+                            <div style="display: block; color:rgb(255, 225, 0)">Giải thưởng: <span>{{item.TotalAmount}}</span> </div>
+                        </div>
+                    </a>
+
+                </div>
             </div>
         </div>
+
+
+
 
 
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="~/Content/assets/template/js/script.min.js"></script>
-    <script type="text/javascript">
-        var language = "en";
-    </script>
     <script>
-        $(document).ready(function () {
-            // Create the chart
-            Highcharts.chart('container', {
-                chart: {
-                    type: 'column',
-                    backgroundColor: 'rgba(255, 255, 255, 0.0)'
-                },
-                title: {
-                    text: 'Tỷ lệ thắng',
+        // Create the chart
+        var chartOptions = {
+            chart: {
+                renderTo: 'raw-chart',
+                type: 'column',
+                backgroundColor: 'rgba(255, 255, 255, 0.0)'
+            },
+            title: {
+                text: 'Tỷ lệ thắng',
+                style: {
+                    color: '#03d1fd',
+                    font: 'bold 25px "Tahoma", Verdana, sans-serif'
+                }
+            },
+            xAxis: {
+                type: 'category',
+                labels: {
                     style: {
-                        color: '#03d1fd',
-                        font: 'bold 25px "Tahoma", Verdana, sans-serif'
+                        color: 'white'
                     }
                 },
-                xAxis: {
-                    type: 'category',
-                    labels: {
-                        style: {
-                            color: 'white'
-                        }
-                    },
+            },
+            yAxis: {
+                min: 0, max: 100,
+                tickInterval: 20,
+                title: {
+                    text: '',
                 },
-                yAxis: {
-                    min: 0, max: 100,
-                    tickInterval: 20,
-                    title: {
-                        text: '',
-                    },
-                    labels: {
-                        style: {
-                            color: 'white'
-                        }
-                    },
-                    gridLineColor: 'white'
-                },
-                legend: {
-                    enabled: false
-                },
-                plotOptions: {
-                    series: {
-                        borderWidth: 0,
-                        dataLabels: {
-                            enabled: true,
-                            format: '{point.y:.1f}%',
-                            color: 'white'
-                        }
+                labels: {
+                    style: {
+                        color: 'white'
                     }
                 },
-
-                tooltip: {
-                    headerFormat: '<span style="font-size:11px">{point.name}</span><br>',
-                    pointFormat: 'Tiền cược: <b>${point.y:.2f}</b><br/>'
-                },
-
-                "series": [
-                    {
-                        "name": "Browsers",
-                        "colorByPoint": true,
-                        "data": [
-                            {
-                                "name": "Chrome",
-                                "y": 62.74
-                            },
-                            {
-                                "name": "Firefox",
-                                "y": 40.57
-                            },
-                            {
-                                "name": "Internet Explorer",
-                                "y": 71.23
-                            },
-                            {
-                                "name": "Safari",
-                                "y": 55.58
-                            },
-                            {
-                                "name": "Edge",
-                                "y": 47.02
-                            },
-                            {
-                                "name": "Opera",
-                                "y": 80.92
-                            },
-                            {
-                                "name": "Other",
-                                "y": 77.62
-                            }
-                        ]
+                gridLineColor: 'white'
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.Percent:.1f}%',
+                        color: 'white'
                     }
-                ],
-                credits: {
-                    enabled: false
-                },
-            });
-        });
-    </script>
-    <script>
-        var giftamount = 5;
-        var gw = $('.gift').outerWidth(true);
-        var giftcenter = gw / 2;
-        var cycle = 7;
+                }
+            },
 
-        var containercenter = $('.boxwrapper').outerWidth(true) / 2;
-        for (var i = 0; i <= giftamount; i++) {
-            var giftduplicate = $('.giftwrapper').children().clone(true, true);
-            $('.giftwrapper').append(giftduplicate);
-        }
+            tooltip: {
+                formatter: function () {
+                    var s = 'Người chơi: <b>' + this.point.UserName + '</b><br/>';
+                    s += 'Số tiền: <b>$' + this.point.AmountBet + '</b>, Tỷ lệ: <b>' + this.point.Percent + '%</b><br/>';
+                    return s;
+                }
+            },
+            credits: {
+                enabled: false
+            },
 
-        $('.button-spin').click(function () {
-            var btn = $(this);
-            btn.hide();
-            //random result
-            var randomgift = Math.floor((Math.random() * giftamount) + 1);
-            var distance = (giftamount) * gw * cycle + containercenter + (randomgift * gw) - giftcenter;
+            "series": [
+                {
+                    "name": "Username",
+                    "colorByPoint": true,
+                    "data": [
+                        //{
+                        //    "name": "Chrome",
+                        //    "UserName": "duy",
+                        //    "AmountBet": 10,
+                        //    "y": 80,
+                        //    "Percent": 80,
+                        //}
+                    ]
+                }
+            ]
+        };
+        var chart = new Highcharts.Chart(chartOptions);
 
-            $(".giftwrapper").css({ left: "0" });
-
-            $('.giftwrapper').animate({ left: "-=" + distance }, 3000, function () {
-                alert('You Won Gift' + randomgift);
-                btn.show();
-            });
-        });
     </script>
 
     <!-- End custom js for this page-->
@@ -411,53 +376,142 @@
     </script>
 
     <script>
-        var IndexController = ($scope, $rootScope, $timeout, $filter, $compile, ApiHelper, CommonHelper, widgetSvc, $q) => {
+        var IndexController = ($scope, $rootScope, $timeout, $filter, $compile, ApiHelper, CommonHelper, UtilFactory, DataFactory, $q, widgetSvc, $interval) => {
+            $scope.RoomId = @ViewBag.Room;
+            $scope.BetId = 0;
 
-            $scope.bets = [];
+            $scope.Rooms = [];
 
+            //#region SignalR
             $scope.sendBet = function () {
                 widgetSvc.sendRequest();
             };
-
-            var addBet = function (data) {
-                debugger;
-                $scope.bets = data;
-            };
-
             widgetSvc.initialize();
-
             $scope.$parent.$on("newBet", function (e, data) {
                 $scope.$apply(function () {
-                    addBet(data);
+                    GetInfoRooms(data.RoomId);
+                    if (data.RoomId == $scope.RoomId) {
+                        GetInfoChartsByRoom(data.RoomId);
+                    }
                 });
             });
+            //#endregion
 
-
-            //GIẢI THƯỞNG VÒNG NÀY
-            $scope.RoomId = @ViewBag.Room;
-
-            $scope.Bet = {};
-
-            $scope.TotalAmount = "$150";
+            $scope.TotalAmount = "";
             //show SẼ KẾT THÚC TRONG hoac BET SẼ BẮT ĐẦU KHI CÓ ÍT NHẤT 2 NGƯỜI CHƠI...
             $scope.IsStart = true;
             $scope.IsFinished = false;
-            $scope.UserWin = {
-                UserName: "duyxaoke",
-                Chance: "18%"
-            };
-            $scope.Status = 1;// chưa có người chơi => hiển thị text "BET SẼ BẮT ĐẦU KHI CÓ ÍT NHẤT 2 NGƯỜI CHƠI..." và HighCharts
+            $scope.Status = 0;// chưa có người chơi => hiển thị text "BET SẼ BẮT ĐẦU KHI CÓ ÍT NHẤT 2 NGƯỜI CHƠI..." và HighCharts
+            //$scope.Status = 1;// có 1 người chơi
             //$scope.Status = 2;// đã có 2 người chơi trở lên => hiển thị ô đếm thời gian => bắt đầu đếm giờ, vẫn giữ HighCharts
             //$scope.Status = 3;// Kết thúc đếm giờ => ẩn ô cược, ô đếm, text.. bên phải, show vòng chạy và text Đang tìm người thắng cuộc + hiển thị HighCharts
             //$scope.Status = 4;// Kết thúc vòng chạy => show người thắng cuộc, giữ 5s quay lại bước 1
-            $scope.ObjBet = {};
+            $scope.ObjBet = {
+                RoomId: $scope.RoomId,
+            };
 
-            function GetBet() {
-                let defer = $q.defer();
-                let strApiEndPoint = CommonHelper.BetUrl + "List";
-                ApiHelper.GetMethod(strApiEndPoint)
+            $scope.UserWin = {
+                TotalAmount : 0,
+                TotalUser: 0,
+                Winner: 0,
+                UserName: "",
+                Percent: 0
+            };
+
+            function Spin() {
+                let strApiEndPoint = CommonHelper.ServiceUrl + "ResultBet?betId=" + $scope.BetId;
+                ApiHelper.PostMethod(strApiEndPoint)
                     .then(function (response) {
-                        $scope.Bet = response.Data;
+                        $scope.UserWin = response.Data;
+                        console.log($scope.UserWin);
+                        let giftamount = $scope.UserWin.TotalUser;
+                        let gw = $('.gift').outerWidth(true);
+                        let giftcenter = gw / 2;
+                        let cycle = 7;
+                        let containercenter = $('.boxwrapper').outerWidth(true) / 2;
+                        for (var i = 0; i <= giftamount; i++) {
+                            let giftduplicate = $('.giftwrapper').children().clone(true, true);
+                            $('.giftwrapper').append(giftduplicate);
+                        }
+                        //random result
+                        let randomgift = $scope.UserWin.Winner;//Math.floor((Math.random() * giftamount) + 1);
+                        let distance = (giftamount) * gw * cycle + containercenter + (randomgift * gw) - giftcenter;
+
+                        $(".giftwrapper").css({ left: "0" });
+
+                        $('.giftwrapper').animate({ left: "-=" + distance }, 3000, function () {
+                            $timeout(function () {
+                                $scope.Status = 4;
+                                //refresh
+                                $timeout(function () {
+                                    $scope.Status = 0;
+                                    GetBalance();
+                                    GetInfoRooms($scope.RoomId);
+                                    GetInfoChartsByRoom($scope.RoomId);
+                                }, 5000);
+                            }, 2000);
+                        });
+                    })
+                    .catch(function (response) {
+                        
+                    });
+                
+            }
+
+
+
+            //#region Create bet
+            $scope.Bet = function () {
+                let strApiEndPoint = CommonHelper.ServiceUrl + "CreateBet";
+                ApiHelper.PostMethod(strApiEndPoint, $scope.ObjBet)
+                    .then(function (response) {
+
+                    })
+                    .catch(function (response) {
+                        if (response.StatusCode == 401) {
+                            location.href = "/Account/Login";
+                        }
+                    });
+            };
+            //#endregion
+
+
+            //#region get balance
+            function GetBalance() {
+                let strApiEndPoint = CommonHelper.UserUrl + "GetBalance";
+                ApiHelper.PostMethod(strApiEndPoint)
+                    .then(function (response) {
+                        $scope.Balance = response.Data;
+                    })
+                    .catch(function (response) {
+                        $scope.Balance = 0;
+                    });
+            };
+            //#endregion
+
+
+            //Get thông tin phòng - param dùng để biết room nào có item mới
+            function GetInfoRooms(roomId) {
+                let defer = $q.defer();
+                DataFactory.Rooms_Get()
+                    .then(function (response) {
+                        $scope.Rooms = response.Data;
+                        let currenRoom = $scope.Rooms.filter(c => c.RoomId == $scope.RoomId)[0];
+                        $scope.TotalAmount = currenRoom.TotalAmount;
+                        $scope.BetId = currenRoom.BetId;
+                        if (currenRoom.TotalUser == 1) {
+                            $scope.Status = 1;
+                        }
+                        if (currenRoom.Finished) {
+                            $scope.Status = 2;
+                            var deadline = new Date(currenRoom.Finished);
+                            $scope.CountDown.initializeClock(deadline);
+                        }
+                        //anmation
+                        $timeout(function () {
+                            AnimationRooms(roomId);
+                        }, 500);
+
                         defer.resolve(response);
                     })
                     .catch(function (response) {
@@ -465,14 +519,103 @@
                     });
                 return defer.promise;
             }
+            //Get thông tin chart
+            function GetInfoChartsByRoom(roomId) {
+                let defer = $q.defer();
+                DataFactory.GetInfoChartsByRooms_Get(roomId)
+                    .then(function (response) {
+                     //redraw chart
+                    chart.destroy();
+                    chartOptions.series[0].data = response.Data;
+                    chart = new Highcharts.Chart(chartOptions);
+                    defer.resolve(response);
+                })
+                    .catch(function (response) {
+                        defer.reject(response);
+                    });
+                return defer.promise;
+            }
 
+            //Init
+            UtilFactory.WaitingLoadDirective(
+                [
+                ]).then(() => {
+                    $q.all({
+                        Rooms: DataFactory.Rooms_Get(),
+                        Charts: DataFactory.GetInfoChartsByRooms_Get($scope.RoomId)
+                    }).then((MultipleRes) => {
+                        $scope.Rooms = MultipleRes.Rooms.Data;
+                        let currenRoom = $scope.Rooms.filter(c => c.RoomId == $scope.RoomId)[0];
+                        $scope.TotalAmount = currenRoom.TotalAmount;
+                        $scope.BetId = currenRoom.BetId;
+                        if (currenRoom.TotalUser == 1) {
+                            $scope.Status = 1;
+                        }
+                        if (currenRoom.Finished) {
+                            $scope.Status = 2;
+                            var deadline = new Date(currenRoom.Finished);
+                            $scope.CountDown.initializeClock(deadline);
+                        }
+                        //redraw chart
+                        chart.destroy();
+                        chartOptions.series[0].data = MultipleRes.Charts.Data;
+                        chart = new Highcharts.Chart(chartOptions);
+                        GetBalance();
+                    });
+                }).catch((response) => {
+                    throw response;
+                });
 
-            //setInterval(GetBet, 2000);
+            ;
+            
+
+            //Timer
+            $scope.CountDown = {
+                days: 0,
+                hours: 0,
+                minutes: 0,
+                seconds: 0,
+                getTimeRemaining: function (endtime) {
+                    var t = Date.parse(endtime) - Date.parse(new Date());
+                    var seconds = Math.floor((t / 1000) % 60);
+                    var minutes = Math.floor((t / 1000 / 60) % 60);
+                    return {
+                        'total': t,
+                        'minutes': minutes,
+                        'seconds': seconds
+                    };
+                },
+
+                initializeClock: function (endtime) {
+                    function updateClock() {
+                        var t = $scope.CountDown.getTimeRemaining(endtime);
+                        $scope.CountDown.minutes = ('0' + t.minutes).slice(-2);
+                        $scope.CountDown.seconds = ('0' + t.seconds).slice(-2);
+                        //finished
+                        if (t.total <= 0) {
+                            $interval.cancel(timeinterval);
+                            $scope.Status = 3;
+                            //quay
+                            Spin();
+                        }
+                    }
+
+                    updateClock();
+                    var timeinterval = $interval(updateClock, 1000);
+                }
+            }
+
+            
+            function AnimationRooms(roomId) {
+                $('#Room_' + roomId).removeClass('flash animated').addClass('flash animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+                    $(this).removeClass('flash animated');
+                });
+            };
 
 
 
         }
-        IndexController.$inject = ["$scope", "$rootScope", "$timeout", "$filter", "$compile", "ApiHelper", "CommonHelper","widgetSvc", "$q"];
+        IndexController.$inject = ["$scope", "$rootScope", "$timeout", "$filter", "$compile", "ApiHelper", "CommonHelper", "UtilFactory", "DataFactory", "$q", "widgetSvc", "$interval"];
         addController("IndexController", IndexController);
     </script>
 

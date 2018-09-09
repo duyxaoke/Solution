@@ -1,4 +1,5 @@
 ﻿using Data.Models;
+using Microsoft.AspNet.Identity;
 using Service;
 using Shared.Models;
 using System;
@@ -13,7 +14,7 @@ using WebApiThrottle;
 
 namespace Web.Api
 {
-    [MvcAuthorize]
+    [ApiAuthorizeAttribute]
     [RoutePrefix("api/Users")]
     public class UsersController : ApiControllerBase
     {
@@ -33,6 +34,16 @@ namespace Web.Api
         public IHttpActionResult List()
         {
             var result = _userManager.Users.ToList();
+            return CCOk(result);
+        }
+
+
+        [HttpPost]
+        [Route("GetBalance")]
+        [EnableThrottling(PerSecond = 1)]
+        public IHttpActionResult GetBalance()
+        {
+            var result = _userManager.FindByIdAsync(User.Identity.GetUserId()).Result.Balance;
             return CCOk(result);
         }
 

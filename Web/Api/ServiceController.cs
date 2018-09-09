@@ -1,4 +1,5 @@
 ﻿using Core.Data;
+using Microsoft.AspNet.Identity;
 using Service;
 using Shared.Models;
 using SignalRAngularDemo.Hubs;
@@ -10,10 +11,12 @@ using System.Net.Http;
 using System.Web.Http;
 using Web.Helpers;
 using Web.Hubs;
+using Web.Infrastructure;
 using WebApiThrottle;
 
 namespace Web.Api
 {
+    [ApiAuthorizeAttribute]
     [RoutePrefix("api/Services")]
     public class ServicesController : SignalRBase<BetHub>
     {
@@ -33,36 +36,44 @@ namespace Web.Api
         [EnableThrottling(PerSecond = 1)]
         public IHttpActionResult CreateBet([FromBody]CreateBetViewModel model)
         {
+            model.UserId = User.Identity.GetUserId();
             var result = _transactionServices.Create(model);
             // notify all connected clients
-            var bet = _roomServices.GetAll().Data.Select(c=> new {
-                RoomName = c.Name,
-                TotalUser = 3,
-                TotalAmount = _betServices.GetByRoomAvailable(c.Id).Data?.TotalBet ?? 0
-            });
             if(result.Data)
-                Hub.Clients.All.newBet(bet);
+                Hub.Clients.All.newBet(model);
             return ApiHelper.ReturnHttpAction(result, this);
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("GetInfoRooms")]
+        [EnableThrottling(PerSecond = 3)]
+        public IHttpActionResult GetInfoRooms()
+        {
+            var result = _roomServices.GetInfoRooms();
+            return ApiHelper.ReturnHttpAction(result, this);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("GetInfoChartsByRoom")]
+        [EnableThrottling(PerSecond = 3)]
+        public IHttpActionResult GetInfoChartsByRoom(int roomId)
+        {
+            var result = _transactionServices.GetInfoChartsByRoom(roomId);
+            return ApiHelper.ReturnHttpAction(result, this);
+        }
 
         [HttpPost]
-        // POST api/<controller>
-        public HttpResponseMessage Post(Widget item)
+        [AllowAnonymous]
+        [Route("ResultBet")]
+        [EnableThrottling(PerSecond = 1)]
+        public IHttpActionResult ResultBet(int betId)
         {
-            if (item == null)
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
-            }
-
-            // validate and add to database in a real app
-
-            // notify all connected clients
-            Hub.Clients.All.newBet(item);
-
-            // return the item inside of a 201 response
-            return Request.CreateResponse(HttpStatusCode.Created, item);
+            var result = _betServices.GetResultBet(betId);
+            return ApiHelper.ReturnHttpAction(result, this);
         }
+
     }
 
 }

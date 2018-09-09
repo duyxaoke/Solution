@@ -14,6 +14,7 @@ namespace Service
     {
         CRUDResult<IEnumerable<Config>> GetAll();
         CRUDResult<Config> GetById(int id);
+        CRUDResult<int> GetPercent();
         CRUDResult<bool> Create(Config model);
         CRUDResult<bool> Update(Config model);
         CRUDResult<bool> Delete(int id);
@@ -37,6 +38,11 @@ namespace Service
         {
             var result = _unitOfWork.ConfigRepository.GetById(id);
             return new CRUDResult<Config> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
+        }
+        public CRUDResult<int> GetPercent()
+        {
+            var result = _unitOfWork.ConfigRepository.GetById(1).Percent;
+            return new CRUDResult<int> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
         }
         public CRUDResult<bool> Create(Config model)
         {

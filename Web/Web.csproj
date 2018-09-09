@@ -1043,6 +1043,7 @@
     <Content Include="bundleconfig.json" />
     <Content Include="Areas\Admin\Views\Rooms\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Bets\Index.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

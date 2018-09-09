@@ -36,12 +36,6 @@
         $localstorage.setObject(CacheKeyClient, storerage);
     };
 
-    //#region UserTypes
-    service.UserTypes_Get = function () {
-        let strApiEndPoint = ApiEndPoint.UserTypeResource;
-        return ApiHelper.GetMethod(strApiEndPoint);
-    };
-
     service.Users_Get = () => {
         let defer = $q.defer();
         let strApiEndPoint = ApiEndPoint.UserResource;
@@ -95,6 +89,20 @@
                 defer.reject(response);
             });
         return defer.promise;
+    };
+    //#endregion
+
+    //#region Room
+    service.Rooms_Get = function () {
+        let strApiEndPoint = CommonHelper.ServiceUrl + "GetInfoRooms";
+        return ApiHelper.GetMethod(strApiEndPoint);
+    };
+    //#endregion
+
+    //#region GetInfoChartsByRoom
+    service.GetInfoChartsByRooms_Get = function (roomId) {
+        let strApiEndPoint = CommonHelper.ServiceUrl + "GetInfoChartsByRoom?roomId=" + roomId;
+        return ApiHelper.GetMethod(strApiEndPoint);
     };
     //#endregion
 

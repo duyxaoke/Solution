@@ -13,7 +13,10 @@ namespace Shared.Models
         public string UserName { get; set; }
         public decimal AmountBet { get; set; }
         public decimal Percent { get; set; }
-        public DateTime CreateDate { get; set; }
+        public DateTime? CreateDate { get; set; }
+        //cho chart
+        public decimal? y { get; set; }
+        public string name { get; set; }
     }
 
 }

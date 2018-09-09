@@ -102,63 +102,6 @@
     <script src="~/Content/assets/angular-1.6.3/angular-route.min.js"></script>
     <script src="~/Content/assets/app/app-bundle.js"></script>
 
-    <!-- SIGNALR-->
-    <script src="~/Scripts/jquery.signalR-2.3.0.min.js"></script>
-    <script src="~/signalr/hubs"></script>
-    <script>
-        var widgetSvc = function ($, $rootScope) {
-            var proxy = null;
-
-            var initialize = function () {
-
-                // fetch connection object and create proxy
-                var connection = $.hubConnection();
-                this.proxy = connection.createHubProxy('bet');
-
-                // start connection
-                connection.start();
-
-                this.proxy.on('newBet', function (data) {
-                    $rootScope.$emit("newBet", data);
-                });
-            };
-
-            var sendRequest = function () {
-                // invoke sendWidget method defined in hub
-                this.proxy.invoke('sendBet');
-            };
-
-            return {
-                initialize: initialize,
-                sendRequest: sendRequest
-            };
-        };
-        widgetSvc.$inject = ["$", "$rootScope"];
-
-        addFactory("widgetSvc", widgetSvc);
-
-        function WidgetCtrl($scope, widgetSvc, $rootScope) {
-            $scope.bets = new Array();
-
-            $scope.sendBet = function () {
-                widgetSvc.sendRequest();
-            };
-
-            var addBet = function (data) {
-                $scope.bets.push(data);
-            };
-
-            widgetSvc.initialize();
-
-            $scope.$parent.$on("newBet", function (e, data) {
-                $scope.$apply(function () {
-                    addBet(data);
-                });
-            });
-        }
-        addController("WidgetCtrl", WidgetCtrl);
-
-    </script>
 
     @RenderSection("scripts", required: false)
 </body>
