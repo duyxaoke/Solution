@@ -112,7 +112,7 @@ namespace Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() { UserName = model.Email, Email = model.Email, Balance = 1000 };
+                var user = new ApplicationUser() { UserName = model.UserName, Email = model.Email, Balance = 1000 };
                 IdentityResult result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

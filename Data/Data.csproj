@@ -104,6 +104,10 @@
     <Compile Include="Migrations\201809090554533_sss.Designer.cs">
       <DependentUpon>201809090554533_sss.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809101507378_aisdasd.cs" />
+    <Compile Include="Migrations\201809101507378_aisdasd.Designer.cs">
+      <DependentUpon>201809101507378_aisdasd.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ApplicationRole.cs" />
     <Compile Include="Models\EmailService.cs" />
     <Compile Include="Models\IdentityConfig.cs" />
@@ -142,6 +146,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809090554533_sss.resx">
       <DependentUpon>201809090554533_sss.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809101507378_aisdasd.resx">
+      <DependentUpon>201809101507378_aisdasd.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

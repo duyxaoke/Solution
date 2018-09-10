@@ -7,6 +7,7 @@ using Shared.Models;
 using Data.DAL;
 using System.Data.Entity;
 using Shared.Common;
+using System.Data.SqlClient;
 
 namespace Service
 {
@@ -58,7 +59,7 @@ namespace Service
                         data.BetId = item.BetId;
                         data.UserId = item.UserId;
                         data.name = data.UserName = _unitOfWork.ApplicationUserRepository.GetById(item.UserId).UserName;
-                        data.y = data.Percent = item.Percent;
+                        data.y = data.Percent = trans.Sum(c=> c.AmountBet) / item.AmountBet;
                         data.AmountBet = item.AmountBet;
                         data.CreateDate = item.CreateDate;
                         //cho chart
@@ -80,81 +81,12 @@ namespace Service
             {
                 try
                 {
-                    ////Kiểm tra user có đủ tiền ko?
-                    var checkBalance = _context.Users.Find(model.UserId);
-                    if (checkBalance == null || (model.AmountBet > checkBalance.Balance))
-                    {
-                        return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.ResetContent, Data = false, ErrorMessage = "Bạn không đủ số dư để cược" };
-                    }
-                    //kiểm tra đã có Bet cho phòng đó chưa?
-                    var bet = _context.Bets.FirstOrDefault(c => c.RoomId == model.RoomId && c.IsComplete == false);
-                    if (bet == null)
-                    {
-                        bet = new Bet();
-                        bet.Code = Guid.NewGuid();
-                        bet.RoomId = model.RoomId;
-                        bet.TotalBet = model.AmountBet;
-                        bet.CreateDate = DateTime.Now;
-                        bet.IsComplete = false;
-                        _context.Bets.Add(bet);
-                    }
-                    else
-                    {
-                        //Kiểm tra nếu user đó đã đặt rồi thì không đặt nữa
-                        var checkBetIdByUser = _context.Transactions.FirstOrDefault(c => c.UserId == model.UserId && c.BetId == bet.Id);
-                        // = null: user chưa cược, có thể chơi
-                        if (checkBetIdByUser != null)
-                        {
-                            return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.ResetContent, Data = false, ErrorMessage = "Bạn đã cược rồi" };
-                        }
-                        bet.TotalBet += model.AmountBet;
-                        bet.UpdateDate = DateTime.Now;
-                        _context.Bets.Attach(bet);
-                        _context.Entry(bet).State = EntityState.Modified;
-                    }
-                    //Lưu bet
-                    _context.SaveChanges();
-                    //Trừ tiền user
-                    var user = _context.Users.Find(model.UserId);
-                    user.Balance -= model.AmountBet;
-                    _context.Users.Attach(user);
-                    _context.Entry(user).State = EntityState.Modified;
-
-                    var tran = new Transaction();
-                    tran.BetId = bet.Id;
-                    tran.UserId = model.UserId;
-                    tran.AmountBet = model.AmountBet;
-                    tran.CreateDate = DateTime.Now;
-                    _context.Transactions.Add(tran);
-                    _context.SaveChanges();
-                    //add new bet
-                    var lsTransasction = _context.Transactions.Where(c => c.BetId == bet.Id);
-                    foreach (var item in lsTransasction)
-                    {
-                        var trans = _context.Transactions.Find(item.Id);
-                        trans.AmountBet = item.AmountBet;
-                        trans.BetId = bet.Id;
-                        trans.UpdateDate = DateTime.Now;
-                        trans.UserId = item.UserId;
-                        trans.Percent = Math.Round(item.AmountBet / lsTransasction.Sum(x => x.AmountBet) * 100, 2);
-                        _context.Transactions.Attach(trans);
-                        _context.Entry(trans).State = EntityState.Modified;
-                    }
-                    //nếu >= 2 người chơi => set time finish
-                    var checkUser = _context.Transactions.Count(c => c.BetId == bet.Id);
-                    if (checkUser > 1)
-                    {
-                        //====================================================================================================================
-                        bet.Finished = DateTime.Now.AddSeconds(Command.Seconds);
-                    }
-                    _context.Bets.Attach(bet);
-                    _context.Entry(bet).State = EntityState.Modified;
-
-                    _context.SaveChanges();
+                    SqlParameter RoomId = new SqlParameter("RoomId", model.RoomId);
+                    SqlParameter UserId = new SqlParameter("UserId", model.UserId);
+                    SqlParameter AmountBet = new SqlParameter("AmountBet", model.AmountBet);
+                    var result =_context.Database.SqlQuery<bool>("EXEC SP_CreateBet @RoomId, @UserId, @AmountBet", RoomId, UserId, AmountBet).FirstOrDefault();
                     dbContextTransaction.Commit();
-                    return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.Success, Data = true };
-
-                    
+                    return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
                 }
                 catch (Exception ex)
                 {

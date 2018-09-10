@@ -220,8 +220,8 @@
                 vertical-align: top;
                 border: 2px solid #1f5380;
                 margin-right: 10px;
-                width:150px;
-                height:90px;
+                width: 150px;
+                height: 90px;
             }
 
             .active_room {
@@ -453,9 +453,9 @@
                         });
                     })
                     .catch(function (response) {
-                        
+
                     });
-                
+
             }
 
 
@@ -478,14 +478,20 @@
 
             //#region get balance
             function GetBalance() {
-                let strApiEndPoint = CommonHelper.UserUrl + "GetBalance";
-                ApiHelper.PostMethod(strApiEndPoint)
-                    .then(function (response) {
-                        $scope.Balance = response.Data;
-                    })
-                    .catch(function (response) {
-                        $scope.Balance = 0;
+                $scope.Balance = 0;
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <text>
+                        let strApiEndPoint = CommonHelper.UserUrl + "GetBalance";
+                        ApiHelper.PostMethod(strApiEndPoint)
+                        .then(function (response) {
+                            $scope.Balance = response.Data;
+                        })
+                        .catch(function (response) {
+                            $scope.Balance = 0;
                     });
+                     </text>
+                }
             };
             //#endregion
 
@@ -567,7 +573,7 @@
                 });
 
             ;
-            
+
 
             //Timer
             $scope.CountDown = {
@@ -605,7 +611,7 @@
                 }
             }
 
-            
+
             function AnimationRooms(roomId) {
                 $('#Room_' + roomId).removeClass('flash animated').addClass('flash animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
                     $(this).removeClass('flash animated');

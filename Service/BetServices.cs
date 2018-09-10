@@ -8,6 +8,7 @@ using Shared.Models;
 using Data.DAL;
 using System.Data.Entity;
 using Shared.Common;
+using System.Data.SqlClient;
 
 namespace Service
 {
@@ -70,46 +71,11 @@ namespace Service
             {
                 try
                 {
-                    var bet = _context.Bets.Find(betId);
-                    if(bet.IsComplete)
-                    {
-                        var trans = _context.Transactions.Where(c => c.BetId == bet.Id).ToList();
-                        var tranWin = trans.FirstOrDefault(c => c.BetId == bet.Id && c.UserId == bet.UserIdWin);
-                        result.RoomId = bet.RoomId;
-                        result.TotalUser = trans.Count;
-                        result.Winner = trans.FindIndex(a => a.UserId == bet.UserIdWin) + 1;
-                        result.Percent = tranWin.Percent;
-                        result.UserName = _context.Users.Find(bet.UserIdWin)?.UserName ?? string.Empty;
-                        result.TotalBet = bet.TotalBet * (100 - Command.Percent) / 100;
-                    }
-                    else
-                    {
-                        var trans = _context.Transactions.Where(c => c.BetId == bet.Id).ToList();
-                        //random result
-                        var data = SelectItem(trans);
-                        result.RoomId = bet.RoomId;
-                        result.TotalUser = trans.Count;
-                        result.Winner = trans.FindIndex(a => a.Id == data.Id) + 1;
-                        result.Percent = data.Percent;
-                        result.UserName = _unitOfWork.ApplicationUserRepository.GetById(data.UserId)?.UserName ?? string.Empty;
-                        result.TotalBet = bet.TotalBet * (100 - Command.Percent) / 100;
-
-                        //update Bet
-                        bet.UserIdWin = data.UserId;
-                        bet.UpdateDate = DateTime.Now;
-                        bet.IsComplete = true;
-                        _context.Bets.Attach(bet);
-                        _context.Entry(bet).State = EntityState.Modified;
-
-                        //cong tien cho user win
-                        var user = _context.Users.Find(data.UserId);
-                        user.Balance += result.TotalBet;
-                        _context.Users.Attach(user);
-                        _context.Entry(user).State = EntityState.Modified;
-                    }
-
-                    _context.SaveChanges();
-
+                    var lsTrans = _unitOfWork.TransactionRepository.GetMany(c=> c.BetId == betId).ToList();
+                    var data = SelectItem(lsTrans);
+                    SqlParameter param1 = new SqlParameter("BetId", betId);
+                    SqlParameter param2 = new SqlParameter("UserIdWin", data.UserId);
+                    result = _context.Database.SqlQuery<ResultBetViewModel>("EXEC SP_GetResultBet @BetId, @UserIdWin", param1, param2).FirstOrDefault();
                     dbContextTransaction.Commit();
                     return new CRUDResult<ResultBetViewModel> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
 
@@ -164,7 +130,7 @@ namespace Service
             double poolSize = 0;
             for (int i = 0; i < items.Count; i++)
             {
-                poolSize += (double)items[i].Percent;
+                poolSize += (double)items[i].AmountBet;
             }
 
             double randomNumber = GetRandomDouble(rnd, 0, poolSize) + 1;
@@ -173,7 +139,7 @@ namespace Service
             double accumulatedProbability = 0;
             for (int i = 0; i < items.Count; i++)
             {
-                accumulatedProbability += (double)items[i].Percent;
+                accumulatedProbability += (double)items[i].AmountBet;
                 if (randomNumber <= accumulatedProbability)
                     return items[i];
             }
