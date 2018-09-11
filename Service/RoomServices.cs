@@ -10,6 +10,7 @@ using Core.DTO.Response;
 using Shared.Models;
 using System;
 using Shared.Common;
+using Data.DAL;
 
 namespace Service
 {
@@ -17,7 +18,7 @@ namespace Service
     {
         CRUDResult<IEnumerable<Room>> GetAll();
         CRUDResult<Room> GetById(int id);
-        CRUDResult<IEnumerable<InfoRoomsViewModel>> GetInfoRooms();
+        CRUDResult<List<InfoRoomsViewModel>> GetInfoRooms();
         CRUDResult<bool> Create(Room model);
         CRUDResult<bool> Update(Room model);
         CRUDResult<bool> Delete(int id);
@@ -28,9 +29,13 @@ namespace Service
     public class RoomServices : IRoomServices
     {
         private readonly UnitOfWork _unitOfWork;
-        public RoomServices(UnitOfWork unitOfWork)
+        private DatabaseContext _context;
+
+        public RoomServices(UnitOfWork unitOfWork, DatabaseContext context)
         {
+            _context = context;
             _unitOfWork = unitOfWork;
+
         }
         public CRUDResult<IEnumerable<Room>> GetAll()
         {
@@ -42,33 +47,18 @@ namespace Service
             var result = _unitOfWork.RoomRepository.GetById(id);
             return new CRUDResult<Room> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
         }
-        public CRUDResult<IEnumerable<InfoRoomsViewModel>> GetInfoRooms()
+        public CRUDResult<List<InfoRoomsViewModel>> GetInfoRooms()
         {
-            var rooms = _unitOfWork.RoomRepository.GetAll();
             var result = new List<InfoRoomsViewModel>();
-            foreach (var item in rooms)
+            try
             {
-                var data = new InfoRoomsViewModel();
-                data.RoomId = item.Id;
-                data.RoomName = item.Name;
-                data.TotalAmount = 0;
-                data.TotalUser = 0;
-               //select room chưa chạy xong
-               var betInRoom = _unitOfWork.BetRepository.Get(c => c.RoomId == item.Id && c.IsComplete == false);
-                if (betInRoom != null)
-                {
-                    data.BetId = betInRoom.Id;
-                    data.TotalAmount = Math.Round(betInRoom.TotalBet * (100 - Command.Percent) / 100, 2);
-                    data.Finished = betInRoom.Finished;
-                    var transInBet = _unitOfWork.TransactionRepository.GetMany(c => c.BetId == betInRoom.Id);
-                    if (transInBet != null)
-                    {
-                        data.TotalUser = transInBet.Count();
-                    }
-                }
-                result.Add(data);
+                result = _context.Database.SqlQuery<InfoRoomsViewModel>("EXEC SP_GetInfoRooms").ToList();
+                return new CRUDResult<List<InfoRoomsViewModel>> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
             }
-            return new CRUDResult<IEnumerable<InfoRoomsViewModel>> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
+            catch (Exception ex)
+            {
+               return new CRUDResult<List<InfoRoomsViewModel>> { StatusCode = CRUDStatusCodeRes.ResetContent, Data = result, ErrorMessage = ex.Message };
+            }
         }
         public CRUDResult<bool> Create(Room model)
         {

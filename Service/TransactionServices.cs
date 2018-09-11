@@ -15,7 +15,7 @@ namespace Service
     {
         CRUDResult<IEnumerable<Transaction>> GetAll();
         CRUDResult<Transaction> GetById(int id);
-        CRUDResult<IEnumerable<TransactionViewModel>> GetInfoChartsByRoom(int roomId);
+        CRUDResult<List<TransactionViewModel>> GetInfoChartsByRoom(int roomId);
         CRUDResult<IEnumerable<Transaction>> GetByBet(int betId);
         CRUDResult<bool> Create(CreateBetViewModel model);
         CRUDResult<bool> Update(Transaction model);
@@ -43,32 +43,19 @@ namespace Service
             var result = _unitOfWork.TransactionRepository.GetById(id);
             return new CRUDResult<Transaction> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
         }
-        public CRUDResult<IEnumerable<TransactionViewModel>> GetInfoChartsByRoom(int roomId)
+        public CRUDResult<List<TransactionViewModel>> GetInfoChartsByRoom(int roomId)
         {
             var result = new List<TransactionViewModel>();
-            var bet = _unitOfWork.BetRepository.Get(c => c.RoomId == roomId && c.IsComplete == false);
-            if (bet != null)
+            try
             {
-                var trans = _unitOfWork.TransactionRepository.GetMany(c => c.BetId == bet.Id);
-                if (trans != null)
-                {
-                    foreach (var item in trans)
-                    {
-                        var data = new TransactionViewModel();
-                        data.Id = item.Id;
-                        data.BetId = item.BetId;
-                        data.UserId = item.UserId;
-                        data.name = data.UserName = _unitOfWork.ApplicationUserRepository.GetById(item.UserId).UserName;
-                        data.y = data.Percent = trans.Sum(c=> c.AmountBet) / item.AmountBet;
-                        data.AmountBet = item.AmountBet;
-                        data.CreateDate = item.CreateDate;
-                        //cho chart
-                        
-                        result.Add(data);
-                    }
-                }
+                SqlParameter param1 = new SqlParameter("RoomId", roomId);
+                result = _context.Database.SqlQuery<TransactionViewModel>("EXEC SP_GetInfoChartsByRoom @RoomId", param1).ToList();
+                return new CRUDResult<List<TransactionViewModel>> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
             }
-            return new CRUDResult<IEnumerable<TransactionViewModel>> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
+            catch (Exception ex)
+            {
+                return new CRUDResult<List<TransactionViewModel>> { StatusCode = CRUDStatusCodeRes.ResetContent, Data = result, ErrorMessage = ex.Message };
+            }
         }
         public CRUDResult<IEnumerable<Transaction>> GetByBet(int betId)
         {

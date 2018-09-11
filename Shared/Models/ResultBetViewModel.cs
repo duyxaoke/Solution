@@ -12,6 +12,7 @@ namespace Shared.Models
         public int TotalUser { get; set; }
         public string UserIdWin { get; set; }
         public string UserName { get; set; }
+        public string AvatarLink { get; set; }
         public decimal TotalBet { get; set; } //sum tat ca
         public decimal Percent { get; set; }
     }

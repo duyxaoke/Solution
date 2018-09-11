@@ -11,6 +11,7 @@ namespace Shared.Models
         public int BetId { get; set; }
         public string UserId { get; set; }
         public string UserName { get; set; }
+        public string AvatarLink { get; set; }
         public decimal AmountBet { get; set; }
         public decimal Percent { get; set; }
         public DateTime? CreateDate { get; set; }
