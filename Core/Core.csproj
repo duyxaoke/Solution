@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Test.cs" />
     <Compile Include="Data\Transaction.cs" />
     <Compile Include="Data\Bet.cs" />
     <Compile Include="Data\Room.cs" />

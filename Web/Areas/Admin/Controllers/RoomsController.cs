@@ -4,6 +4,7 @@ using Data.Models;
 using DataTablesDotNet;
 using DataTablesDotNet.Models;
 using Service;
+using Shared.Models;
 using System.Linq;
 using System.Web.Mvc;
 using Web.Helpers;
@@ -27,8 +28,8 @@ namespace Web.Areas.Admin.Controllers
         }
         public JsonResult Data(DataTablesRequest model)
         {
-            var data = _roomServices.GetAll().Data.AsQueryable();
-            var dataTableParser = new DataTablesParser<Room>(model, data);
+            var data = _roomServices.List().Data.AsQueryable();
+            var dataTableParser = new DataTablesParser<RoomRes>(model, data);
             var formattedList = dataTableParser.Process();
             return Json(formattedList, JsonRequestBehavior.AllowGet);
         }

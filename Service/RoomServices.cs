@@ -11,83 +11,121 @@ using Shared.Models;
 using System;
 using Shared.Common;
 using Data.DAL;
+using Core.DataAccess.Interface;
+using Dapper;
+using AutoMapper;
 
 namespace Service
 {
-    public interface IRoomServices
+    public interface IRoomServices : IDisposable
     {
-        CRUDResult<IEnumerable<Room>> GetAll();
-        CRUDResult<Room> GetById(int id);
-        CRUDResult<List<InfoRoomsViewModel>> GetInfoRooms();
-        CRUDResult<bool> Create(Room model);
-        CRUDResult<bool> Update(Room model);
+        CRUDResult<IEnumerable<RoomRes>> List();
+        CRUDResult<RoomRes> GetById(int id);
+        CRUDResult<IEnumerable<InfoRoomRes>> GetInfoRooms();
+        CRUDResult<int> Create(RoomInsertReq obj);
+        CRUDResult<bool> Update(RoomUpdateReq obj);
         CRUDResult<bool> Delete(int id);
-        void Save();
-        void Dispose();
 
     }
     public class RoomServices : IRoomServices
     {
-        private readonly UnitOfWork _unitOfWork;
-        private DatabaseContext _context;
+        private readonly Lazy<IRepository> _repository;
+        private readonly Lazy<IReadOnlyRepository> _readOnlyRepository;
 
-        public RoomServices(UnitOfWork unitOfWork, DatabaseContext context)
+        public RoomServices(Lazy<IRepository> repository, Lazy<IReadOnlyRepository> readOnlyRepository)
         {
-            _context = context;
-            _unitOfWork = unitOfWork;
-
+            _repository = repository;
+            _readOnlyRepository = readOnlyRepository;
         }
-        public CRUDResult<IEnumerable<Room>> GetAll()
+        public CRUDResult<IEnumerable<RoomRes>> List()
         {
-            var result = _unitOfWork.RoomRepository.GetAll();
-            return new CRUDResult<IEnumerable<Room>> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
-        }
-        public CRUDResult<Room> GetById(int id)
-        {
-            var result = _unitOfWork.RoomRepository.GetById(id);
-            return new CRUDResult<Room> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
-        }
-        public CRUDResult<List<InfoRoomsViewModel>> GetInfoRooms()
-        {
-            var result = new List<InfoRoomsViewModel>();
-            try
+            var result = _readOnlyRepository.Value.SQLQuery<RoomRes>("SELECT * FROM Room");
+            if (result == null)
             {
-                result = _context.Database.SqlQuery<InfoRoomsViewModel>("EXEC SP_GetInfoRooms").ToList();
-                return new CRUDResult<List<InfoRoomsViewModel>> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
+                return new CRUDResult<IEnumerable<RoomRes>> { StatusCode = CRUDStatusCodeRes.ResourceNotFound };
             }
-            catch (Exception ex)
+            else
             {
-               return new CRUDResult<List<InfoRoomsViewModel>> { StatusCode = CRUDStatusCodeRes.ResetContent, Data = result, ErrorMessage = ex.Message };
+                return new CRUDResult<IEnumerable<RoomRes>> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
             }
         }
-        public CRUDResult<bool> Create(Room model)
+        public CRUDResult<RoomRes> GetById(int id)
         {
-            var result = _unitOfWork.RoomRepository.Insert(model);
-            if (result)
-                return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.Success, Data = true };
-            return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.ResetContent, Data = false };
+            if (id <= 0) return new CRUDResult<RoomRes> { StatusCode = CRUDStatusCodeRes.InvalidData, ErrorMessage = "Dữ liệu truyền vào không hợp lệ.", Data = null, };
+            RoomRes item = _readOnlyRepository.Value.Connection.QuerySingleOrDefault<RoomRes>(
+                @"SELECT * FROM Room WHERE Id = @Id",
+                new
+                {
+                    Id = id
+                });
+            if (item == null)
+                return new CRUDResult<RoomRes> { StatusCode = CRUDStatusCodeRes.ResourceNotFound };
+            else
+                return new CRUDResult<RoomRes> { StatusCode = CRUDStatusCodeRes.Success, Data = item };
         }
-        public CRUDResult<bool> Update(Room model)
+
+        public CRUDResult<IEnumerable<InfoRoomRes>> GetInfoRooms()
         {
-            var result = _unitOfWork.RoomRepository.Update(model);
-            if (result)
-                return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.Success, Data = true };
-            return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.ResetContent, Data = false };
+            var result = _readOnlyRepository.Value.StoreProcedureQuery<InfoRoomRes>("SP_Room_GetInfo");
+            if (result == null)
+            {
+                return new CRUDResult<IEnumerable<InfoRoomRes>> { StatusCode = CRUDStatusCodeRes.ResourceNotFound };
+            }
+            else
+            {
+                return new CRUDResult<IEnumerable<InfoRoomRes>> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
+            }
+
+        }
+
+        public CRUDResult<int> Create(RoomInsertReq obj)
+        {
+            var data = _repository.Value.Insert<Room>(new Room()
+            {
+                Name = obj.Name,
+                MaxBet = obj.MaxBet,
+                MinBet = obj.MinBet
+            });
+            return new CRUDResult<int>() { Data = data.Id, StatusCode = CRUDStatusCodeRes.ReturnWithData };
+        }
+        public CRUDResult<bool> Update(RoomUpdateReq obj)
+        {
+            var getData =
+                _readOnlyRepository.Value.GetById<Room>(
+                    new Room() { Id = obj.Id });
+            if (getData == null)
+            {
+                return new CRUDResult<bool>() { StatusCode = CRUDStatusCodeRes.ResourceNotFound };
+            }
+            var objRoom = Mapper.Map<RoomUpdateReq, Room>(obj);
+            objRoom.Name = obj.Name;
+            objRoom.MaxBet = obj.MaxBet;
+            objRoom.MinBet = obj.MinBet;
+            _repository.Value.Update<Room>(objRoom);
+            return new CRUDResult<bool>() { Data = true, StatusCode = CRUDStatusCodeRes.Success };
         }
         public CRUDResult<bool> Delete(int id)
         {
-            var result = _unitOfWork.RoomRepository.Delete(id);
-            if (result)
-                return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.Success, Data = true };
-            return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.ResetContent, Data = false };
+            var objData = _readOnlyRepository.Value.GetById<Test>(new Test() { Id = id });
+            if (objData == null)
+                return new CRUDResult<bool>() { StatusCode = CRUDStatusCodeRes.ResourceNotFound, Data = false };
+
+            int row = _repository.Value.Connection.Execute(@"DELETE Room
+                where Id = @Id", new
+            {
+                Id = id
+            });
+            return new CRUDResult<bool>() { Data = (row > 0), StatusCode = CRUDStatusCodeRes.Success };
         }
-        public void Save()
-        {
-            _unitOfWork.Save();
-        }
+
+
         public void Dispose()
         {
-            _unitOfWork.Dispose();
+            if (_repository.IsValueCreated)
+                _repository.Value.Dispose();
+            if (_readOnlyRepository.IsValueCreated)
+                _readOnlyRepository.Value.Dispose();
         }
+
     }
 }

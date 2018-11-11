@@ -112,6 +112,10 @@
     <Compile Include="Migrations\201809111417466_adfd.Designer.cs">
       <DependentUpon>201809111417466_adfd.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811100328459_addtest.cs" />
+    <Compile Include="Migrations\201811100328459_addtest.Designer.cs">
+      <DependentUpon>201811100328459_addtest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ApplicationRole.cs" />
     <Compile Include="Models\EmailService.cs" />
     <Compile Include="Models\IdentityConfig.cs" />
@@ -156,6 +160,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809111417466_adfd.resx">
       <DependentUpon>201809111417466_adfd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811100328459_addtest.resx">
+      <DependentUpon>201811100328459_addtest.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

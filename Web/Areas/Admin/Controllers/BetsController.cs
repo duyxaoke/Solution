@@ -30,8 +30,8 @@ namespace Web.Areas.Admin.Controllers
         }
         public JsonResult Data(DataTablesRequest model)
         {
-            var data = _betServices.GetAll().Data.AsQueryable();
-            var dataTableParser = new DataTablesParser<BetViewModel>(model, data);
+            var data = _betServices.List().Data.AsQueryable();
+            var dataTableParser = new DataTablesParser<BetRes>(model, data);
             var formattedList = dataTableParser.Process();
             return Json(formattedList, JsonRequestBehavior.AllowGet);
         }

@@ -9,122 +9,144 @@ using Data.DAL;
 using System.Data.Entity;
 using Shared.Common;
 using System.Data.SqlClient;
+using Core.DataAccess.Interface;
+using Dapper;
+using AutoMapper;
 
 namespace Service
 {
-    public interface IBetServices
+    public interface IBetServices : IDisposable
     {
-        CRUDResult<IEnumerable<BetViewModel>> GetAll();
-        CRUDResult<Bet> GetById(int id);
-        CRUDResult<Bet> GetByRoomAvailable(int roomId);
-        CRUDResult<ResultBetViewModel> GetResultBet(int roomId);
-        CRUDResult<Bet> GetByCode(Guid code);
-        CRUDResult<bool> Create(Bet model);
-        CRUDResult<bool> Update(Bet model);
-        void Save();
-        void Dispose();
+        CRUDResult<IEnumerable<BetRes>> List();
+        CRUDResult<BetRes> GetById(int id);
+        CRUDResult<BetRes> GetByRoomAvailable(int roomId);
+        CRUDResult<ResultBetRes> GetResultBet(int roomId);
+        CRUDResult<BetRes> GetByCode(Guid code);
+        CRUDResult<int> Create(BetInsertReq obj);
+        CRUDResult<bool> Update(BetUpdateReq obj);
 
     }
     public class BetServices : IBetServices
     {
-        private readonly UnitOfWork _unitOfWork;
+        private readonly Lazy<IRepository> _repository;
+        private readonly Lazy<IReadOnlyRepository> _readOnlyRepository;
         public static Random rnd = new Random();
-        private DatabaseContext _context;
 
-        public BetServices(UnitOfWork unitOfWork, DatabaseContext context)
+        public BetServices(Lazy<IRepository> repository, Lazy<IReadOnlyRepository> readOnlyRepository)
         {
-            _unitOfWork = unitOfWork;
-            _context = context;
+            _repository = repository;
+            _readOnlyRepository = readOnlyRepository;
         }
-        public CRUDResult<IEnumerable<BetViewModel>> GetAll()
+        public CRUDResult<IEnumerable<BetRes>> List()
         {
-            var result = _unitOfWork.BetRepository.GetAll()
-                .Select(c => new BetViewModel
-                {
-                    Id = c.Id,
-                    Code = c.Code,
-                    RoomId = c.RoomId,
-                    RoomName = _unitOfWork.RoomRepository.GetById(c.RoomId)?.Name ?? string.Empty,
-                    UserIdWin = c.UserIdWin,
-                    UserWin = _unitOfWork.ApplicationUserRepository.GetById(c.UserIdWin)?.UserName ?? string.Empty,
-                    TotalBet = c.TotalBet,
-                    IsComplete = c.IsComplete,
-                    CreateDate = c.CreateDate,
-                    UpdateDate = c.UpdateDate
-                }); ;
-            return new CRUDResult<IEnumerable<BetViewModel>> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
-        }
-        public CRUDResult<Bet> GetById(int id)
-        {
-            var result = _unitOfWork.BetRepository.GetById(id);
-            return new CRUDResult<Bet> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
-        }
-        public CRUDResult<Bet> GetByRoomAvailable(int roomId)
-        {
-            var result = _unitOfWork.BetRepository.Get(c => c.RoomId == roomId && c.IsComplete == false);
-            return new CRUDResult<Bet> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
-        }
-        public CRUDResult<ResultBetViewModel> GetResultBet(int betId)
-        {
-            var result = new ResultBetViewModel();
-            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            var result = _readOnlyRepository.Value.StoreProcedureQuery<BetRes>("SP_Bet_GetAll");
+            if (result == null)
             {
-                try
-                {
-                    var lsTrans = _unitOfWork.TransactionRepository.GetMany(c=> c.BetId == betId).ToList();
-                    var data = SelectItem(lsTrans);
-                    SqlParameter param1 = new SqlParameter("BetId", betId);
-                    SqlParameter param2 = new SqlParameter("UserIdWin", data.UserId);
-                    result = _context.Database.SqlQuery<ResultBetViewModel>("EXEC SP_GetResultBet @BetId, @UserIdWin", param1, param2).FirstOrDefault();
-                    dbContextTransaction.Commit();
-                    return new CRUDResult<ResultBetViewModel> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
-
-                }
-                catch (Exception ex)
-                {
-                    dbContextTransaction.Rollback(); //Required according to MSDN article 
-                    return new CRUDResult<ResultBetViewModel> { StatusCode = CRUDStatusCodeRes.ResetContent, Data = result, ErrorMessage = ex.Message };
-
-                }
+                return new CRUDResult<IEnumerable<BetRes>> { StatusCode = CRUDStatusCodeRes.ResourceNotFound };
+            }
+            else
+            {
+                return new CRUDResult<IEnumerable<BetRes>> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
             }
         }
-        public CRUDResult<Bet> GetByCode(Guid code)
+        public CRUDResult<BetRes> GetById(int id)
         {
-            var result = _unitOfWork.BetRepository.Get(c=> c.Code == code);
-            return new CRUDResult<Bet> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
-        }
-        public CRUDResult<bool> Create(Bet model)
-        {
-            var result = _unitOfWork.BetRepository.Insert(model);
-            if (result)
-                return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.Success, Data = true };
-            return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.ResetContent, Data = false };
-        }
-        public CRUDResult<bool> Update(Bet model)
-        {
-            if (model.IsComplete)
-            {
-                return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.ResetContent, Data = false };
-            }
-            model.UpdateDate = DateTime.Now;
-            var result = _unitOfWork.BetRepository.Update(model);
-            if (result)
-                return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.Success, Data = true };
-            return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.ResetContent, Data = false };
+            if (id <= 0) return new CRUDResult<BetRes> { StatusCode = CRUDStatusCodeRes.InvalidData, ErrorMessage = "Dữ liệu truyền vào không hợp lệ.", Data = null, };
+            BetRes item = _readOnlyRepository.Value.Connection.QuerySingleOrDefault<BetRes>(
+                @"SELECT * FROM Bet WHERE Id = @Id",
+                new
+                {
+                    Id = id
+                });
+            if (item == null)
+                return new CRUDResult<BetRes> { StatusCode = CRUDStatusCodeRes.ResourceNotFound };
+            else
+                return new CRUDResult<BetRes> { StatusCode = CRUDStatusCodeRes.Success, Data = item };
         }
 
-        public void Save()
+        public CRUDResult<BetRes> GetByRoomAvailable(int roomId)
         {
-            _unitOfWork.Save();
+            if (roomId <= 0) return new CRUDResult<BetRes> { StatusCode = CRUDStatusCodeRes.InvalidData, ErrorMessage = "Dữ liệu truyền vào không hợp lệ.", Data = null, };
+            BetRes item = _readOnlyRepository.Value.Connection.QuerySingleOrDefault<BetRes>(
+                @"SELECT * FROM Bet WHERE RoomId = @RoomId AND IsComplete = 0",
+                new
+                {
+                    RoomId = roomId
+                });
+            if (item == null)
+                return new CRUDResult<BetRes> { StatusCode = CRUDStatusCodeRes.ResourceNotFound };
+            else
+                return new CRUDResult<BetRes> { StatusCode = CRUDStatusCodeRes.Success, Data = item };
         }
+        public CRUDResult<ResultBetRes> GetResultBet(int betId)
+        {
+            var resultTrans = _readOnlyRepository.Value.StoreProcedureQuery<TransactionRes>("SP_Transaction_GetByBetId", new { BetId = betId}).ToList();
+            var dataResult = SelectItem(resultTrans);
+            var param = new DynamicParameters();
+            param.Add("@BetId", betId);
+            param.Add("@UserIdWin", dataResult.UserId);
+            var result = _readOnlyRepository.Value.StoreProcedureQuery<ResultBetRes>("SP_Bet_GetResult", param).FirstOrDefault();
+            if (result != null)
+            {
+                return new CRUDResult<ResultBetRes>() { Data = result, StatusCode = CRUDStatusCodeRes.Success };
+            }
+            return new CRUDResult<ResultBetRes>() { StatusCode = CRUDStatusCodeRes.ResetContent, Data = null };
+        }
+        public CRUDResult<BetRes> GetByCode(Guid code)
+        {
+            if (code == Guid.Empty) return new CRUDResult<BetRes> { StatusCode = CRUDStatusCodeRes.InvalidData, ErrorMessage = "Dữ liệu truyền vào không hợp lệ.", Data = null, };
+            BetRes item = _readOnlyRepository.Value.Connection.QuerySingleOrDefault<BetRes>(
+                @"SELECT * FROM Bet WHERE Code = @Code",
+                new
+                {
+                    Code = code
+                });
+            if (item == null)
+                return new CRUDResult<BetRes> { StatusCode = CRUDStatusCodeRes.ResourceNotFound };
+            else
+                return new CRUDResult<BetRes> { StatusCode = CRUDStatusCodeRes.Success, Data = item };
+        }
+        public CRUDResult<int> Create(BetInsertReq obj)
+        {
+            var model = _repository.Value.Insert<Bet>(new Bet()
+            {
+                Code = obj.Code,
+                RoomId = obj.RoomId,
+                TotalBet = obj.TotalBet,
+                CreateDate = DateTime.Now,
+                IsComplete = false
+            });
+            return new CRUDResult<int>() { Data = model.Id, StatusCode = CRUDStatusCodeRes.ReturnWithData };
+        }
+        public CRUDResult<bool> Update(BetUpdateReq obj)
+        {
+            var getData =
+                _readOnlyRepository.Value.GetById<Bet>(
+                    new Bet() { Id = obj.Id });
+            if (getData == null)
+            {
+                return new CRUDResult<bool>() { StatusCode = CRUDStatusCodeRes.ResourceNotFound };
+            }
+            var objBet = Mapper.Map<BetUpdateReq, Bet>(obj);
+            objBet.TotalBet = obj.TotalBet;
+            objBet.IsComplete = obj.IsComplete;
+            objBet.CreateDate = getData.CreateDate;
+            objBet.UpdateDate = DateTime.Now;
+            _repository.Value.Update<Bet>(objBet);
+            return new CRUDResult<bool>() { Data = true, StatusCode = CRUDStatusCodeRes.Success };
+        }
+
         public void Dispose()
         {
-            _unitOfWork.Dispose();
+            if (_repository.IsValueCreated)
+                _repository.Value.Dispose();
+            if (_readOnlyRepository.IsValueCreated)
+                _readOnlyRepository.Value.Dispose();
         }
 
         // Static method for using from anywhere. You can make its overload for accepting not only List, but arrays also:
         // public static Item SelectItem (Item[] items)...
-        public static Transaction SelectItem(List<Transaction> items)
+        public static TransactionRes SelectItem(List<TransactionRes> items)
         {
             // Calculate the summa of all portions.
             double poolSize = 0;

@@ -1,12 +1,17 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
 using Autofac.Integration.WebApi;
+using Core.DataAccess.Implement;
+using Core.DataAccess.Interface;
 using Data.DAL;
 using Data.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Service;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Reflection;
 using System.Web;
 using System.Web.Http;
@@ -40,6 +45,11 @@ namespace Web
             {
                 DataProtectionProvider = new Microsoft.Owin.Security.DataProtection.DpapiDataProtectionProvider("Application​")
             });
+            builder.Register(c => new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnect"].ConnectionString))
+            .As<IDbConnection>().InstancePerLifetimeScope();
+
+            builder.RegisterType<DapperReadOnlyRepository>().As<IReadOnlyRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<DapperRepository>().As<IRepository>().InstancePerLifetimeScope();
             builder.RegisterType<ConfigServices>().As<IConfigServices>().InstancePerDependency();
             builder.RegisterType<MenuServices>().As<IMenuServices>().InstancePerDependency();
             builder.RegisterType<MenuInRolesServices>().As<IMenuInRolesServices>().InstancePerDependency();
@@ -49,6 +59,7 @@ namespace Web
             builder.RegisterType<RoomServices>().As<IRoomServices>().InstancePerDependency();
             builder.RegisterType<BetServices>().As<IBetServices>().InstancePerDependency();
             builder.RegisterType<TransactionServices>().As<ITransactionServices>().InstancePerDependency();
+            builder.RegisterType<TestService>().As<ITestServices>().InstancePerDependency();
 
             // Set the dependency resolver to be Autofac.
             var container = builder.Build();

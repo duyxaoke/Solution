@@ -34,7 +34,7 @@ namespace Web.Api
         [HttpPost]
         [Route("CreateBet")]
         [EnableThrottling(PerSecond = 1)]
-        public IHttpActionResult CreateBet([FromBody]CreateBetViewModel model)
+        public IHttpActionResult CreateBet([FromBody]CreateBetInsertReq model)
         {
             model.UserId = User.Identity.GetUserId();
             var result = _transactionServices.Create(model);

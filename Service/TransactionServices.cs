@@ -8,102 +8,127 @@ using Data.DAL;
 using System.Data.Entity;
 using Shared.Common;
 using System.Data.SqlClient;
+using Core.DataAccess.Interface;
+using Dapper;
+using AutoMapper;
+using System.Data;
 
 namespace Service
 {
-    public interface ITransactionServices
+    public interface ITransactionServices : IDisposable
     {
-        CRUDResult<IEnumerable<Transaction>> GetAll();
-        CRUDResult<Transaction> GetById(int id);
-        CRUDResult<List<TransactionViewModel>> GetInfoChartsByRoom(int roomId);
-        CRUDResult<IEnumerable<Transaction>> GetByBet(int betId);
-        CRUDResult<bool> Create(CreateBetViewModel model);
-        CRUDResult<bool> Update(Transaction model);
-        CRUDResult<bool> Updates(List<Transaction> model);
-        void Save();
-        void Dispose();
+        CRUDResult<IEnumerable<TransactionRes>> List();
+        CRUDResult<TransactionRes> GetById(int id);
+        CRUDResult<bool> Create(CreateBetInsertReq obj);
+        CRUDResult<bool> Update(TransactionUpdateReq obj);
+        CRUDResult<IEnumerable<TransactionRes>> GetInfoChartsByRoom(int roomId);
+        CRUDResult<IEnumerable<TransactionRes>> GetByBet(int betId);
 
     }
     public class TransactionServices : ITransactionServices
     {
-        private readonly UnitOfWork _unitOfWork;
-        private DatabaseContext _context;
-        public TransactionServices(UnitOfWork unitOfWork, DatabaseContext context)
-        {
-            _unitOfWork = unitOfWork;
-            _context = context;
-        }
-        public CRUDResult<IEnumerable<Transaction>> GetAll()
-        {
-            var result = _unitOfWork.TransactionRepository.GetAll();
-            return new CRUDResult<IEnumerable<Transaction>> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
-        }
-        public CRUDResult<Transaction> GetById(int id)
-        {
-            var result = _unitOfWork.TransactionRepository.GetById(id);
-            return new CRUDResult<Transaction> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
-        }
-        public CRUDResult<List<TransactionViewModel>> GetInfoChartsByRoom(int roomId)
-        {
-            var result = new List<TransactionViewModel>();
-            try
-            {
-                SqlParameter param1 = new SqlParameter("RoomId", roomId);
-                result = _context.Database.SqlQuery<TransactionViewModel>("EXEC SP_GetInfoChartsByRoom @RoomId", param1).ToList();
-                return new CRUDResult<List<TransactionViewModel>> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
-            }
-            catch (Exception ex)
-            {
-                return new CRUDResult<List<TransactionViewModel>> { StatusCode = CRUDStatusCodeRes.ResetContent, Data = result, ErrorMessage = ex.Message };
-            }
-        }
-        public CRUDResult<IEnumerable<Transaction>> GetByBet(int betId)
-        {
-            var result = _unitOfWork.TransactionRepository.GetMany(c => c.BetId == betId);
-            return new CRUDResult<IEnumerable<Transaction>> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
-        }
-        public CRUDResult<bool> Create(CreateBetViewModel model)
-        {
-            using (var dbContextTransaction = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    SqlParameter RoomId = new SqlParameter("RoomId", model.RoomId);
-                    SqlParameter UserId = new SqlParameter("UserId", model.UserId);
-                    SqlParameter AmountBet = new SqlParameter("AmountBet", model.AmountBet);
-                    var result =_context.Database.SqlQuery<bool>("EXEC SP_CreateBet @RoomId, @UserId, @AmountBet", RoomId, UserId, AmountBet).FirstOrDefault();
-                    dbContextTransaction.Commit();
-                    return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
-                }
-                catch (Exception ex)
-                {
-                    dbContextTransaction.Rollback(); //Required according to MSDN article 
-                    return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.ResetContent, Data = false, ErrorMessage = ex.Message };
+        private readonly Lazy<IRepository> _repository;
+        private readonly Lazy<IReadOnlyRepository> _readOnlyRepository;
 
-                }
+        public TransactionServices(Lazy<IRepository> repository, Lazy<IReadOnlyRepository> readOnlyRepository)
+        {
+            _repository = repository;
+            _readOnlyRepository = readOnlyRepository;
+        }
+        public CRUDResult<IEnumerable<TransactionRes>> List()
+        {
+            var result = _readOnlyRepository.Value.SQLQuery<TransactionRes>("SELECT * FROM Transaction");
+            if (result == null)
+            {
+                return new CRUDResult<IEnumerable<TransactionRes>> { StatusCode = CRUDStatusCodeRes.ResourceNotFound };
+            }
+            else
+            {
+                return new CRUDResult<IEnumerable<TransactionRes>> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
             }
         }
-        public CRUDResult<bool> Update(Transaction model)
+        public CRUDResult<TransactionRes> GetById(int id)
         {
-            var result = _unitOfWork.TransactionRepository.Update(model);
-            if (result)
-                return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.Success, Data = true };
-            return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.ResetContent, Data = false };
+            if (id <= 0) return new CRUDResult<TransactionRes> { StatusCode = CRUDStatusCodeRes.InvalidData, ErrorMessage = "Dữ liệu truyền vào không hợp lệ.", Data = null, };
+            TransactionRes item = _readOnlyRepository.Value.Connection.QuerySingleOrDefault<TransactionRes>(
+                @"SELECT * FROM Transaction WHERE Id = @Id",
+                new
+                {
+                    Id = id
+                });
+            if (item == null)
+                return new CRUDResult<TransactionRes> { StatusCode = CRUDStatusCodeRes.ResourceNotFound };
+            else
+                return new CRUDResult<TransactionRes> { StatusCode = CRUDStatusCodeRes.Success, Data = item };
         }
-        public CRUDResult<bool> Updates(List<Transaction> model)
+
+        public CRUDResult<IEnumerable<TransactionRes>> GetByBet(int betId)
         {
-            var result = _unitOfWork.TransactionRepository.Update(model);
-            if (result)
-                return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.Success, Data = true };
-            return new CRUDResult<bool> { StatusCode = CRUDStatusCodeRes.ResetContent, Data = false };
+            if (betId <= 0) return new CRUDResult<IEnumerable<TransactionRes>> { StatusCode = CRUDStatusCodeRes.InvalidData, ErrorMessage = "Dữ liệu truyền vào không hợp lệ.", Data = null, };
+            var result = _readOnlyRepository.Value.SQLQuery<TransactionRes>("SELECT * FROM Transaction WHERE BetId = @BetId", new
+            {
+                BetId = betId
+            });
+            if (result == null)
+            {
+                return new CRUDResult<IEnumerable<TransactionRes>> { StatusCode = CRUDStatusCodeRes.ResourceNotFound };
+            }
+            else
+            {
+                return new CRUDResult<IEnumerable<TransactionRes>> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
+            }
         }
-        public void Save()
+
+        public CRUDResult<bool> Create(CreateBetInsertReq obj)
         {
-            _unitOfWork.Save();
+            var param = new DynamicParameters();
+            param.Add("@RoomId", obj.RoomId);
+            param.Add("@UserId", obj.UserId);
+            param.Add("@AmountBet", obj.AmountBet);
+            _repository.Value.Connection.Execute("SP_Bet_Create", param, commandType: CommandType.StoredProcedure);
+            return new CRUDResult<bool>() { Data = true, StatusCode = CRUDStatusCodeRes.Success };
         }
+
+        public CRUDResult<bool> Update(TransactionUpdateReq obj)
+        {
+            var getData =
+                _readOnlyRepository.Value.GetById<Transaction>(
+                    new Transaction() { Id = obj.Id });
+            if (getData == null)
+            {
+                return new CRUDResult<bool>() { StatusCode = CRUDStatusCodeRes.ResourceNotFound };
+            }
+            var objTransaction = Mapper.Map<TransactionUpdateReq, Transaction>(obj);
+            objTransaction.BetId = obj.BetId;
+            objTransaction.AmountBet = obj.AmountBet;
+            objTransaction.UpdateDate = DateTime.Now;
+            _repository.Value.Update<Transaction>(objTransaction);
+            return new CRUDResult<bool>() { Data = true, StatusCode = CRUDStatusCodeRes.Success };
+        }
+
+
+        public CRUDResult<IEnumerable<TransactionRes>> GetInfoChartsByRoom(int roomId)
+        {
+            var param = new DynamicParameters();
+            param.Add("@RoomId", roomId);
+            var result = _readOnlyRepository.Value.StoreProcedureQuery<TransactionRes>("SP_Room_GetInfoChart", param);
+            if (result == null)
+            {
+                return new CRUDResult<IEnumerable<TransactionRes>> { StatusCode = CRUDStatusCodeRes.ResourceNotFound };
+            }
+            else
+            {
+                return new CRUDResult<IEnumerable<TransactionRes>> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
+            }
+        }
+
         public void Dispose()
         {
-            _unitOfWork.Dispose();
+            if (_repository.IsValueCreated)
+                _repository.Value.Dispose();
+            if (_readOnlyRepository.IsValueCreated)
+                _readOnlyRepository.Value.Dispose();
         }
+
     }
 }

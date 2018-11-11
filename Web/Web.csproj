@@ -63,6 +63,10 @@
     <Reference Include="Core.API">
       <HintPath>..\packages\Core.API.dll</HintPath>
     </Reference>
+    <Reference Include="Core.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Core.DataAccess.dll</HintPath>
+    </Reference>
     <Reference Include="Core.DTO">
       <HintPath>..\packages\Core.DTO.dll</HintPath>
     </Reference>
@@ -219,6 +223,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ApiController.cs" />
+    <Compile Include="Api\TestsController.cs" />
     <Compile Include="Api\TransactionsController.cs" />
     <Compile Include="Api\BetsController.cs" />
     <Compile Include="Api\RoomsController.cs" />

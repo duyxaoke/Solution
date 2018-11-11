@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Data
 {
-   public class Repository<T> : IRepository<T> where T: class
+   public class Repository<T> :  IRepository<T> where T: class
     { 
         private readonly DatabaseContext _context;
         private IDbSet<T> _entities;
