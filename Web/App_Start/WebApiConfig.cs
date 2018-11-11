@@ -6,6 +6,8 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Tracing;
 using Web.Helpers;
+using WebApi.OutputCache.Core.Cache;
+using WebApi.OutputCache.V2;
 using WebApiThrottle;
 
 namespace Web

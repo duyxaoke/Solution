@@ -12,11 +12,13 @@ using Core.DataAccess.Interface;
 using Dapper;
 using AutoMapper;
 using System.Data;
+using Service.CacheService;
 
 namespace Service
 {
     public interface ITransactionServices : IDisposable
     {
+        CRUDResult<TestRes> Test();
         CRUDResult<IEnumerable<TransactionRes>> List();
         CRUDResult<TransactionRes> GetById(int id);
         CRUDResult<bool> Create(CreateBetInsertReq obj);
@@ -29,15 +31,33 @@ namespace Service
     {
         private readonly Lazy<IRepository> _repository;
         private readonly Lazy<IReadOnlyRepository> _readOnlyRepository;
+        private readonly ICacheProviderService _cache;
 
-        public TransactionServices(Lazy<IRepository> repository, Lazy<IReadOnlyRepository> readOnlyRepository)
+        public TransactionServices(Lazy<IRepository> repository, Lazy<IReadOnlyRepository> readOnlyRepository, ICacheProviderService cache)
         {
             _repository = repository;
             _readOnlyRepository = readOnlyRepository;
+            _cache = cache;
         }
+
+        public CRUDResult<TestRes> Test()
+        {
+            TestRes result = null;
+            using (var multi = _readOnlyRepository.Value.Connection.QueryMultiple("SP_TEST", null, commandType: CommandType.StoredProcedure))
+            {
+                result = multi.ReadFirstOrDefault<TestRes>();
+                if (result != null)
+                    result.Room = multi.ReadFirstOrDefault<RoomRes>();
+            }
+            if (result == null)
+                return new CRUDResult<TestRes> { StatusCode = CRUDStatusCodeRes.ResourceNotFound };
+            return new CRUDResult<TestRes> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
+        }
+
+
         public CRUDResult<IEnumerable<TransactionRes>> List()
         {
-            var result = _readOnlyRepository.Value.SQLQuery<TransactionRes>("SELECT * FROM Transaction");
+            var result = _readOnlyRepository.Value.SQLQuery<TransactionRes>(@"SELECT * FROM [Transaction]");
             if (result == null)
             {
                 return new CRUDResult<IEnumerable<TransactionRes>> { StatusCode = CRUDStatusCodeRes.ResourceNotFound };
@@ -81,6 +101,10 @@ namespace Service
 
         public CRUDResult<bool> Create(CreateBetInsertReq obj)
         {
+            #region Clear cache when insert or update
+            _cache.Invalidate("InfoRoom");
+            #endregion
+
             var param = new DynamicParameters();
             param.Add("@RoomId", obj.RoomId);
             param.Add("@UserId", obj.UserId);

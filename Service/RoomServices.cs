@@ -31,11 +31,13 @@ namespace Service
     {
         private readonly Lazy<IRepository> _repository;
         private readonly Lazy<IReadOnlyRepository> _readOnlyRepository;
+        private readonly ICacheProviderService _cache;
 
-        public RoomServices(Lazy<IRepository> repository, Lazy<IReadOnlyRepository> readOnlyRepository)
+        public RoomServices(Lazy<IRepository> repository, Lazy<IReadOnlyRepository> readOnlyRepository, ICacheProviderService cache)
         {
             _repository = repository;
             _readOnlyRepository = readOnlyRepository;
+            _cache = cache;
         }
         public CRUDResult<IEnumerable<RoomRes>> List()
         {
@@ -63,10 +65,29 @@ namespace Service
             else
                 return new CRUDResult<RoomRes> { StatusCode = CRUDStatusCodeRes.Success, Data = item };
         }
+        private IEnumerable<InfoRoomRes> GetDatatracking()
+        {
+            // First, check the cache
+            var trackingdata = _cache.Get("InfoRoom") as IDictionary<int?, InfoRoomRes>;
+
+            // If it's not in the cache, we need to read it from the repository
+            if (trackingdata == null)
+            {
+                //kiem tra thong bao trong ngay
+                trackingdata = _readOnlyRepository.Value.StoreProcedureQuery<InfoRoomRes>("SP_Room_GetInfo").ToDictionary(v => v.RoomId);
+
+                if (trackingdata.Any())
+                {
+                    // Put this data into the cache for 300 minutes
+                    _cache.Set("InfoRoom", trackingdata); // 300 minute
+                }
+            }
+            return trackingdata.Values;
+        }
 
         public CRUDResult<IEnumerable<InfoRoomRes>> GetInfoRooms()
         {
-            var result = _readOnlyRepository.Value.StoreProcedureQuery<InfoRoomRes>("SP_Room_GetInfo");
+            var result = GetDatatracking();
             if (result == null)
             {
                 return new CRUDResult<IEnumerable<InfoRoomRes>> { StatusCode = CRUDStatusCodeRes.ResourceNotFound };

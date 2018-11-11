@@ -1,3 +1,32 @@
 ﻿@{
     ViewBag.Title = "Test";
 }
+
+<div ng-controller="IndexController" ng-cloak>
+
+   </div>
+    @section scripts{
+        <script>
+            var IndexController = ($scope, $rootScope, $timeout, $filter, $compile, ApiHelper, CommonHelper, UtilFactory, DataFactory, $q, $interval) => {
+                $scope.GetInfoRooms = function () {
+                    let defer = $q.defer();
+                    DataFactory.Rooms_Get()
+                        .then(function (response) {
+                            console.log(response.Data);
+                            defer.resolve(response);
+                        })
+                        .catch(function (response) {
+                            defer.reject(response);
+                        });
+                    return defer.promise;
+                }
+
+                setInterval(function () {
+                    $scope.GetInfoRooms();
+                }, 1000);
+
+            }
+            IndexController.$inject = ["$scope", "$rootScope", "$timeout", "$filter", "$compile", "ApiHelper", "CommonHelper", "UtilFactory", "DataFactory", "$q", "$interval"];
+            addController("IndexController", IndexController);
+        </script>
+    }

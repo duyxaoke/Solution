@@ -7,5 +7,8 @@ namespace Shared.Models
     {
         public string Id { get; set; }
         public string Code { get; set; }
+        public RoomRes Room { get; set; }
+
     }
+
 }

@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Service;
+using Service.CacheService;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -50,6 +51,7 @@ namespace Web
 
             builder.RegisterType<DapperReadOnlyRepository>().As<IReadOnlyRepository>().InstancePerLifetimeScope();
             builder.RegisterType<DapperRepository>().As<IRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<CacheProviderService>().As<ICacheProviderService>().InstancePerLifetimeScope();
             builder.RegisterType<ConfigServices>().As<IConfigServices>().InstancePerDependency();
             builder.RegisterType<MenuServices>().As<IMenuServices>().InstancePerDependency();
             builder.RegisterType<MenuInRolesServices>().As<IMenuInRolesServices>().InstancePerDependency();

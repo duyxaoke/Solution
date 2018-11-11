@@ -408,55 +408,55 @@
     <script src="~/Scripts/jquery.signalR-2.3.0.min.js"></script>
     <script src="~/signalr/hubs"></script>
     <script>
-        var widgetSvc = function ($, $rootScope) {
-            var proxy = null;
+        //var widgetSvc = function ($, $rootScope) {
+        //    var proxy = null;
 
-            var initialize = function () {
+        //    var initialize = function () {
 
-                // fetch connection object and create proxy
-                var connection = $.hubConnection();
-                this.proxy = connection.createHubProxy('bet');
+        //        // fetch connection object and create proxy
+        //        var connection = $.hubConnection();
+        //        this.proxy = connection.createHubProxy('bet');
 
-                // start connection
-                connection.start();
+        //        // start connection
+        //        connection.start();
 
-                this.proxy.on('newBet', function (data) {
-                    $rootScope.$emit("newBet", data);
-                });
-            };
+        //        this.proxy.on('newBet', function (data) {
+        //            $rootScope.$emit("newBet", data);
+        //        });
+        //    };
 
-            var sendRequest = function () {
-                // invoke sendWidget method defined in hub
-                this.proxy.invoke('sendBet');
-            };
+        //    var sendRequest = function () {
+        //        // invoke sendWidget method defined in hub
+        //        this.proxy.invoke('sendBet');
+        //    };
 
-            return {
-                initialize: initialize,
-                sendRequest: sendRequest
-            };
-        };
-        widgetSvc.$inject = ["$", "$rootScope"];
+        //    return {
+        //        initialize: initialize,
+        //        sendRequest: sendRequest
+        //    };
+        //};
+        //widgetSvc.$inject = ["$", "$rootScope"];
 
-        addFactory("widgetSvc", widgetSvc);
+        //addFactory("widgetSvc", widgetSvc);
 
     </script>
 
     <script>
-        var IndexController = ($scope, $rootScope, $timeout, $filter, $compile, ApiHelper, CommonHelper, UtilFactory, DataFactory, $q, widgetSvc, $interval) => {
+        var IndexController = ($scope, $rootScope, $timeout, $filter, $compile, ApiHelper, CommonHelper, UtilFactory, DataFactory, $q, $interval) => {
             //#region SignalR
-            $scope.sendBet = function () {
-                widgetSvc.sendRequest();
-            };
+            //$scope.sendBet = function () {
+            //    widgetSvc.sendRequest();
+            //};
             //#endregion
-            widgetSvc.initialize();
-            $scope.$parent.$on("newBet", function (e, data) {
-                $scope.$apply(function () {
-                    GetInfoRooms(data.RoomId);
-                    if (data.RoomId == $scope.RoomId) {
-                        GetInfoChartsByRoom(data.RoomId);
-                    }
-                });
-            });
+            //widgetSvc.initialize();
+            //$scope.$parent.$on("newBet", function (e, data) {
+            //    $scope.$apply(function () {
+            //        GetInfoRooms(data.RoomId);
+            //        if (data.RoomId == $scope.RoomId) {
+            //            GetInfoChartsByRoom(data.RoomId);
+            //        }
+            //    });
+            //});
 
             $scope.RoomId = @ViewBag.Room;
             $scope.BetId = 0;
@@ -565,6 +565,9 @@
             };
             //#endregion
 
+            setInterval(function () {
+                GetInfoRooms();
+            }, 1000);
 
             //Get thông tin phòng - param dùng để biết room nào có item mới
             function GetInfoRooms(roomId) {
@@ -701,7 +704,7 @@
 
 
         }
-        IndexController.$inject = ["$scope", "$rootScope", "$timeout", "$filter", "$compile", "ApiHelper", "CommonHelper", "UtilFactory", "DataFactory", "$q", "widgetSvc", "$interval"];
+        IndexController.$inject = ["$scope", "$rootScope", "$timeout", "$filter", "$compile", "ApiHelper", "CommonHelper", "UtilFactory", "DataFactory", "$q", "$interval"];
         addController("IndexController", IndexController);
     </script>
 

@@ -24,6 +24,14 @@ namespace Web.Api
             _transactionServices = transactionServices;
         }
         [HttpGet]
+        [Route("Test")]
+        [ResponseType(typeof(IEnumerable<TestRes>))]
+        public IHttpActionResult Test()
+        {
+            var result = _transactionServices.Test();
+            return ApiHelper.ReturnHttpAction(result, this);
+        }
+        [HttpGet]
         [Route("List")]
         [ResponseType(typeof(IEnumerable<TransactionRes>))]
         public IHttpActionResult List()

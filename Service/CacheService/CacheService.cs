@@ -3,7 +3,7 @@ using System.Runtime.Caching;
 
 namespace Service.CacheService
 {
-    public interface ICacheProviderService
+    public interface ICacheProviderService : IDisposable
     {
         object Get(string key);
         void Set(string key, object data);
@@ -36,6 +36,11 @@ namespace Service.CacheService
         public void Invalidate(string key)
         {
             Cache.Remove(key);
+        }
+
+        public void Dispose()
+        {
+           
         }
     }
 }

@@ -1,13 +1,7 @@
-﻿using Core.Data;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Service;
 using Shared.Models;
 using SignalRAngularDemo.Hubs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using Web.Helpers;
 using Web.Hubs;
@@ -18,7 +12,7 @@ namespace Web.Api
 {
     [ApiAuthorizeAttribute]
     [RoutePrefix("api/Services")]
-    public class ServicesController : SignalRBase<BetHub>
+    public class ServicesController : ApiControllerBase //SignalRBase<BetHub>
     {
         private readonly ITransactionServices _transactionServices;
         private readonly IBetServices _betServices;
@@ -39,11 +33,10 @@ namespace Web.Api
             model.UserId = User.Identity.GetUserId();
             var result = _transactionServices.Create(model);
             // notify all connected clients
-            if(result.Data)
-                Hub.Clients.All.newBet(model);
+            //if(result.Data)
+            //    Hub.Clients.All.newBet(model);
             return ApiHelper.ReturnHttpAction(result, this);
         }
-
         [HttpGet]
         [AllowAnonymous]
         [Route("GetInfoRooms")]
