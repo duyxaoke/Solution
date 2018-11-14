@@ -5,10 +5,10 @@ namespace Shared.Models
 
     public class ConfigRes
     {
-        public int Id { get; set; }
-        public bool SystemEnable { get; set; }
-        public string Currency { get; set; }
-        public decimal? ReferalBonus { get; set; }
-        public int Percent { get; set; }
+        [ProtoMember(1)]public int Id { get; set; }
+        [ProtoMember(2)]public bool SystemEnable { get; set; }
+        [ProtoMember(3)]public string Currency { get; set; }
+        [ProtoMember(4)]public decimal? ReferalBonus { get; set; }
+        [ProtoMember(5)] public int Percent { get; set; }
     }
 }

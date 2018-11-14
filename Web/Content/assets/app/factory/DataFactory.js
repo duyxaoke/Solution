@@ -93,16 +93,9 @@
     //#endregion
 
     //#region Room
-    service.Rooms_Get = function () {
-        let strApiEndPoint = CommonHelper.ServiceUrl + "GetInfoRooms";
-        return ApiHelper.GetMethod(strApiEndPoint);
-    };
-    //#endregion
-
-    //#region GetInfoChartsByRoom
-    service.GetInfoChartsByRooms_Get = function (roomId) {
-        let strApiEndPoint = CommonHelper.ServiceUrl + "GetInfoChartsByRoom?roomId=" + roomId;
-        return ApiHelper.GetMethod(strApiEndPoint);
+    service.Rooms_Get = function (roomId) {
+        let strApiEndPoint = CommonHelper.ServiceUrl + "GetInfoRooms?roomId=" + roomId;
+        return ApiHelper.PostMethod(strApiEndPoint);
     };
     //#endregion
 

@@ -3,6 +3,7 @@ using Service;
 using Shared.Models;
 using SignalRAngularDemo.Hubs;
 using System.Web.Http;
+using System.Web.Http.Description;
 using Web.Helpers;
 using Web.Hubs;
 using Web.Infrastructure;
@@ -27,6 +28,7 @@ namespace Web.Api
 
         [HttpPost]
         [Route("CreateBet")]
+        [ResponseType(typeof(bool))]
         [EnableThrottling(PerSecond = 1)]
         public IHttpActionResult CreateBet([FromBody]CreateBetInsertReq model)
         {
@@ -37,29 +39,22 @@ namespace Web.Api
             //    Hub.Clients.All.newBet(model);
             return ApiHelper.ReturnHttpAction(result, this);
         }
-        [HttpGet]
+
+        [HttpPost]
         [AllowAnonymous]
         [Route("GetInfoRooms")]
+        [ResponseType(typeof(FullDataRes))]
         [EnableThrottling(PerSecond = 3)]
-        public IHttpActionResult GetInfoRooms()
+        public IHttpActionResult GetInfoRooms(int? roomId)
         {
-            var result = _roomServices.GetInfoRooms();
-            return ApiHelper.ReturnHttpAction(result, this);
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        [Route("GetInfoChartsByRoom")]
-        [EnableThrottling(PerSecond = 3)]
-        public IHttpActionResult GetInfoChartsByRoom(int roomId)
-        {
-            var result = _transactionServices.GetInfoChartsByRoom(roomId);
+            var result = _roomServices.GetInfoRooms(roomId.Value);
             return ApiHelper.ReturnHttpAction(result, this);
         }
 
         [HttpPost]
         [AllowAnonymous]
         [Route("ResultBet")]
+        [ResponseType(typeof(ResultBetRes))]
         [EnableThrottling(PerSecond = 1)]
         public IHttpActionResult ResultBet(int betId)
         {

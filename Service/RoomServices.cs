@@ -21,7 +21,7 @@ namespace Service
     {
         CRUDResult<IEnumerable<RoomRes>> List();
         CRUDResult<RoomRes> GetById(int id);
-        CRUDResult<IEnumerable<InfoRoomRes>> GetInfoRooms();
+        CRUDResult<FullDataRes> GetInfoRooms(int roomId);
         CRUDResult<int> Create(RoomInsertReq obj);
         CRUDResult<bool> Update(RoomUpdateReq obj);
         CRUDResult<bool> Delete(int id);
@@ -65,36 +65,48 @@ namespace Service
             else
                 return new CRUDResult<RoomRes> { StatusCode = CRUDStatusCodeRes.Success, Data = item };
         }
-        private IEnumerable<InfoRoomRes> GetDatatracking()
+        private FullDataRes GetDatatracking(int roomId)
         {
             // First, check the cache
-            var trackingdata = _cache.Get("InfoRoom") as IDictionary<int?, InfoRoomRes>;
+            var trackingdata = _cache.Get("InfoRoom") as FullDataRes;
 
             // If it's not in the cache, we need to read it from the repository
             if (trackingdata == null)
             {
                 //kiem tra thong bao trong ngay
-                trackingdata = _readOnlyRepository.Value.StoreProcedureQuery<InfoRoomRes>("SP_Room_GetInfo").ToDictionary(v => v.RoomId);
+                FullDataRes result = new FullDataRes();
 
-                if (trackingdata.Any())
+                using (var multi = _readOnlyRepository.Value.Connection.QueryMultiple(@"EXEC SP_Room_GetInfo;
+                EXEC SP_Room_GetInfoChart @RoomId", new
+                {
+                    RoomId = roomId
+                }))
+                {
+                    result.InfoRooms = multi.Read<InfoRoomRes>().ToList();
+                    result.InfoCharts = multi.Read<TransactionRes>().ToList();
+                }
+
+                trackingdata = result;
+
+                if (trackingdata.InfoRooms.Any())
                 {
                     // Put this data into the cache for 300 minutes
                     _cache.Set("InfoRoom", trackingdata); // 300 minute
                 }
             }
-            return trackingdata.Values;
+            return trackingdata;
         }
 
-        public CRUDResult<IEnumerable<InfoRoomRes>> GetInfoRooms()
+        public CRUDResult<FullDataRes> GetInfoRooms(int roomId)
         {
-            var result = GetDatatracking();
+            var result = GetDatatracking(roomId);
             if (result == null)
             {
-                return new CRUDResult<IEnumerable<InfoRoomRes>> { StatusCode = CRUDStatusCodeRes.ResourceNotFound };
+                return new CRUDResult<FullDataRes> { StatusCode = CRUDStatusCodeRes.ResourceNotFound };
             }
             else
             {
-                return new CRUDResult<IEnumerable<InfoRoomRes>> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
+                return new CRUDResult<FullDataRes> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
             }
 
         }

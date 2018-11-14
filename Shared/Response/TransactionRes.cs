@@ -3,8 +3,6 @@ using System;
 
 namespace Shared.Models
 {
-    [ProtoContract(ImplicitFields = ImplicitFields.AllFields)]
-
     public class TransactionRes
     {
         public int Id { get; set; }

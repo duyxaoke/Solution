@@ -161,6 +161,7 @@
     <Compile Include="Request\TestUpdateReq.cs" />
     <Compile Include="Request\TestInsertReq.cs" />
     <Compile Include="Response\BetRes.cs" />
+    <Compile Include="Response\FullDataRes.cs" />
     <Compile Include="Response\RoomRes.cs" />
     <Compile Include="Response\ResultBetRes.cs" />
     <Compile Include="Response\ConfigRes.cs" />

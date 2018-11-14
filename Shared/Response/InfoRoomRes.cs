@@ -1,9 +1,9 @@
 ﻿using ProtoBuf;
 using System;
+using System.Collections.Generic;
 
 namespace Shared.Models
 {
-    [ProtoContract(ImplicitFields = ImplicitFields.AllFields)]
 
     public class InfoRoomRes
     {

@@ -23,7 +23,6 @@ namespace Service
         CRUDResult<TransactionRes> GetById(int id);
         CRUDResult<bool> Create(CreateBetInsertReq obj);
         CRUDResult<bool> Update(TransactionUpdateReq obj);
-        CRUDResult<IEnumerable<TransactionRes>> GetInfoChartsByRoom(int roomId);
         CRUDResult<IEnumerable<TransactionRes>> GetByBet(int betId);
 
     }
@@ -128,22 +127,6 @@ namespace Service
             objTransaction.UpdateDate = DateTime.Now;
             _repository.Value.Update<Transaction>(objTransaction);
             return new CRUDResult<bool>() { Data = true, StatusCode = CRUDStatusCodeRes.Success };
-        }
-
-
-        public CRUDResult<IEnumerable<TransactionRes>> GetInfoChartsByRoom(int roomId)
-        {
-            var param = new DynamicParameters();
-            param.Add("@RoomId", roomId);
-            var result = _readOnlyRepository.Value.StoreProcedureQuery<TransactionRes>("SP_Room_GetInfoChart", param);
-            if (result == null)
-            {
-                return new CRUDResult<IEnumerable<TransactionRes>> { StatusCode = CRUDStatusCodeRes.ResourceNotFound };
-            }
-            else
-            {
-                return new CRUDResult<IEnumerable<TransactionRes>> { StatusCode = CRUDStatusCodeRes.Success, Data = result };
-            }
         }
 
         public void Dispose()

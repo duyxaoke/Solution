@@ -5,9 +5,9 @@ namespace Shared.Models
 
     public class RoomRes
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public decimal MinBet { get; set; }
-        public decimal MaxBet { get; set; }
+        [ProtoMember(1)]public int Id { get; set; }
+        [ProtoMember(2)]public string Name { get; set; }
+        [ProtoMember(3)]public decimal MinBet { get; set; }
+        [ProtoMember(4)] public decimal MaxBet { get; set; }
     }
 }

@@ -295,20 +295,20 @@
 
 
         @*<div id="footer">
-            <div align="center">
-                <div class="room_div" ng-repeat="item in Rooms" ng-class="RoomId == item.RoomId ? 'active_room' : ''" id="Room_{{item.RoomId}}">
-                    <a href="/?room={{item.RoomId}}">
-                        <h5 style="color:#00ff07">{{item.RoomName}}</h5>
-                        <img ng-show="item.TotalUser == 0" src="https://loading.io/spinners/gears/index.dual-gear-loading-icon.svg" style="height:35px" />
-                        <div ng-show="item.TotalUser > 0">
-                            <div style="display: block; color: rgb(255, 255, 255);">Đang chơi: <span>{{item.TotalUser}}</span></div>
-                            <div style="display: block; color:rgb(255, 225, 0)">Giải thưởng: <span>{{item.TotalBet}}</span><span ng-show="item.TotalBet > 0">+</span></div>
-                        </div>
-                    </a>
+                <div align="center">
+                    <div class="room_div" ng-repeat="item in Rooms" ng-class="RoomId == item.RoomId ? 'active_room' : ''" id="Room_{{item.RoomId}}">
+                        <a href="/?room={{item.RoomId}}">
+                            <h5 style="color:#00ff07">{{item.RoomName}}</h5>
+                            <img ng-show="item.TotalUser == 0" src="https://loading.io/spinners/gears/index.dual-gear-loading-icon.svg" style="height:35px" />
+                            <div ng-show="item.TotalUser > 0">
+                                <div style="display: block; color: rgb(255, 255, 255);">Đang chơi: <span>{{item.TotalUser}}</span></div>
+                                <div style="display: block; color:rgb(255, 225, 0)">Giải thưởng: <span>{{item.TotalBet}}</span><span ng-show="item.TotalBet > 0">+</span></div>
+                            </div>
+                        </a>
 
+                    </div>
                 </div>
-            </div>
-        </div>*@
+            </div>*@
 
 
 
@@ -463,6 +463,7 @@
 
             $scope.Rooms = [];
             $scope.InfoChartsByRoom = [];
+            $scope.InfoChartsByRoomTemp = [];
 
 
             $scope.TotalBet = 0;
@@ -516,8 +517,7 @@
                                     $('.giftwrapper').removeAttr('style');
                                     $('.giftwrapper li').remove();
                                     GetBalance();
-                                    GetInfoRooms($scope.RoomId);
-                                    GetInfoChartsByRoom($scope.RoomId);
+                                    GetInfoRooms();
                                 }, 5000);
                             }, 2000);
                         });
@@ -567,14 +567,19 @@
 
             setInterval(function () {
                 GetInfoRooms();
-            }, 1000);
+            }, 2000);
 
             //Get thông tin phòng - param dùng để biết room nào có item mới
-            function GetInfoRooms(roomId) {
+            function GetInfoRooms() {
                 let defer = $q.defer();
-                DataFactory.Rooms_Get()
+                DataFactory.Rooms_Get($scope.RoomId)
                     .then(function (response) {
-                        $scope.Rooms = response.Data;
+                        $scope.Rooms = response.Data.InfoRooms;
+                        $scope.InfoChartsByRoom = response.Data.InfoCharts;
+                        $scope.InfoChartsByRoom.forEach((x) => {
+                            x.name = x.UserName;
+                            x.y = x.Percent;
+                        });
                         let currenRoom = $scope.Rooms.filter(c => c.RoomId == $scope.RoomId)[0];
                         $scope.TotalBet = currenRoom.TotalBet;
                         $scope.BetId = currenRoom.BetId;
@@ -586,11 +591,19 @@
                             var deadline = new Date(currenRoom.Finished);
                             $scope.CountDown.initializeClock(deadline);
                         }
-                        //anmation
-                        $timeout(function () {
-                            AnimationRooms(roomId);
-                        }, 500);
-
+                        //check new item
+                        if (!UtilFactory.IsEquivalent($scope.InfoChartsByRoom, $scope.InfoChartsByRoomTemp)) {
+                            //redraw chart
+                            chart.destroy();
+                            chartOptions.series[0].data = $scope.InfoChartsByRoom;
+                            chart = new Highcharts.Chart(chartOptions);
+                            //anmation
+                            $timeout(function () {
+                                AnimationRooms($scope.RoomId);
+                            }, 500);
+                            GetBalance();
+                        }
+                        $scope.InfoChartsByRoomTemp = angular.copy($scope.InfoChartsByRoom);
                         defer.resolve(response);
                     })
                     .catch(function (response) {
@@ -598,65 +611,6 @@
                     });
                 return defer.promise;
             }
-            //Get thông tin chart
-            function GetInfoChartsByRoom(roomId) {
-                let defer = $q.defer();
-                DataFactory.GetInfoChartsByRooms_Get(roomId)
-                    .then(function (response) {
-                     $scope.InfoChartsByRoom = response.Data;
-                     //redraw chart
-                    chart.destroy();
-                     response.Data.forEach((x) => {
-                        x.name = x.UserName;
-                        x.y = x.Percent;
-                    });
-                     chartOptions.series[0].data = response.Data;
-                    chart = new Highcharts.Chart(chartOptions);
-                    defer.resolve(response);
-                })
-                    .catch(function (response) {
-                        defer.reject(response);
-                    });
-                return defer.promise;
-            }
-
-            //Init
-            UtilFactory.WaitingLoadDirective(
-                [
-                ]).then(() => {
-                    $q.all({
-                        Rooms: DataFactory.Rooms_Get(),
-                        Charts: DataFactory.GetInfoChartsByRooms_Get($scope.RoomId)
-                    }).then((MultipleRes) => {
-                        $scope.Rooms = MultipleRes.Rooms.Data;
-                        let currenRoom = $scope.Rooms.filter(c => c.RoomId == $scope.RoomId)[0];
-                        $scope.TotalBet = currenRoom.TotalBet;
-                        $scope.BetId = currenRoom.BetId;
-                        if (currenRoom.TotalUser == 1) {
-                            $scope.Status = 1;
-                        }
-                        if (currenRoom.Finished) {
-                            $scope.Status = 2;
-                            var deadline = new Date(currenRoom.Finished);
-                            $scope.CountDown.initializeClock(deadline);
-                        }
-                        $scope.InfoChartsByRoom = MultipleRes.Charts.Data;
-                        //redraw chart
-                        chart.destroy();
-                        MultipleRes.Charts.Data.forEach((x) => {
-                            x.name = x.UserName;
-                            x.y = x.Percent;
-                        });
-                        chartOptions.series[0].data = MultipleRes.Charts.Data;
-                        chart = new Highcharts.Chart(chartOptions);
-                        GetBalance();
-                    });
-                }).catch((response) => {
-                    throw response;
-                });
-
-            ;
-
 
             //Timer
             $scope.CountDown = {
@@ -700,9 +654,6 @@
                     $(this).removeClass('flash animated');
                 });
             };
-
-
-
         }
         IndexController.$inject = ["$scope", "$rootScope", "$timeout", "$filter", "$compile", "ApiHelper", "CommonHelper", "UtilFactory", "DataFactory", "$q", "$interval"];
         addController("IndexController", IndexController);

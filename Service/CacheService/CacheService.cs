@@ -23,7 +23,7 @@ namespace Service.CacheService
         {
             CacheItemPolicy policy = new CacheItemPolicy
             {
-                AbsoluteExpiration = DateTime.Now.AddHours(5)
+                AbsoluteExpiration = DateTime.Now.AddMinutes(15)
             };
             Cache.Add(new CacheItem(key, data), policy);
         }

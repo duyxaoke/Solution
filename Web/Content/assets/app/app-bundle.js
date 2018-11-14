@@ -649,16 +649,9 @@ var DataFactory = function ($rootScope, $localstorage, $timeout, UtilFactory, $q
     //#endregion
 
     //#region Room
-    service.Rooms_Get = function () {
-        let strApiEndPoint = CommonHelper.ServiceUrl + "GetInfoRooms";
-        return ApiHelper.GetMethod(strApiEndPoint);
-    };
-    //#endregion
-
-    //#region GetInfoChartsByRoom
-    service.GetInfoChartsByRooms_Get = function (roomId) {
-        let strApiEndPoint = CommonHelper.ServiceUrl + "GetInfoChartsByRoom?roomId=" + roomId;
-        return ApiHelper.GetMethod(strApiEndPoint);
+    service.Rooms_Get = function (roomId) {
+        let strApiEndPoint = CommonHelper.ServiceUrl + "GetInfoRooms?roomId=" + roomId;
+        return ApiHelper.PostMethod(strApiEndPoint);
     };
     //#endregion
 
@@ -679,6 +672,14 @@ var UtilFactory = function ($rootScope, $timeout, $q) {
             }
         }, 100);
         return defer.promise;
+    };
+
+    service.IsEquivalent = function (a, b) {
+        values = (o) => Object.keys(o).sort().map(k => o[k]).join('|'),
+            mapped1 = a.map(o => values(o)),
+            mapped2 = b.map(o => values(o));
+        var res = mapped1.every(v => mapped2.includes(v));
+        return res;
     };
 
     service.InitArrayNoIndex = function (number) {
